@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -26,9 +27,10 @@ namespace ProductionPlanner.PagedQueries
         {
             return query; // Default: No filtering
         }
-        public PagedQueryParameters<T> GetQuery(int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             return new PagedQueryParameters<T>(
+                columns,
                 pageIndex,
                 sort,
                 ipp,

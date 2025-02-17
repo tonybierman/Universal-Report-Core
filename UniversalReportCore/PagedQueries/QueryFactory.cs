@@ -1,4 +1,5 @@
-﻿using UniversalReportCore.PagedQueries;
+﻿using UniversalReportCore;
+using UniversalReportCore.PagedQueries;
 
 namespace ProductionPlanner.PagedQueries
 {
@@ -11,7 +12,7 @@ namespace ProductionPlanner.PagedQueries
             _providers = providers;
         }
 
-        public PagedQueryParameters<T> CreateQueryParameters(string slug, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public PagedQueryParameters<T> CreateQueryParameters(string slug, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
@@ -19,7 +20,7 @@ namespace ProductionPlanner.PagedQueries
                 throw new InvalidOperationException($"Unsupported report type: {slug}");
             }
 
-            return provider.GetQuery(pageIndex, sort, ipp, cohortIds);
+            return provider.GetQuery(columns, pageIndex, sort, ipp, cohortIds);
         }
     }
 

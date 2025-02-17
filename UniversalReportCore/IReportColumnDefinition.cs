@@ -10,5 +10,6 @@
         string ViewModelName { get; set; }
         string? RenderPartial { get; set; }
         bool HideInPortrait { get; set; }
+        AggregationType Aggregation { get; set; }
     }
 }

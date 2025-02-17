@@ -12,7 +12,7 @@ namespace UniversalReportCore.PagedQueries
         public int? ItemsPerPage { get; }
         public int[]? CohortIds { get; set; }
 
-        public List<IReportColumnDefinition> ReportColumns = new List<IReportColumnDefinition>();
+        public IReportColumnDefinition[] ReportColumns { get; set; }
 
         public Func<IQueryable<T>, IQueryable<T>>? AdditionalFilter { get; set; }
         public Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? AggregateLogic { get; set; }
@@ -20,6 +20,7 @@ namespace UniversalReportCore.PagedQueries
         public Func<IQueryable<T>, int[], IQueryable<T>>? CohortLogic { get; set; }
 
         public PagedQueryParameters(
+            IReportColumnDefinition[] columns,
             int? pageIndex,
             string? sort,
             int? itemsPerPage,
@@ -28,6 +29,7 @@ namespace UniversalReportCore.PagedQueries
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? aggregateLogic = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? metaLogic = null)
         {
+            ReportColumns = columns;
             PageIndex = pageIndex;
             Sort = sort;
             ItemsPerPage = itemsPerPage;

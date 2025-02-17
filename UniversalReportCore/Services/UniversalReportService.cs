@@ -66,7 +66,7 @@ namespace UniversalReport.Services
             // Sorting: Apply sorting if a sort order is specified in the parameters
             if (!string.IsNullOrEmpty(parameters.Sort))
             {
-                query = ApplySorting(query, parameters.Sort, parameters.ReportColumns);
+                query = ApplySorting(query, parameters.Sort, parameters.ReportColumns.ToArray());
             }
 
             // Ensure that AggregateLogic is not null. If it is, initialize it to return an empty dictionary.
@@ -100,7 +100,7 @@ namespace UniversalReport.Services
         private IQueryable<TEntity> ApplySorting<TEntity>(
             IQueryable<TEntity> query,
             string sortOrder,
-            List<IReportColumnDefinition> columns)
+            IReportColumnDefinition[] columns)
         {
             // TODO: Fix bracket removal hack
             sortOrder = sortOrder.Replace("{", "").Replace("}", "");
