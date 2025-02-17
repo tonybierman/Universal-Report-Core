@@ -13,7 +13,7 @@ namespace ProductionPlanner.PagedQueries
         {
         }
 
-        protected abstract Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query);
+        protected abstract Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query, IReportColumnDefinition[] columns);
         protected abstract Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<T> query);
         protected virtual IQueryable<T> ApplyFilters(IQueryable<T> query)
         {
@@ -43,10 +43,10 @@ namespace ProductionPlanner.PagedQueries
 
                     if (cohortIds == null || cohortIds.Length == 0)
                     {
-                        return await ComputeAggregates(filteredQuery);
+                        return await ComputeAggregates(filteredQuery, columns);
                     }
 
-                    var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds));
+                    var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
 
                     foreach (var key in totalAggregates.Keys)
                     {
@@ -56,7 +56,7 @@ namespace ProductionPlanner.PagedQueries
                     foreach (var cohortId in cohortIds)
                     {
                         var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
-                        var cohortResults = await ComputeAggregates(cohortQuery);
+                        var cohortResults = await ComputeAggregates(cohortQuery, columns);
                         foreach (var key in cohortResults.Keys)
                         {
                             aggregates[$"{key}_{cohortId}"] = cohortResults[key];
