@@ -17,7 +17,7 @@ namespace ProductionPlanner.PagedQueries
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
             {
-                throw new InvalidOperationException($"Unsupported report type: {slug}");
+                throw new InvalidOperationException($"Unsupported query type: {slug}");
             }
 
             return provider.GetQuery(columns, pageIndex, sort, ipp, cohortIds);
