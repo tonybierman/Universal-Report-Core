@@ -12,7 +12,7 @@ namespace UniversalReportCore.ViewModels
         public int? TakeTop { get; set; }
         public string DataEndpoint { get; set; }
         public bool IsHistorical { get; set; }
-
+        public string? PartialName { get; set; }
         public ChartMetaViewModel() 
         {
             ChartType = "bar";
