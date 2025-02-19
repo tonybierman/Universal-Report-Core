@@ -1,0 +1,2 @@
+docker build -t universal-report-demo -f UniversalReportDemo/Dockerfile .
+docker exec -it UniversalReportDemo /bin/bash

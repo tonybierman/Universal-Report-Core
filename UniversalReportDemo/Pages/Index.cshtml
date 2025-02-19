@@ -1,0 +1,13 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h2>City Populations</h2>
+<ul>
+    @foreach (var item in Model.Data.OrderBy(a => a.City))
+    {
+        <li>@item.City @item.CityType, @item.CountryOrArea - @item.Sex @item.Value</li>
+    }
+</ul>
