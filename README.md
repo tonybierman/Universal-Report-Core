@@ -7,9 +7,9 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 - **Paging**: Efficiently handle large datasets with built-in pagination.
 - **Column Sorting**: Sort data by columns dynamically.
 - **Column Aggregation**: Supports sum, average, count, min, and max operations.
-- **Cohort Aggregation**: Aggregate data within defined subsets.
+- **Cohort Aggregation**: Aggregate data within user-defined subsets.
 
-## Installation
+## Installation (coming soon)
 
 To install via NuGet:
 
