@@ -39,7 +39,7 @@ builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationV
 
 Create an entity that represents a row your dataset:
 
-https://github.com/tonybierman/Universal-Report-Core/blob/master/UniversalReportDemo/Data/CityPopulation.cs
+https://github.com/tonybierman/Universal-Report-Core/blob/master/UniversalReportDemo/Data/CityPopulation.cs#L10-L27
 
 ### 3. Configure a Report Query
 
