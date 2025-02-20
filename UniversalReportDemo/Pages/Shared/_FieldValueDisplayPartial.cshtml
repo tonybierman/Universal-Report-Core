@@ -1,0 +1,39 @@
+﻿@model (dynamic Item, string PropertyName)
+
+@{
+    var fieldVal = Model.Item.GetType().GetProperty(Model.PropertyName)?.GetValue(Model.Item);
+}
+
+@if (fieldVal != null)
+{
+    switch (fieldVal)
+    {
+        case int:
+            @fieldVal
+            break;
+        case long:
+        case double:
+        case decimal:
+            @string.Format("{0:0.00}", fieldVal)
+            break;
+        default:
+            @fieldVal
+            break;
+    }
+}
+else
+{
+    switch (Model.Item.GetType().GetProperty(Model.PropertyName)?.PropertyType)
+    {
+        case Type t when t == typeof(int?) || t == typeof(int):
+            <text>0</text>
+            break;
+        case Type t when t == typeof(long?) || t == typeof(double?) || t == typeof(decimal?) ||
+            t == typeof(long) || t == typeof(double) || t == typeof(decimal):
+            <text>0.00</text>
+            break;
+        default:
+            <text>-</text>
+            break;
+    }
+}

@@ -15,8 +15,11 @@ using UniversalReportDemo.Reports.CityPop;
 using AutoMapper;
 using UniversalReport.Services;
 using ProductionPlanner.Maps;
+using UniversalReportDemo.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpContextAccessor();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>

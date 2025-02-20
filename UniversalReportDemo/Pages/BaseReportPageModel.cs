@@ -29,7 +29,7 @@ namespace UniversalReportDemo.Pages
         [BindProperty] public PageMetaViewModel PageMeta { get; set; }
         public List<IReportColumnDefinition> ReportColumns { get; set; } = new();
         public string CurrentSort { get; set; }
-        //public ItemCohort[] Cohorts { get; set; }
+        public Cohort[] Cohorts { get; set; }
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
 
@@ -40,6 +40,8 @@ namespace UniversalReportDemo.Pages
             IReportColumnFactory reportColumnFactory,
             PageHelperFactory pageHelperFactory)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _pageMetaFactory = pageMetaFactory;
             _pageHelperFactory = pageHelperFactory;
             _reportColumnFactory = reportColumnFactory;
             _mapper = mapper;
@@ -62,6 +64,17 @@ namespace UniversalReportDemo.Pages
             }
             SortHelper.ConfigureSort(ReportColumns, Params.SortOrder.Value);
             CurrentSort = Params.SortOrder.Value;
+
+            if (Params.CohortIds.Value != null && Params.CohortIds.Value.Any())
+            {
+                if (!Params.CohortIds.Validate(Cohorts))
+                    return StatusCode(422); // "Unknown cohort."
+            }
+            else
+            {
+                if (!Params.CohortIds.Validate())
+                    return StatusCode(400);// "Chort validation error."
+            }
 
             // Load data
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);

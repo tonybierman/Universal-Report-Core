@@ -8,6 +8,8 @@ namespace UniversalReportDemo.Reports.CityPop
     {
         public string Slug => "CityPopulationDemo";
 
+        public override string CategorySlug => "CityPopulationReports";
+
         public PageMetaViewModel GetPageMeta()
         {
             return new PageMetaViewModel() { Title = "Demo", Subtitle = "City Populations" };
