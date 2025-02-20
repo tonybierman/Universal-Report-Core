@@ -20,13 +20,13 @@ namespace UniversalReportDemo.Reports.CityPop
                 },
                 new ReportColumnDefinition
                 {
-                    DisplayName = "CityType",
+                    DisplayName = "City Type",
                     PropertyName = "CityType",
                     IsSortable = true,
                 },
                 new ReportColumnDefinition
                 {
-                    DisplayName = "CountryOrArea",
+                    DisplayName = "Country or Area",
                     PropertyName = "CountryOrArea",
                     IsSortable = true
                 },
@@ -44,7 +44,7 @@ namespace UniversalReportDemo.Reports.CityPop
                 },
                 new ReportColumnDefinition
                 {
-                    DisplayName = "Value",
+                    DisplayName = "Population",
                     PropertyName = "Value",
                     IsSortable = true
                 }

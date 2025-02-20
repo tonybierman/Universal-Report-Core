@@ -26,7 +26,7 @@ namespace UniversalReportDemo.Reports.CountryGdp
                 },
                 new ReportColumnDefinition
                 {
-                    DisplayName = "Value (USD)",
+                    DisplayName = "GDP (USD)",
                     PropertyName = "Value",
                     IsSortable = true
                 }
