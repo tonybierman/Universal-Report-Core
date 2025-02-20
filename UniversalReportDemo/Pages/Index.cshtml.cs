@@ -17,16 +17,12 @@ namespace UniversalReportDemo.Pages
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public IndexModel(ApplicationDbContext dbContext)
+        public IndexModel()
         {
-            _dbContext = dbContext;
         }
-
-        public List<CityPopulation> Data { get; set; }
 
         public async Task OnGet()
         {
-            Data = await _dbContext.CityPopulations.ToListAsync();
         }
     }
 }
