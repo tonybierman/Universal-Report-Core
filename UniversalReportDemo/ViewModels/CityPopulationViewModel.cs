@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace UniversalReportDemo.Data
+namespace UniversalReportDemo.ViewModels
 {
-    public class CityPopulationViewModel
+    public class CityPopulationViewModel : IEntityViewModel<int>
     {
         public int Id { get; set; }  // Primary Key
         public string? CountryOrArea { get; set; }

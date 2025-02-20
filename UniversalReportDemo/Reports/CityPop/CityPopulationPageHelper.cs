@@ -3,6 +3,7 @@ using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
 using UniversalReportDemo.Data;
+using UniversalReportDemo.ViewModels;
 
 namespace UniversalReportDemo.Reports.CityPop
 {
