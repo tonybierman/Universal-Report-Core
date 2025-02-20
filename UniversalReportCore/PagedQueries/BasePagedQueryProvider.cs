@@ -3,7 +3,7 @@ using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace ProductionPlanner.PagedQueries
+namespace UniversalReportCore.PagedQueries
 {
     public abstract class BasePagedQueryProvider<T> : IPagedQueryProvider<T> where T : class
     {

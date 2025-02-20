@@ -1,7 +1,7 @@
 ﻿using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
 
-namespace ProductionPlanner.PagedQueries
+namespace UniversalReportCore.PagedQueries
 {
     public interface IPagedQueryProvider<T> where T : class
     {

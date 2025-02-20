@@ -1,4 +1,4 @@
-﻿using ProductionPlanner.PageMetadata;
+﻿using UniversalReportCore.PageMetadata;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.PageMetadata;
 

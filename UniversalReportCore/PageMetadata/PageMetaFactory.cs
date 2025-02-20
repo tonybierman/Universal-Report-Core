@@ -2,7 +2,7 @@
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.ViewModels;
 
-namespace ProductionPlanner.PageMetadata
+namespace UniversalReportCore.PageMetadata
 {
     public class PageMetaFactory : IPageMetaFactory
     {
