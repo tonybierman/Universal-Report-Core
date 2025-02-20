@@ -12,14 +12,32 @@ using UniversalReportCore.PagedQueries;
 using UniversalReportCore;
 using UniversalReportDemo.Reports;
 using UniversalReportDemo.Reports.CityPop;
+using AutoMapper;
+using UniversalReport.Services;
+using ProductionPlanner.Maps;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Auto Mapper Configurations
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    // Default maps
+    mc.AddProfile(new CityPopulationMappingProfile());
+});
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 // Add In-Memory Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
 
 // *** Universal Reports
+builder.Services.AddScoped<IUniversalReportService>(provider =>
+{
+    var dbContext = provider.GetRequiredService<ApplicationDbContext>();
+    var mapper = provider.GetRequiredService<IMapper>();
+    return new UniversalReportService(dbContext, mapper);
+});
 builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
 builder.Services.AddTransient<IPageMetaFactory, PageMetaFactory>();
 builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
