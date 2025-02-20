@@ -8,6 +8,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
 		<PackageReference Include="MinVer" Version="6.0.0">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -67,7 +71,7 @@
 
 	<ItemGroup>
 		<!-- Add a README.md next to the csproj -->
-		<None Include="README.md" Pack="true" PackagePath=""/>
+		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 </Project>
