@@ -55,7 +55,7 @@ builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDe
 // CityPopulation Universal reports factory and providers
 builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
 // CityPopulation Page Helpers
-builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationPageHelper));
+builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
 
 builder.Services.AddRazorPages();
 

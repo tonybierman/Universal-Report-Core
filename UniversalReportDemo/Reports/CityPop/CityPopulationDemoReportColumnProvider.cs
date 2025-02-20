@@ -15,7 +15,7 @@ namespace UniversalReportDemo.Reports.CityPop
                     DisplayName = "City",
                     PropertyName = "City",
                     IsSortable = true,
-                    DefaultSort = "Desc"
+                    DefaultSort = "Asc"
 
                 },
                 new ReportColumnDefinition
@@ -34,6 +34,12 @@ namespace UniversalReportDemo.Reports.CityPop
                 {
                     DisplayName = "Sex",
                     PropertyName = "Sex",
+                    IsSortable = true
+                },
+                new ReportColumnDefinition
+                {
+                    DisplayName = "Year",
+                    PropertyName = "Year",
                     IsSortable = true
                 },
                 new ReportColumnDefinition

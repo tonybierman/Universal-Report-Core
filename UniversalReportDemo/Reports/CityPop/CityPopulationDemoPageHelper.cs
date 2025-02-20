@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
@@ -7,32 +8,38 @@ using UniversalReportDemo.ViewModels;
 
 namespace UniversalReportDemo.Reports.CityPop
 {
-    public class CityPopulationPageHelper : BasePageHelper<CityPopulation, CityPopulationViewModel>
+    public class CityPopulationDemoPageHelper : BasePageHelper<CityPopulation, CityPopulationViewModel>
     {
-        public CityPopulationPageHelper(
+        public CityPopulationDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
             ApplicationDbContext dbContext,
             IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, dbContext, mapper)
         {
-            DefaultSort = "Product.SkuDesc";
+            DefaultSort = "CityAsc";
         }
 
-        public async override Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters)
+        private IQueryable<CityPopulation> GetLatestCityPopulation(IQueryable<CityPopulation> query)
         {
-            //parameters.CohortLogic = (query, cohortIds) =>
-            //{
-            //    return query.Where(pi =>
-            //        _dbContext.Products
-            //            .Where(p => p.Id == pi.ProductId)
-            //            .SelectMany(p => p.Cohorts)
-            //            .Any(c => cohortIds.Contains(c.Id))
-            //    );
-            //};
+            var latestYears = query
+                .Where(cp => cp.Year.HasValue && !string.IsNullOrEmpty(cp.Sex) && !string.IsNullOrEmpty(cp.City))
+                .GroupBy(cp => new { cp.City, cp.Sex })
+                .Select(g => new { g.Key.City, g.Key.Sex, MaxYear = g.Max(cp => cp.Year) });
 
-            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters);
+            return from cp in query
+                   join ly in latestYears
+                   on new { cp.City, cp.Sex, cp.Year } equals new { ly.City, ly.Sex, Year = ly.MaxYear }
+                   select cp;
         }
+
+        public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters)
+        {
+            IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
+
+            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, query);
+        }
+
         public override List<IReportColumnDefinition> GetReportColumns(string slug)
         {
             var columns = _reportColumnFactory.GetReportColumns(slug);
