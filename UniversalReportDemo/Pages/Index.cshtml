@@ -1,13 +1,46 @@
 ﻿@page
+@using UniversalReportCore.PageMetadata
+@inject IPageMetaFactory PageMetaFactory
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    var reportsCategory = PageMetaFactory.Providers
+        .OrderBy(p => p.GetPageMeta().Subtitle);
 }
 
-<h2>City Populations</h2>
-<ul>
-    @foreach (var item in Model.Data.OrderBy(a => a.City))
+<h2>Universal Report Demos</h2>
+@if (reportsCategory.Any())
+{
+    @if (reportsCategory.Where(a => a.CategorySlug == "CityPopulationReports").Any())
     {
-        <li>@item.City @item.CityType, @item.CountryOrArea - @item.Sex @item.Value</li>
+        <h6 class="mx-2">City Population Reports</h6>
+        <ul>
+            @foreach (var provider in reportsCategory.Where(a => a.CategorySlug == "CityPopulationReports"))
+            {
+                var meta = provider.GetPageMeta();
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-route-slug="@provider.Slug" asp-page="/Reports/Index">
+                        @meta.Subtitle
+                    </a>
+                </li>
+            }
+        </ul>
     }
-</ul>
+
+    @if (reportsCategory.Where(a => a.CategorySlug == "NationalGdpReports").Any())
+    {
+        <h6 class="mx-2">National GDP Reports</h6>
+        <ul>
+            @foreach (var provider in reportsCategory.Where(a => a.CategorySlug == "NationalGdpReports"))
+            {
+                var meta = provider.GetPageMeta();
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-route-slug="@provider.Slug" asp-page="/Reports/Index">
+                        @meta.Subtitle
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+}

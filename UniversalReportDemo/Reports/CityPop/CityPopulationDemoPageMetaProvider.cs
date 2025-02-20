@@ -12,7 +12,7 @@ namespace UniversalReportDemo.Reports.CityPop
 
         public PageMetaViewModel GetPageMeta()
         {
-            return new PageMetaViewModel() { Title = "Demo", Subtitle = "City Populations" };
+            return new PageMetaViewModel() { Title = "Demo", Subtitle = "Most Recent City Populations" };
         }
     }
 }

@@ -79,7 +79,7 @@
                                                 if (value != null)
                                                 {
                                                     string formattedValue = value is double or float or decimal
-                                                    ? $"{value:F2}" // Format with 2 decimal places
+                                                    ? $"{value:N2}" // Format with 2 decimal places
                                                     : $"{value}";   // Default formatting for other types
 
                                                     @formattedValue
@@ -107,7 +107,7 @@
                                     @if (value != null)
                                     {
                                         string formattedValue = value is double or float or decimal
-                                        ? $"{value:F2}" // Format with 2 decimal places
+                                        ? $"{value:N2}" // Format with 2 decimal places
                                         : $"{value}";   // Default formatting for other types
 
                                         @formattedValue

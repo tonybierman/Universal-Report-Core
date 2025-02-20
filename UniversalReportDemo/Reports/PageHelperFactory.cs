@@ -14,7 +14,8 @@ namespace UniversalReportDemo.Reports
             _serviceProvider = serviceProvider;
             _helperMap = new Dictionary<string, (Type, Type)>
         {
-            { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) }
+            { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) },
+            { "NationalGdpReports", (typeof(NationalGdp), typeof(NationalGdpViewModel)) }
         };
         }
 

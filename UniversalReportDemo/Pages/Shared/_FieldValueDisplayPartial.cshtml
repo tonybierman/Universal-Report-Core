@@ -9,18 +9,21 @@
     switch (fieldVal)
     {
         case int:
+        case long:
             @fieldVal
             break;
-        case long:
         case double:
+        case float:
         case decimal:
-            @string.Format("{0:0.00}", fieldVal)
+            @string.Format("{0:N2}", fieldVal)
+            // Commas + 2 decimal places
             break;
         default:
             @fieldVal
             break;
     }
 }
+
 else
 {
     switch (Model.Item.GetType().GetProperty(Model.PropertyName)?.PropertyType)

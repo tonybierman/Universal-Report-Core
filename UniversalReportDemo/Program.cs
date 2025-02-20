@@ -16,6 +16,7 @@ using AutoMapper;
 using UniversalReport.Services;
 using ProductionPlanner.Maps;
 using UniversalReportDemo.ViewModels;
+using UniversalReportDemo.Reports.CountryGdp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +25,8 @@ builder.Services.AddHttpContextAccessor();
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
 {
-    // Default maps
     mc.AddProfile(new CityPopulationMappingProfile());
+    mc.AddProfile(new NationalGdpMappingProfile());
 });
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -41,21 +42,30 @@ builder.Services.AddScoped<IUniversalReportService>(provider =>
     var mapper = provider.GetRequiredService<IMapper>();
     return new UniversalReportService(dbContext, mapper);
 });
+
+// Universal Reports
 builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
 builder.Services.AddTransient<IPageMetaFactory, PageMetaFactory>();
 builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
 builder.Services.AddScoped<PageHelperFactory>();
 
 // ** CityPopulation
-// CityPopulation Reports page meta providers
-builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
-// CityPopulation Paged queries factory and providers
+// Entity Type
 builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
-builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
-// CityPopulation Universal reports factory and providers
+// Report Instances
+builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
 builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
-// CityPopulation Page Helpers
+builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
 builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
+
+// ** NationalGdp
+// Entity Type
+builder.Services.AddScoped<IQueryFactory<NationalGdp>, NationalGdpQueryFactory>();
+// Report Instances
+builder.Services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
+builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
+builder.Services.AddTransient(typeof(IPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
+builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
 
 builder.Services.AddRazorPages();
 
@@ -68,7 +78,8 @@ using (var scope = app.Services.CreateScope())
     var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-    SeedDatabase(dbContext, env, logger);
+    SeedCityPopulationDatabase(dbContext, env, logger);
+    SeedNationalGdpDatabase(dbContext, env, logger);
 }
 
 if (!app.Environment.IsDevelopment())
@@ -89,7 +100,7 @@ app.Run();
 /// <summary>
 /// Seeds the database with data from a CSV file.
 /// </summary>
-static void SeedDatabase(ApplicationDbContext context, IWebHostEnvironment env, ILogger logger)
+static void SeedCityPopulationDatabase(ApplicationDbContext context, IWebHostEnvironment env, ILogger logger)
 {
     string csvFilePath = Path.Combine(env.WebRootPath, "data", "city_populations.csv");
 
@@ -126,3 +137,39 @@ static void SeedDatabase(ApplicationDbContext context, IWebHostEnvironment env, 
     }
 }
 
+static void SeedNationalGdpDatabase(ApplicationDbContext context, IWebHostEnvironment env, ILogger logger)
+{
+    string csvFilePath = Path.Combine(env.WebRootPath, "data", "national_gdp.csv");
+
+    if (!System.IO.File.Exists(csvFilePath))
+    {
+        logger.LogError($"CSV file not found: {csvFilePath}");
+        return;
+    }
+
+    using var stream = new FileStream(csvFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+    using var reader = new StreamReader(stream);
+    using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+    {
+        HeaderValidated = null,
+        MissingFieldFound = null,
+    });
+
+    csv.Context.RegisterClassMap<NationalGdpRecordMap>();
+
+    var rawRecords = csv.GetRecords<NationalGdp>().ToList();
+    logger.LogInformation($"Loaded {rawRecords.Count} records from CSV.");
+
+    if (!context.NationalGdps.Any()) // Prevent duplicate seed
+    {
+        int idCounter = 1; // Start at 1, or use the highest existing ID
+
+        foreach (var record in rawRecords)
+        {
+            record.Id = idCounter++; // Assign unique IDs
+        }
+
+        context.NationalGdps.AddRange(rawRecords);
+        context.SaveChanges();
+    }
+}
