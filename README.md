@@ -25,24 +25,21 @@ Or add it to your `csproj` file:
 
 ## Usage
 
-### 1. Register Services in `Program.cs`
+### 1. Register report services in `Program.cs`
 
 https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Program.cs#L52-L59
-### 2. Define Your Report Model
 
-Create an entity that represents a row your dataset:
+### 2. Create an entity that represents a row your report:
+
 https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Data/CityPopulation.cs#L10-L27
-### 3. Configure a Report Query
 
-```csharp
-# Embed Code Example
-[View CityPopulationDemoReportColumnProvider.cs](UniversalReportDemo/Reports/CityPop/CityPopulationDemoReportColumnProvider.cs)
-```
+### 3. Define the report's columns
 
-## Extending & Customization
+https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Reports/CityPop/CityPopulationDemoReportColumnProvider.cs#L5-L53
 
-- **Custom Aggregation**: Implement your own aggregation logic using `ComputeAggregates()`.
-- **Custom Page Helpers**: Extend `BasePageHelper<TEntity, TViewModel>` for additional functionality.
+### 4. Define the base query for the report
+
+https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Reports/CityPop/CityPopulationDemoPageHelper.cs#L23-L41
 
 ## Contributing
 
@@ -58,4 +55,4 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For questions or issues, open an [issue on GitHub](https://github.com/yourrepo/issues).
+For questions or issues, open an [issue on GitHub](https://github.com/tonybierman/Universal-Report-Core/issues).
