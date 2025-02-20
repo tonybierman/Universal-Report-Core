@@ -27,20 +27,11 @@ Or add it to your `csproj` file:
 
 ### 1. Register Services in `Program.cs`
 
-```csharp
-builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
-builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
-builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
-builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
-builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
-```
-
+https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Program.cs#L52-L59
 ### 2. Define Your Report Model
 
 Create an entity that represents a row your dataset:
-
-https://github.com/tonybierman/Universal-Report-Core/blob/master/UniversalReportDemo/Data/CityPopulation.cs#L10-L27
-
+https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Data/CityPopulation.cs#L10-L27
 ### 3. Configure a Report Query
 
 ```csharp
