@@ -25,7 +25,7 @@ Or add it to your `csproj` file:
 
 ## Usage
 
-### 1. Register Services in `Startup.cs` (ASP.NET Core 6+)
+### 1. Register Services in `Program.cs`
 
 ```csharp
 builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
@@ -39,10 +39,7 @@ builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationV
 
 Create an entity that represents a row your dataset:
 
-```csharp
-# Embed Code Example
-[View CityPopulation.cs](https://github.com/tonybierman/Universal-Report-Core/blob/master/UniversalReportDemo/Data/CityPopulation.cs)
-```
+https://github.com/tonybierman/Universal-Report-Core/blob/master/UniversalReportDemo/Data/CityPopulation.cs
 
 ### 3. Configure a Report Query
 
