@@ -7,12 +7,34 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using UniversalReportDemo.Data;
 using UniversalReportDemo.Import;
+using UniversalReportCore.PageMetadata;
+using UniversalReportCore.PagedQueries;
+using UniversalReportCore;
+using UniversalReportDemo.Reports;
+using UniversalReportDemo.Reports.CityPop;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add In-Memory Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
+
+// *** Universal Reports
+builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
+builder.Services.AddTransient<IPageMetaFactory, PageMetaFactory>();
+builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
+builder.Services.AddScoped<PageHelperFactory>();
+
+// ** CityPopulation
+// CityPopulation Reports page meta providers
+builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
+// CityPopulation Paged queries factory and providers
+builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
+builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
+// CityPopulation Universal reports factory and providers
+builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
+// CityPopulation Page Helpers
+builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationPageHelper));
 
 builder.Services.AddRazorPages();
 

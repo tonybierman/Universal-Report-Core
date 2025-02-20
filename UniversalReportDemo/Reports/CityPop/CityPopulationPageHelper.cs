@@ -6,9 +6,9 @@ using UniversalReportDemo.Data;
 
 namespace UniversalReportDemo.Reports.CityPop
 {
-    public class PlannedLineItemPageHelper : BasePageHelper<CityPopulation, CityPopulationViewModel>
+    public class CityPopulationPageHelper : BasePageHelper<CityPopulation, CityPopulationViewModel>
     {
-        public PlannedLineItemPageHelper(
+        public CityPopulationPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
