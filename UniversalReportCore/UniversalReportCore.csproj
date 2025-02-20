@@ -36,14 +36,14 @@
 
 	<PropertyGroup>
 		<!-- Optional: By default, it uses the project's file name -->
-		<!-- <PackageId>Meziantou.SampleNuGet</PackageId> -->
+		 <PackageId>BiermanTech.UniversalReportCore</PackageId> 
 
 		<Authors>Tony Bierman</Authors>
-		<Description>A fast and versatile framework for presenting tabular data reports in ASP.NET Core.</Description>
+		<Description>Universal Report Core is a fast and versatile framework for presenting tabular data reports in ASP.NET Core.</Description>
 
 		<!-- PackageProjectUrl is different from the repository URL. It can be a documentation
          website or a website explaining the project -->
-		<PackageProjectUrl>https://www.tonybierman.com</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/tonybierman/Universal-Report-Core</PackageProjectUrl>
 
 		<!-- A list of tags to help the search engine to understand the content of the package -->
 		<PackageTags>sample, library</PackageTags>
