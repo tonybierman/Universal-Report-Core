@@ -9,6 +9,10 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 - **Column Aggregation**: Supports sum, average, count, min, and max operations.
 - **Cohort Aggregation**: Aggregate data within user-defined subsets.
 
+## Screen shot
+
+![Screenshot](screenshot.png)
+
 ## Installation (coming soon)
 
 To install via NuGet:
