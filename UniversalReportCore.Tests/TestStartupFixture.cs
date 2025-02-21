@@ -82,17 +82,16 @@ namespace UniversalReportCore.Tests
             // Ensure the database is created and seeded
             using var scope = ServiceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger<TestStartupFixture>>();
-            SeedCityPopulationDatabase(context, _csvFileName, logger);
+            SeedCityPopulationDatabase(context, _csvFileName);
         }
 
-        static void SeedCityPopulationDatabase(ApplicationDbContext context, string csvFname, ILogger logger)
+        static void SeedCityPopulationDatabase(ApplicationDbContext context, string csvFname)
         {
-            string csvFilePath = Path.Combine("Data", "csvFname");
+            string csvFilePath = Path.Combine("Data", csvFname);
 
             if (!System.IO.File.Exists(csvFilePath))
             {
-                logger.LogError($"CSV file not found: {csvFilePath}");
+                //logger.LogError($"CSV file not found: {csvFilePath}");
                 return;
             }
 
@@ -107,7 +106,7 @@ namespace UniversalReportCore.Tests
             csv.Context.RegisterClassMap<CityPopulationsRecordMap>();
 
             var rawRecords = csv.GetRecords<CityPopulation>().ToList();
-            logger.LogInformation($"Loaded {rawRecords.Count} records from CSV.");
+            //logger.LogInformation($"Loaded {rawRecords.Count} records from CSV.");
 
             if (!context.CityPopulations.Any()) // Prevent duplicate seed
             {

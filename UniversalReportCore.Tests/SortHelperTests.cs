@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Xunit;
 using UniversalReportCore.Helpers;
+using UniversalReportDemo.Reports.CityPop;
 
 namespace UniversalReportCore.Tests
 {
