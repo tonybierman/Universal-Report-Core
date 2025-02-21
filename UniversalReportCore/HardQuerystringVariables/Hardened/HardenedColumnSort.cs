@@ -4,20 +4,27 @@ using UniversalReportCore.Helpers;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
+    /// <summary>
+    /// Represents a hardened variable for column sorting with validation logic.
+    /// </summary>
     public class HardenedColumnSort : HardenedVariable<string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HardenedColumnSort"/> class.
+        /// </summary>
+        /// <param name="sort">The sorting column name.</param>
         public HardenedColumnSort(string sort) : base(sort) { }
 
+        /// <summary>
+        /// Validates the column sort against a list of report column definitions.
+        /// </summary>
+        /// <param name="reportColumns">List of report columns.</param>
+        /// <returns>True if the sort column exists in the report columns; otherwise, false.</returns>
         public bool Validate(List<IReportColumnDefinition> reportColumns)
         {
-            // Validate querystring variables
             var baseSortKey = SortHelper.BaseSortKey(Value);
-
-            // Find the corresponding column definition that matches the extracted sort key.
             var column = reportColumns.FirstOrDefault(c => c.PropertyName == baseSortKey);
-
             IsValid = column != null;
-
             return IsValid;
         }
     }

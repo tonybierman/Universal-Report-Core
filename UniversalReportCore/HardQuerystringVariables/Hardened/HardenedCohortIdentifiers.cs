@@ -3,14 +3,25 @@ using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
+    /// <summary>
+    /// Represents a hardened variable for cohort identifiers with sanity and validation checks.
+    /// </summary>
     public class HardenedCohortIdentifiers : HardenedVariable<int[]?>
     {
         private readonly int _min = 1;
         private readonly int _max = 10000;
         private readonly int maxArraySize = 100;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HardenedCohortIdentifiers"/> class.
+        /// </summary>
+        /// <param name="cohortIds">The array of cohort IDs.</param>
         public HardenedCohortIdentifiers(int[]? cohortIds) : base(cohortIds) { }
 
+        /// <summary>
+        /// Checks whether the cohort identifiers are within valid limits.
+        /// </summary>
+        /// <returns>True if the values are sane; otherwise, false.</returns>
         public override bool CheckSanity()
         {
             if (Value == null || Value.Length == 0)
@@ -33,6 +44,11 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
             return IsSane;
         }
 
+        /// <summary>
+        /// Validates the cohort IDs against a provided list of valid cohorts.
+        /// </summary>
+        /// <param name="cohorts">An optional list of valid cohorts.</param>
+        /// <returns>True if all cohort IDs exist in the valid set; otherwise, false.</returns>
         public bool Validate(Cohort[]? cohorts = null)
         {
             if (Value == null || Value.Length == 0)
