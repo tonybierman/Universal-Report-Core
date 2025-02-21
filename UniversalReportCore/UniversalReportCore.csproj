@@ -35,38 +35,32 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!-- Optional: By default, it uses the project's file name -->
-		 <PackageId>BiermanTech.UniversalReportCore</PackageId> 
-
+		<PackageId>BiermanTech.UniversalReportCore</PackageId>
 		<Authors>Tony Bierman</Authors>
-		<Description>Universal Report Core is a fast and versatile framework for presenting tabular data reports in ASP.NET Core.</Description>
-
-		<!-- PackageProjectUrl is different from the repository URL. It can be a documentation
-         website or a website explaining the project -->
+		<Description>A fast and versatile framework for presenting tabular reports in ASP.NET Core</Description>
 		<PackageProjectUrl>https://github.com/tonybierman/Universal-Report-Core</PackageProjectUrl>
-
-		<!-- A list of tags to help the search engine to understand the content of the package -->
-		<PackageTags>sample, library</PackageTags>
-	</PropertyGroup>
-
-	<PropertyGroup>
+		<PackageTags>
+			reporting, reports, paginated, pagination, ASP.NET, ASP.NET Core, Entity Framework,
+			EF Core, data, datatable, query, filtering, sorting, dynamic queries, AutoMapper,
+			LINQ, UniversalReport, analytics, dashboard, data visualization, tabular data
+		</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+
+		<!-- Add Repository Information -->
+		<RepositoryUrl>https://github.com/tonybierman/Universal-Report-Core.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageSourceUrl>https://www.nuget.org/packages/BiermanTech.UniversalReportCore/</PackageSourceUrl>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageIcon>icon.png</PackageIcon>
+		<MinVerTagPrefix>v</MinVerTagPrefix>
+		<MinVerAutoIncrement>patch</MinVerAutoIncrement>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath=""/>
-	</ItemGroup>
-
-	<PropertyGroup>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<!-- Add a README.md next to the csproj -->
 		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
