@@ -38,6 +38,10 @@ jobs:
           9.0.x
           8.0.x
 
+    # Copy the README.md from the solution root to the package project directory
+    - name: Copy README.md for NuGet package
+      run: cp README.md UniversalReportCore/
+
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
 
@@ -69,7 +73,8 @@ jobs:
         run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
 
       - name: Validate package
-        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg")
+        run: |
+          Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg" | ForEach-Object { meziantou.validate-nuget-package $_.FullName }
 
   run_test:
     runs-on: ubuntu-latest
