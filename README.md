@@ -13,18 +13,18 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 
 ![Screenshot](screenshot.png)
 
-## Installation (coming soon)
+## Installation
 
 To install via NuGet:
 
 ```sh
-dotnet add package UniversalReportCore
+dotnet add package BiermanTech.UniversalReportCore
 ```
 
 Or add it to your `csproj` file:
 
 ```xml
-<PackageReference Include="UniversalReportCore" Version="1.0.0" />
+<PackageReference Include="BiermanTech.UniversalReportCore" />
 ```
 
 ## Usage
