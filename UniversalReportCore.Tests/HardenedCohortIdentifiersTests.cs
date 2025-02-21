@@ -1,11 +1,11 @@
+using System;
+using System.Linq;
+using Xunit;
+using UniversalReportCore.HardQuerystringVariables.Hardened;
+using UniversalReportCore.HardQuerystringVariables;
+
 namespace UniversalReportCore.Tests
 {
-    using System;
-    using System.Linq;
-    using Xunit;
-    using UniversalReportCore.HardQuerystringVariables.Hardened;
-    using UniversalReportCore.HardQuerystringVariables;
-
     public class HardenedCohortIdentifiersTests
     {
         [Fact]
