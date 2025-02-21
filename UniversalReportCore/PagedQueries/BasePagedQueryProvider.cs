@@ -1,18 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace UniversalReportCore.PagedQueries
 {
+    /// <summary>
+    /// Base class for paged query providers. Implements aggregation, filtering, and metadata retrieval for paginated data.
+    /// </summary>
+    /// <typeparam name="T">The entity type being queried.</typeparam>
     public abstract class BasePagedQueryProvider<T> : IPagedQueryProvider<T> where T : class
     {
+        /// <summary>
+        /// The unique slug identifier for this query provider.
+        /// </summary>
         public abstract string Slug { get; }
 
-        public BasePagedQueryProvider()
-        {
-        }
+        /// <summary>
+        /// Default constructor for the query provider.
+        /// </summary>
+        public BasePagedQueryProvider() { }
 
+        /// <summary>
+        /// Computes aggregate values (Sum, Average, Min, Max, Count) for the specified columns.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <param name="columns">Columns on which aggregation is performed.</param>
+        /// <returns>A dictionary containing aggregated values.</returns>
         protected virtual async Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query, IReportColumnDefinition[] columns)
         {
             var aggregateResults = new Dictionary<string, dynamic>();
@@ -89,19 +106,56 @@ namespace UniversalReportCore.PagedQueries
             return aggregateResults;
         }
 
+        /// <summary>
+        /// Retrieves metadata associated with the query.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <returns>A dictionary containing metadata.</returns>
         protected abstract Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<T> query);
+
+        /// <summary>
+        /// Applies filters to the query. Default implementation returns the original query.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <returns>The filtered query.</returns>
         protected virtual IQueryable<T> ApplyFilters(IQueryable<T> query)
         {
-            return query; // Default: No filtering
+            return query;
         }
+
+        /// <summary>
+        /// Modifies the query to include aggregate computations based on cohort identifiers.
+        /// Default implementation returns the unmodified query.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <param name="cohortIds">Array of cohort IDs.</param>
+        /// <returns>The modified query.</returns>
         public virtual IQueryable<T> EnsureAggregateQuery(IQueryable<T> query, int[]? cohortIds)
         {
-            return query; // Default: No filtering
+            return query;
         }
+
+        /// <summary>
+        /// Modifies the query to filter results by a specific cohort ID.
+        /// Default implementation returns the unmodified query.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <param name="cohortId">Cohort ID to filter by.</param>
+        /// <returns>The filtered query.</returns>
         public virtual IQueryable<T> EnsureCohortQuery(IQueryable<T> query, int cohortId)
         {
-            return query; // Default: No filtering
+            return query;
         }
+
+        /// <summary>
+        /// Generates a paged query parameter object with applied filtering, aggregation, and metadata retrieval.
+        /// </summary>
+        /// <param name="columns">Columns to include in the query.</param>
+        /// <param name="pageIndex">Current page index.</param>
+        /// <param name="sort">Sorting parameter.</param>
+        /// <param name="ipp">Items per page.</param>
+        /// <param name="cohortIds">Array of cohort IDs.</param>
+        /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing query settings.</returns>
         public PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             return new PagedQueryParameters<T>(
@@ -110,7 +164,7 @@ namespace UniversalReportCore.PagedQueries
                 sort,
                 ipp,
                 cohortIds,
-                query => ApplyFilters((IQueryable<T>)query),  // Corrected to handle generic type T
+                query => ApplyFilters((IQueryable<T>)query),
                 async (IQueryable<T> src) =>
                 {
                     var aggregates = new Dictionary<string, dynamic>();
