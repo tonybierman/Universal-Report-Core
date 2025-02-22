@@ -7,12 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportDemo", "Univ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore", "..\UniversalReportCore\UniversalReportCore.csproj", "{16CF5B2D-7068-47BB-817F-932954DCA08C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "var", "var", "{8490EBDC-4AFE-4CC9-A436-69253A2B0EA6}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.override.yml = docker-compose.override.yml
-		docker-compose.yml = docker-compose.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
