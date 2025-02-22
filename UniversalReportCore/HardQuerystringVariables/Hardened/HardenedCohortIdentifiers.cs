@@ -49,7 +49,7 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         /// </summary>
         /// <param name="cohorts">An optional list of valid cohorts.</param>
         /// <returns>True if all cohort IDs exist in the valid set; otherwise, false.</returns>
-        public bool Validate(Cohort[]? cohorts = null)
+        public bool Validate(ICohort[]? cohorts = null)
         {
             if (Value == null || Value.Length == 0)
             {

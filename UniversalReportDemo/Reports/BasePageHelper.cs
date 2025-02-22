@@ -49,6 +49,11 @@ namespace UniversalReportDemo.Reports
             throw new NotImplementedException();
         }
 
+        public virtual Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
+        {
+            return null;
+        }
+
         public List<ChartDataPoint> GetChartData(IPaginatedList items, string key)
         {
             return _mapper.Map<List<ChartDataPoint>>(

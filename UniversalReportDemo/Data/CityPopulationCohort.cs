@@ -3,7 +3,7 @@ using UniversalReportCore;
 
 namespace UniversalReportDemo.Data
 {
-    public partial class CityPopulationCohort : Cohort
+    public partial class CityPopulationCohort : Cohort, ICohort
     {
         public virtual ICollection<CityPopulation> CityPopulations { get; set; } = new List<CityPopulation>();
     }

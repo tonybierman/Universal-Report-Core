@@ -171,16 +171,21 @@ namespace UniversalReportCore
             Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>> aggregateFunction,
             Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>>? metaFunction = null)
         {
-            var count = await source.CountAsync();
-            var items = pageSize > 0
-                ? await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync()
-                : await source.ToListAsync();
+            // Fetch data and count in a single query using Projection
+            var itemsQuery = source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
-            var mappedItems = items.Select(mapFunction).ToList();
+            var data = await itemsQuery.ToListAsync();
+            var mappedItems = data.Select(mapFunction).ToList();
+
+            // Get total count without fetching all records
+            var count = await source.Select(x => 1).CountAsync();
+
+            // Aggregate values
             var aggregates = await aggregateFunction(source);
             var meta = metaFunction == null ? null : await metaFunction(source);
 
             return new PaginatedList<TResult>(mappedItems, count, pageIndex, pageSize, aggregates, meta);
         }
+
     }
 }

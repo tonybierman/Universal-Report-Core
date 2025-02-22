@@ -37,20 +37,30 @@ namespace UniversalReportDemo.Reports.CityPop
         {
             if (parameters.CohortIds.Any())
             {
-                //parameters.CohortLogic = (query, cohortIds) =>
-                //{
-                //    return query.Where(pi =>
-                //        _dbContext.CityPopulations
-                //            .Where(p => p.Id == pi.Id)
-                //            .SelectMany(p => p.Cohorts)
-                //            .Any(c => cohortIds.Contains(c.Id))
-                //    );
-                //};
+                parameters.CohortLogic = (query, cohortIds) =>
+                {
+                    return query.Where(pi =>
+                        _dbContext.CityPopulations
+                            .Where(p => p.Id == pi.Id)
+                            .SelectMany(p => p.CityPopulationCohorts)
+                            .Any(c => cohortIds.Contains(c.Id))
+                    );
+                };
             }
 
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, query);
+        }
+
+        public override async Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
+        {
+            var cohorts = await _dbContext.CityPopulationCohorts
+                            .Where(c => cohortIds.Contains(c.Id))
+                            .Cast<ICohort>() // Ensure conversion to ICohort
+                            .ToArrayAsync();
+
+            return cohorts.Length > 0 ? cohorts : null;
         }
 
         public override List<IReportColumnDefinition> GetReportColumns(string slug)

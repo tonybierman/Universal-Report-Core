@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using UniversalReportCore;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
 using UniversalReportCore.Helpers;
@@ -29,7 +30,7 @@ namespace UniversalReportDemo.Pages
         [BindProperty] public PageMetaViewModel PageMeta { get; set; }
         public List<IReportColumnDefinition> ReportColumns { get; set; } = new();
         public string CurrentSort { get; set; }
-        public Cohort[] Cohorts { get; set; }
+        public ICohort[] Cohorts { get; set; }
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
 
@@ -67,6 +68,7 @@ namespace UniversalReportDemo.Pages
 
             if (Params.CohortIds.Value != null && Params.CohortIds.Value.Any())
             {
+                Cohorts = await pageHelper.GetCohortsAsync(Params.CohortIds.Value);
                 if (!Params.CohortIds.Validate(Cohorts))
                     return StatusCode(422); // "Unknown cohort."
             }
