@@ -133,6 +133,12 @@ static void SeedCityPopulationDatabase(ApplicationDbContext context, IWebHostEnv
         }
 
         context.CityPopulations.AddRange(rawRecords);
+
+
+
+
+
+
         context.SaveChanges();
     }
 }

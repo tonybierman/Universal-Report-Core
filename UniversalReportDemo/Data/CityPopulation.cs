@@ -23,5 +23,7 @@ namespace UniversalReportDemo.Data
         public int? SourceYear { get; set; }
         public decimal? Value { get; set; }
         public string? ValueFootnotes { get; set; }
+
+        public virtual ICollection<CityPopulationCohort> CityPopulationCohorts { get; set; } = new List<CityPopulationCohort>();
     }
 }

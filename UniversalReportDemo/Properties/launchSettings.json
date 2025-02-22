@@ -39,7 +39,7 @@
     "CityPopulationDemo": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/Reports/CityPopulationDemo",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/Reports/CityPopulationDemo?cohortIds=1",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
         "ASPNETCORE_HTTP_PORTS": "8080"
