@@ -165,27 +165,38 @@ namespace UniversalReportCore
 
         /// <summary>
         /// Creates a paginated list with mapped items and aggregates.
+        /// Optimized to minimize database trips and use No-Tracking queries.
         /// </summary>
         public static async Task<PaginatedList<TResult>> CreateMappedWithAggregatesAsync<TSource, TResult>(
-            IQueryable<TSource> source, int pageIndex, int pageSize, Func<TSource, TResult> mapFunction,
+            IQueryable<TSource> source,
+            int pageIndex,
+            int pageSize,
+            Func<TSource, TResult> mapFunction,
             Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>> aggregateFunction,
             Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>>? metaFunction = null)
+            where TSource : class
         {
-            // Fetch data and count in a single query using Projection
-            var itemsQuery = source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            source = source.AsNoTracking();
 
-            var data = await itemsQuery.ToListAsync();
+            // Fetch total count
+            int count = await source.CountAsync();
+
+            // Fetch paginated data
+            // Determine if full dataset should be returned
+            var dataQuery = (pageSize == 0)
+                ? source  // Return all records
+                : source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+            var data = await dataQuery.ToListAsync();
             var mappedItems = data.Select(mapFunction).ToList();
 
-            // Get total count without fetching all records
-            var count = await source.Select(x => 1).CountAsync();
-
-            // Aggregate values
+            // Fetch aggregates
             var aggregates = await aggregateFunction(source);
-            var meta = metaFunction == null ? null : await metaFunction(source);
+
+            // Fetch metadata if provided
+            Dictionary<string, dynamic>? meta = metaFunction != null ? await metaFunction(source) : null;
 
             return new PaginatedList<TResult>(mappedItems, count, pageIndex, pageSize, aggregates, meta);
         }
-
     }
 }
