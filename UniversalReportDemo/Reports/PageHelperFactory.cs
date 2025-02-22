@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using UniversalReportCore;
 using UniversalReportDemo.Data;
 using UniversalReportDemo.ViewModels;
 
@@ -26,7 +27,7 @@ namespace UniversalReportDemo.Reports
                 throw new ArgumentException($"No PageHelper found for report type {reportType}");
             }
 
-            var helperType = typeof(IPageHelper<,>).MakeGenericType(types.EntityType, types.ViewModelType);
+            var helperType = typeof(IReportPageHelper<,>).MakeGenericType(types.EntityType, types.ViewModelType);
             return _serviceProvider.GetService(helperType) ?? throw new InvalidOperationException($"Failed to resolve {helperType.Name}");
         }
     }

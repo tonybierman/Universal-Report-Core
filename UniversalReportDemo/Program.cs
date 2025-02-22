@@ -56,7 +56,7 @@ builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFac
 builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
 builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
 builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
-builder.Services.AddTransient(typeof(IPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
+builder.Services.AddTransient(typeof(IReportPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
 
 // ** NationalGdp
 // Entity Type
@@ -64,7 +64,7 @@ builder.Services.AddScoped<IQueryFactory<NationalGdp>, NationalGdpQueryFactory>(
 // Report Instances
 builder.Services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
 builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
-builder.Services.AddTransient(typeof(IPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
+builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
 builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
 
 builder.Services.AddRazorPages();

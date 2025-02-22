@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportDemo.Reports
 {

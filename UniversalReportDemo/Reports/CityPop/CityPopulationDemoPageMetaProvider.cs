@@ -1,4 +1,5 @@
-﻿using UniversalReportCore.PageMetadata;
+﻿using UniversalReportCore;
+using UniversalReportCore.PageMetadata;
 using UniversalReportCore.ViewModels;
 using UniversalReportDemo.Reports;
 

@@ -13,6 +13,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         /// </summary>
         public string? ReportType { get; private set; }
 
+        public HardenedReportSlug() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedReportSlug"/> class.
         /// </summary>

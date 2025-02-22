@@ -12,6 +12,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _max = 10000;
         private readonly int maxArraySize = 100;
 
+        public HardenedCohortIdentifiers() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedCohortIdentifiers"/> class.
         /// </summary>

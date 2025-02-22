@@ -10,6 +10,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _min = 0;
         private readonly int _max = 10000;
 
+        public HardenedItemsPerPage() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedItemsPerPage"/> class.
         /// </summary>

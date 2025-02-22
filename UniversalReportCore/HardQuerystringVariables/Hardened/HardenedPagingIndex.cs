@@ -10,6 +10,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _min = 1;
         private readonly int _max = 10000;
 
+        public HardenedPagingIndex() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedPagingIndex"/> class.
         /// </summary>

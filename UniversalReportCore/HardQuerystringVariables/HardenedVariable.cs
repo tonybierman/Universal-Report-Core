@@ -10,6 +10,8 @@ namespace UniversalReportCore.HardQuerystringVariables
     [DebuggerDisplay("{Value}, IsHard = {IsHard}")]
     public class HardenedVariable<T> : BaseHardenedVariable
     {
+        public HardenedVariable() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedVariable{T}"/> class.
         /// </summary>

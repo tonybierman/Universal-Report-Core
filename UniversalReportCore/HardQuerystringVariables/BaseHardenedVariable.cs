@@ -8,6 +8,8 @@ namespace UniversalReportCore.HardQuerystringVariables
     /// </summary>
     public class BaseHardenedVariable : IHardVariable
     {
+        public BaseHardenedVariable() { }
+
         /// <summary>
         /// Gets a value indicating whether the variable passes sanity checks.
         /// </summary>

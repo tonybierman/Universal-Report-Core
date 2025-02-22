@@ -8,7 +8,7 @@ using UniversalReportDemo.Data;
 
 namespace UniversalReportDemo.Reports
 {
-    public class BasePageHelper<TEntity, TViewModel> : IPageHelper<TEntity, TViewModel>
+    public class BasePageHelper<TEntity, TViewModel> : IReportPageHelper<TEntity, TViewModel>
         where TViewModel : class, new()
         where TEntity : class
     {

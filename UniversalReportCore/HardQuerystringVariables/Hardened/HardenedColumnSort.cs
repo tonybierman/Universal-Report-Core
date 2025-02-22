@@ -9,6 +9,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
     /// </summary>
     public class HardenedColumnSort : HardenedVariable<string>
     {
+        public HardenedColumnSort() : base() { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedColumnSort"/> class.
         /// </summary>

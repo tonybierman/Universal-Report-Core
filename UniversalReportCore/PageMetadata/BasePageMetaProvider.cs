@@ -8,13 +8,5 @@ namespace UniversalReportCore.PageMetadata
     /// </summary>
     public class BasePageMetaProvider
     {
-        /// <summary>
-        /// Retrieves metadata for the report's chart representation.
-        /// This method can be overridden by derived classes to provide custom chart metadata.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ChartMetaViewModel"/> containing the chart metadata, or <c>null</c> if no chart metadata is available.
-        /// </returns>
-        public virtual ChartMetaViewModel? GetChartMeta() => null;
     }
 }
