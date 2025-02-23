@@ -1,0 +1,22 @@
+﻿@using UniversalReportCore
+@using UniversalReportCore.HardQuerystringVariables
+@using UniversalReportHeavyDemo.Reports
+@model (ReportQueryParams Params, IPaginatedList Items)
+<p class="mt-2">@Model.Items.DisplayMessage</p>
+<form method="get" class="d-inline">
+    <label for="Ipp">Items Per Page:</label>
+    <select id="Ipp" name="Ipp" class="form-control d-inline w-auto" onchange="this.form.submit()">
+        @foreach (var option in new int[] { 25, 50, 100, 250, 0 })
+        {
+            <option value="@option" selected="@(Model.Params.Ipp.Value == option ? "selected" : null)">
+                @(option == 0 ? "Max" : option)
+            </option>
+        }
+    </select>
+    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+    <input type="hidden" name="sortOrder" value="@Model.Params.SortOrder.Value" />
+    @foreach (var cohortId in Model.Params.CohortIds.Value ?? Array.Empty<int>())
+    {
+        <input type="hidden" name="cohortIds" value="@cohortId" />
+    }
+</form>
