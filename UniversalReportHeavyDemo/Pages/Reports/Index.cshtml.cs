@@ -21,7 +21,6 @@ namespace UniversalReportHeavyDemo.Pages.Reports
         {
 
         }
-
         public async Task<IActionResult> OnGetAsync()
         {
             // Check and validate query parameters

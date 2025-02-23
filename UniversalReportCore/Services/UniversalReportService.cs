@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Dynamic.Core;
 using UniversalReportCore;
 using UniversalReportCore.Helpers;
@@ -36,6 +37,8 @@ namespace UniversalReport.Services
             IQueryable<TEntity>? query = null
         ) where TEntity : class where TViewModel : class
         {
+            var stopwatch = Stopwatch.StartNew();
+
             // If no query is provided, initialize it with the DbSet for TEntity
             query = query ?? _dbContext.Set<TEntity>();
 
@@ -78,7 +81,7 @@ namespace UniversalReport.Services
             // - Entities mapped to TViewModel using AutoMapper
             // - Aggregate logic for summaries (e.g., sums, counts)
             // - Optional meta logic for additional metadata
-            return await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
+            var retval =  await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
                 query.AsNoTracking(),
                 parameters.PageIndex ?? 1,
                 parameters.ItemsPerPage ?? 25, // TODO: get rid of Magic number
@@ -86,6 +89,12 @@ namespace UniversalReport.Services
                 parameters.AggregateLogic,
                 parameters.MetaLogic
             );
+
+            stopwatch.Stop();
+
+            retval.Meta["QueryDuration"] = $"{stopwatch.Elapsed.TotalMilliseconds:N2} ms";
+
+            return retval;
         }
 
 

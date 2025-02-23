@@ -145,6 +145,11 @@
         {
             @await Html.PartialAsync("_ReportPagingNavigationPartial", (Model?.CurrentSort, Model?.Params, Model?.Items))
         }
+        @if (Model?.Items?.Meta?.ContainsKey("QueryDuration") == true)
+        {
+            var queryDuration = Model?.Items?.Meta?["QueryDuration"];
+            <p class="small mt-4"><i>Query Duration: @queryDuration</i></p>
+        }
     </div>
 </div>
 @section Scripts {

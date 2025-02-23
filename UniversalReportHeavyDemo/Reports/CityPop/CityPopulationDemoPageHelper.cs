@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
