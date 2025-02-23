@@ -1,19 +1,19 @@
 ﻿using System;
 using UniversalReportCore.PageMetadata;
+using UniversalReportCore.Tests.Reports.Acme;
 using UniversalReportCore.ViewModels;
-using UniversalReportDemo.Reports.CityPop;
 using Xunit;
 
 namespace UniversalReportCore.Tests
 {
     public class BasePageMetaProviderTests
     {
-        private readonly CityPopulationDemoPageMetaProvider _provider;
+        private readonly AcmeDemoPageMetaProvider _provider;
 
         public BasePageMetaProviderTests()
         {
             // Arrange: Create an instance of the provider to test.
-            _provider = new CityPopulationDemoPageMetaProvider();
+            _provider = new AcmeDemoPageMetaProvider();
         }
 
         [Fact]

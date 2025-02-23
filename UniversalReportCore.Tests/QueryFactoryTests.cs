@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
-using UniversalReportDemo.Data;
 using Xunit;
+using UniversalReportCoreTests.Data;
 
 namespace UniversalReportCore.Tests
 {
@@ -18,28 +18,28 @@ namespace UniversalReportCore.Tests
     {
         public class QueryFactoryTests
         {
-            private class MockPagedQueryProvider : IPagedQueryProvider<CityPopulation>
+            private class MockPagedQueryProvider : IPagedQueryProvider<Widget>
             {
                 public string Slug => "CityPopulationDemo";
 
-                public IQueryable<CityPopulation> EnsureAggregateQuery(IQueryable<CityPopulation> query, int[]? cohortIds)
+                public IQueryable<Widget> EnsureAggregateQuery(IQueryable<Widget> query, int[]? cohortIds)
                 {
                     throw new NotImplementedException();
                 }
 
-                public IQueryable<CityPopulation> EnsureCohortQuery(IQueryable<CityPopulation> query, int cohortId)
+                public IQueryable<Widget> EnsureCohortQuery(IQueryable<Widget> query, int cohortId)
                 {
                     throw new NotImplementedException();
                 }
 
-                public PagedQueryParameters<CityPopulation> GetQuery(
+                public PagedQueryParameters<Widget> GetQuery(
                     IReportColumnDefinition[] columns,
                     int? pageIndex,
                     string? sort,
                     int? ipp,
                     int[]? cohortIds)
                 {
-                    return new PagedQueryParameters<CityPopulation>(columns, pageIndex, sort, ipp, cohortIds);
+                    return new PagedQueryParameters<Widget>(columns, pageIndex, sort, ipp, cohortIds);
                 }
             }
 
@@ -47,8 +47,8 @@ namespace UniversalReportCore.Tests
             public void CreateQueryParameters_ValidSlug_ReturnsQueryParameters()
             {
                 // Arrange
-                var providers = new List<IPagedQueryProvider<CityPopulation>> { new MockPagedQueryProvider() };
-                var queryFactory = new QueryFactory<CityPopulation>(providers);
+                var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
+                var queryFactory = new QueryFactory<Widget>(providers);
                 var columns = new IReportColumnDefinition[] { };
 
                 // Act
@@ -66,8 +66,8 @@ namespace UniversalReportCore.Tests
             public void CreateQueryParameters_InvalidSlug_ThrowsException()
             {
                 // Arrange
-                var providers = new List<IPagedQueryProvider<CityPopulation>> { new MockPagedQueryProvider() };
-                var queryFactory = new QueryFactory<CityPopulation>(providers);
+                var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
+                var queryFactory = new QueryFactory<Widget>(providers);
                 var columns = new IReportColumnDefinition[] { };
 
                 // Act & Assert

@@ -5,26 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UniversalReportCore.PagedQueries;
-using UniversalReportDemo.Data;
-using UniversalReportDemo.Reports.CityPop;
+using UniversalReportCore.Tests.Reports.Acme;
+using UniversalReportCoreTests.Data;
 using Xunit;
 
 namespace UniversalReportCore.Tests
 {
     public class BasePagedQueryProviderTests : IDisposable
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly PagedCityPopulationQueryProvider _queryProvider;
+        private readonly AcmeDbContext _dbContext;
+        private readonly PagedAcmeQueryProvider _queryProvider;
 
         public BasePagedQueryProviderTests()
         {
             // Initialize in-memory database
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            var options = new DbContextOptionsBuilder<AcmeDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
                 .Options;
 
-            _dbContext = new ApplicationDbContext(options);
-            _queryProvider = new PagedCityPopulationQueryProvider(_dbContext);
+            _dbContext = new AcmeDbContext(options);
+            _queryProvider = new PagedAcmeQueryProvider(_dbContext);
 
             SeedDatabase();
         }
@@ -64,7 +64,7 @@ namespace UniversalReportCore.Tests
         public void EnsureAggregateQuery_ShouldReturn_UnmodifiedQuery_WhenNoCohorts()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
             int[]? cohortIds = null;
 
             // Act
@@ -81,7 +81,7 @@ namespace UniversalReportCore.Tests
         public void EnsureCohortQuery_ShouldReturn_FilteredQuery()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
             int cohortId = 1;
 
             // Act
@@ -96,11 +96,11 @@ namespace UniversalReportCore.Tests
         /// </summary>
         private void SeedDatabase()
         {
-            _dbContext.CityPopulations.AddRange(new List<CityPopulation>
+            _dbContext.Widgets.AddRange(new List<Widget>
         {
-            new CityPopulation { Id = 1, City = "New York", Value = 800000 },
-            new CityPopulation { Id = 2, City = "Los Angeles", Value = 1200000 },
-            new CityPopulation { Id = 3, City = "Chicago", Value = 1000000 }
+            new Widget { Id = 1, City = "New York", Value = 800000 },
+            new Widget { Id = 2, City = "Los Angeles", Value = 1200000 },
+            new Widget { Id = 3, City = "Chicago", Value = 1000000 }
         });
 
             _dbContext.SaveChanges();

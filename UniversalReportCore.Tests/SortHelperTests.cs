@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Xunit;
 using UniversalReportCore.Helpers;
-using UniversalReportDemo.Reports.CityPop;
+using UniversalReportCore.Tests.Reports.Acme;
 
 namespace UniversalReportCore.Tests
 {
@@ -15,7 +15,7 @@ namespace UniversalReportCore.Tests
 
         public SortHelperTests()
         {
-            var provider = new CityPopulationDemoReportColumnProvider();
+            var provider = new AcmeDemoReportColumnProvider();
             _columns = provider.GetColumns();
         }
 

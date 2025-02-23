@@ -5,39 +5,40 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniversalReport.Services;
-using UniversalReportDemo.Data;
-using UniversalReportDemo.ViewModels;
 using UniversalReportCore.PagedQueries;
+using UniversalReportCoreTests.Data;
+using UniversalReportCoreTests.Maps;
+using UniversalReportCoreTests.ViewModels;
 using Xunit;
-using ProductionPlanner.Maps;
 
 namespace UniversalReportCore.Tests
 {
     public class UniversalReportServiceTests : IDisposable
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly AcmeDbContext _dbContext;
         private readonly UniversalReportService _reportService;
+        private readonly IMapper _mapper;
 
         public UniversalReportServiceTests()
         {
+
             // ** Set up AutoMapper **
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new CityPopulationMappingProfile());
+                mc.AddProfile(new WidgetMappingProfile());
             });
             _mapper = mapperConfig.CreateMapper();
 
             // ** Set up In-Memory Database **
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            var options = new DbContextOptionsBuilder<AcmeDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
                 .Options;
 
-            _dbContext = new ApplicationDbContext(options);
+            _dbContext = new AcmeDbContext(options);
             _dbContext.Database.EnsureCreated();
 
             // ** Seed test data **
-            SeedCityPopulationDatabase();
+            SeedWidgetDatabase();
 
             // ** Initialize Service **
             _reportService = new UniversalReportService(_dbContext, _mapper);
@@ -46,15 +47,15 @@ namespace UniversalReportCore.Tests
         /// <summary>
         /// Seeds the in-memory database with test data.
         /// </summary>
-        private void SeedCityPopulationDatabase()
+        private void SeedWidgetDatabase()
         {
-            _dbContext.CityPopulations.AddRange(new List<CityPopulation>
+            _dbContext.Widgets.AddRange(new List<Widget>
             {
-                new CityPopulation { Id = 1, City = "New York", Value = 8419600, Year = 2020 },
-                new CityPopulation { Id = 2, City = "Los Angeles", Value = 3980400, Year = 2020 },
-                new CityPopulation { Id = 3, City = "Chicago", Value = 2716000, Year = 2020 },
-                new CityPopulation { Id = 4, City = "Houston", Value = 2328000, Year = 2020 },
-                new CityPopulation { Id = 5, City = "Phoenix", Value = 1690000, Year = 2020 }
+                new Widget { Id = 1, City = "New York", Value = 8419600, Year = 2020 },
+                new Widget { Id = 2, City = "Los Angeles", Value = 3980400, Year = 2020 },
+                new Widget { Id = 3, City = "Chicago", Value = 2716000, Year = 2020 },
+                new Widget { Id = 4, City = "Houston", Value = 2328000, Year = 2020 },
+                new Widget { Id = 5, City = "Phoenix", Value = 1690000, Year = 2020 }
             });
 
             _dbContext.SaveChanges();
@@ -73,11 +74,11 @@ namespace UniversalReportCore.Tests
                 new ReportColumnDefinition { PropertyName = "Population", IsSortable = true }
             };
 
-            var parameters = new PagedQueryParameters<CityPopulation>(
+            var parameters = new PagedQueryParameters<Widget>(
                 columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 2, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
 
             // Assert
             Assert.NotNull(result);
@@ -96,11 +97,11 @@ namespace UniversalReportCore.Tests
                 new ReportColumnDefinition { PropertyName = "City", IsSortable = true }
             };
 
-            var parameters = new PagedQueryParameters<CityPopulation>(
+            var parameters = new PagedQueryParameters<Widget>(
                 columns, pageIndex: 1, sort: "CityDesc", itemsPerPage: 5, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
             var sortedCities = result.Select(r => r.City).ToList();
 
             // Assert
@@ -115,7 +116,7 @@ namespace UniversalReportCore.Tests
         public async Task GetPagedAsync_ShouldReturnEmptyForNoRecords()
         {
             // Arrange
-            _dbContext.CityPopulations.RemoveRange(_dbContext.CityPopulations);
+            _dbContext.Widgets.RemoveRange(_dbContext.Widgets);
             await _dbContext.SaveChangesAsync();
 
             var columns = new IReportColumnDefinition[]
@@ -123,11 +124,11 @@ namespace UniversalReportCore.Tests
                 new ReportColumnDefinition { PropertyName = "City", IsSortable = true }
             };
 
-            var parameters = new PagedQueryParameters<CityPopulation>(
+            var parameters = new PagedQueryParameters<Widget>(
                 columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 10, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
 
             // Assert
             Assert.NotNull(result);
@@ -152,14 +153,14 @@ namespace UniversalReportCore.Tests
         //        name: "Year"
         //    );
 
-        //    var parameters = new PagedQueryParameters<CityPopulation>(
+        //    var parameters = new PagedQueryParameters<Widget>(
         //        columns, pageIndex: 1, sort: "YearAsc", itemsPerPage: 10, cohortIds: null)
         //    {
         //        DateFilter = dateFilter
         //    };
 
         //    // Act
-        //    var result = await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters);
+        //    var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
 
         //    // Assert
         //    Assert.All(result, item =>

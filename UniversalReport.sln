@@ -15,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "var", "var", "{C8B472CA-D63
 		screenshot.png = screenshot.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportDemo", "UniversalReportDemo\UniversalReportDemo.csproj", "{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{A2EA8B31-9F0B-4994-B6BE-726B3EB7FC3E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,15 +29,8 @@ Global
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{1CC39DC9-3A8C-4EB6-931D-EFF95C738ECD} = {A2EA8B31-9F0B-4994-B6BE-726B3EB7FC3E}
 	EndGlobalSection
 EndGlobal

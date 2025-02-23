@@ -8,8 +8,8 @@ using UniversalReportCore.PagedQueries;
 using UniversalReportCore;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
-using UniversalReportDemo.Data;
-using UniversalReportDemo.Reports.CityPop;
+using UniversalReportCoreTests.Data;
+using UniversalReportCore.Tests.Reports.Acme;
 
 namespace UniversalReportCore.Tests
 {
@@ -32,7 +32,7 @@ namespace UniversalReportCore.Tests
             int[]? cohortIds = new[] { 1, 2, 3 };
 
             // Act
-            var queryParameters = new PagedCityPopulationQueryParameters(_columns, pageIndex, sort, itemsPerPage, cohortIds);
+            var queryParameters = new PagedAcmeQueryParameters(_columns, pageIndex, sort, itemsPerPage, cohortIds);
 
             // Assert
             Assert.Equal(pageIndex, queryParameters.PageIndex);
@@ -46,14 +46,14 @@ namespace UniversalReportCore.Tests
         public async Task AggregateLogic_CorrectlyExecutes()
         {
             // Arrange
-            var data = new List<CityPopulation>
+            var data = new List<Widget>
         {
-            new CityPopulation { City = "New York", Value = 8000000 },
-            new CityPopulation { City = "Los Angeles", Value = 4000000 },
-            new CityPopulation { City = "Chicago", Value = 2700000 }
+            new Widget { City = "New York", Value = 8000000 },
+            new Widget { City = "Los Angeles", Value = 4000000 },
+            new Widget { City = "Chicago", Value = 2700000 }
         }.AsQueryable();
 
-            Func<IQueryable<CityPopulation>, Task<Dictionary<string, dynamic>>> aggregateLogic = async (query) =>
+            Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>> aggregateLogic = async (query) =>
             {
                 return await Task.FromResult(new Dictionary<string, dynamic>
             {
@@ -61,7 +61,7 @@ namespace UniversalReportCore.Tests
             });
             };
 
-            var queryParameters = new PagedCityPopulationQueryParameters(_columns, 1, "Population", 10, null, null, aggregateLogic, null);
+            var queryParameters = new PagedAcmeQueryParameters(_columns, 1, "Population", 10, null, null, aggregateLogic, null);
 
             // Act
             var result = await queryParameters.AggregateLogic!(data);
@@ -76,17 +76,17 @@ namespace UniversalReportCore.Tests
         public void AdditionalFilter_CorrectlyFiltersData()
         {
             // Arrange
-            var data = new List<CityPopulation>
+            var data = new List<Widget>
         {
-            new CityPopulation { City = "New York", Value = 8000000 },
-            new CityPopulation { City = "Los Angeles", Value = 4000000 },
-            new CityPopulation { City = "Chicago", Value = 2700000 }
+            new Widget { City = "New York", Value = 8000000 },
+            new Widget { City = "Los Angeles", Value = 4000000 },
+            new Widget { City = "Chicago", Value = 2700000 }
         }.AsQueryable();
 
-            Func<IQueryable<CityPopulation>, IQueryable<CityPopulation>> filterLogic = (query) =>
+            Func<IQueryable<Widget>, IQueryable<Widget>> filterLogic = (query) =>
                 query.Where(x => x.Value > 5000000);
 
-            var queryParameters = new PagedCityPopulationQueryParameters(_columns, 1, "Population", 10, null, filterLogic, null, null);
+            var queryParameters = new PagedAcmeQueryParameters(_columns, 1, "Population", 10, null, filterLogic, null, null);
 
             // Act
             var filteredResult = queryParameters.AdditionalFilter!(data).ToList();
@@ -101,14 +101,14 @@ namespace UniversalReportCore.Tests
         public async Task MetaLogic_CorrectlyExecutes()
         {
             // Arrange
-            var data = new List<CityPopulation>
+            var data = new List<Widget>
         {
-            new CityPopulation { City = "New York", Value = 8000000 },
-            new CityPopulation { City = "Los Angeles", Value = 4000000 },
-            new CityPopulation { City = "Chicago", Value = 2700000 }
+            new Widget { City = "New York", Value = 8000000 },
+            new Widget { City = "Los Angeles", Value = 4000000 },
+            new Widget { City = "Chicago", Value = 2700000 }
         }.AsQueryable();
 
-            Func<IQueryable<CityPopulation>, Task<Dictionary<string, dynamic>>> metaLogic = async (query) =>
+            Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>> metaLogic = async (query) =>
             {
                 return await Task.FromResult(new Dictionary<string, dynamic>
             {
@@ -116,7 +116,7 @@ namespace UniversalReportCore.Tests
             });
             };
 
-            var queryParameters = new PagedCityPopulationQueryParameters(_columns, 1, "Population", 10, null, null, null, metaLogic);
+            var queryParameters = new PagedAcmeQueryParameters(_columns, 1, "Population", 10, null, null, null, metaLogic);
 
             // Act
             var result = await queryParameters.MetaLogic!(data);

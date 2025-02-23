@@ -4,41 +4,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UniversalReportCore;
-using UniversalReportDemo.Data;
+using UniversalReportCoreTests.Data;
 using Xunit;
 
 namespace UniversalReportCore.Tests
 {
     public class PaginatedListTests : IDisposable
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly AcmeDbContext _dbContext;
 
         public PaginatedListTests()
         {
             // ** Set up In-Memory Database **
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            var options = new DbContextOptionsBuilder<AcmeDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
                 .Options;
 
-            _dbContext = new ApplicationDbContext(options);
+            _dbContext = new AcmeDbContext(options);
             _dbContext.Database.EnsureCreated();
 
             // ** Seed test data **
-            SeedCityPopulationDatabase();
+            SeedWidgetDatabase();
         }
 
         /// <summary>
         /// Seeds the in-memory database with test data.
         /// </summary>
-        private void SeedCityPopulationDatabase()
+        private void SeedWidgetDatabase()
         {
-            _dbContext.CityPopulations.AddRange(new List<CityPopulation>
+            _dbContext.Widgets.AddRange(new List<Widget>
             {
-                new CityPopulation { Id = 1, City = "New York", Value = 8419600, Year = 2020 },
-                new CityPopulation { Id = 2, City = "Los Angeles", Value = 3980400, Year = 2020 },
-                new CityPopulation { Id = 3, City = "Chicago", Value = 2716000, Year = 2020 },
-                new CityPopulation { Id = 4, City = "Houston", Value = 2328000, Year = 2020 },
-                new CityPopulation { Id = 5, City = "Phoenix", Value = 1690000, Year = 2020 }
+                new Widget { Id = 1, City = "New York", Value = 8419600, Year = 2020 },
+                new Widget { Id = 2, City = "Los Angeles", Value = 3980400, Year = 2020 },
+                new Widget { Id = 3, City = "Chicago", Value = 2716000, Year = 2020 },
+                new Widget { Id = 4, City = "Houston", Value = 2328000, Year = 2020 },
+                new Widget { Id = 5, City = "Phoenix", Value = 1690000, Year = 2020 }
             });
 
             _dbContext.SaveChanges();
@@ -51,10 +51,10 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldReturnPaginatedList()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
 
             // Assert
             Assert.NotNull(result);
@@ -69,10 +69,10 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldCalculateTotalPagesCorrectly()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
 
             // Assert
             Assert.Equal(3, result.TotalPages); // 5 items with page size of 2 should give 3 total pages
@@ -85,13 +85,13 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldReturnEmptyList_WhenNoRecords()
         {
             // Arrange
-            _dbContext.CityPopulations.RemoveRange(_dbContext.CityPopulations);
+            _dbContext.Widgets.RemoveRange(_dbContext.Widgets);
             await _dbContext.SaveChangesAsync();
 
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
 
             // Assert
             Assert.NotNull(result);
@@ -106,10 +106,10 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldIndicateNextPageExists()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
 
             // Assert
             Assert.True(result.HasNextPage);
@@ -122,10 +122,10 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldIndicatePreviousPageExists()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateAsync(query, pageIndex: 2, pageSize: 2);
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 2, pageSize: 2);
 
             // Assert
             Assert.True(result.HasPreviousPage);
@@ -138,10 +138,10 @@ namespace UniversalReportCore.Tests
         public async Task CreateMappedAsync_ShouldMapEntitiesCorrectly()
         {
             // Arrange
-            var query = _dbContext.CityPopulations.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();
 
             // Act
-            var result = await PaginatedList<CityPopulation>.CreateMappedAsync(
+            var result = await PaginatedList<Widget>.CreateMappedAsync(
                 query, pageIndex: 1, pageSize: 2,
                 mapFunction: entity => new { entity.City, entity.Value });
 

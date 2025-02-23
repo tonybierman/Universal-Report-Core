@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UniversalReportCore.PageMetadata;
+using UniversalReportCore.Tests.Reports.Acme;
 using UniversalReportCore.ViewModels;
-using UniversalReportDemo.Reports.CityPop;
 using Xunit;
 
 namespace UniversalReportCore.Tests
@@ -14,7 +14,7 @@ namespace UniversalReportCore.Tests
         public PageMetaFactoryTests()
         {
             // Use CityPopulationDemoPageMetaProvider as the concrete provider
-            var cityPopProvider = new CityPopulationDemoPageMetaProvider();
+            var cityPopProvider = new AcmeDemoPageMetaProvider();
 
             _providers = new List<IPageMetaProvider> { cityPopProvider };
             _factory = new PageMetaFactory(_providers);
