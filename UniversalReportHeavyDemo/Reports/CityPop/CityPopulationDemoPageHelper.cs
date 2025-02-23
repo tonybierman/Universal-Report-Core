@@ -50,19 +50,6 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
 
         public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters)
         {
-            if (parameters.CohortIds.Any())
-            {
-                parameters.CohortLogic = (query, cohortIds) =>
-                {
-                    return query.Where(pi =>
-                        _dbContext.CityPopulations
-                            .Where(p => p.Id == pi.Id)
-                            .SelectMany(p => p.CityPopulationCohorts)
-                            .Any(c => cohortIds.Contains(c.Id))
-                    );
-                };
-            }
-
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, query);

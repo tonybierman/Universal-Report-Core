@@ -19,29 +19,29 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             return new Dictionary<string, dynamic>();
         }
 
-        //public override IQueryable<CityPopulation> EnsureAggregateQuery(IQueryable<CityPopulation> query, int[]? cohortIds)
-        //{
-        //    if (cohortIds == null || cohortIds.Length == 0)
-        //    {
-        //        return query;  // No filtering needed
-        //    }
+        public override IQueryable<CityPopulation> EnsureAggregateQuery(IQueryable<CityPopulation> query, int[]? cohortIds)
+        {
+            if (cohortIds == null || cohortIds.Length == 0)
+            {
+                return query;  // No filtering needed
+            }
 
-        //    // Fetch all ProductIds associated with the specified cohortIds
-        //    var productIds = _dbContext.Products
-        //        .Where(p => p.Cohorts.Any(c => cohortIds.Contains(c.Id)))
-        //        .Select(p => p.Id)
-        //        .ToList();
+            // Fetch all CityPopulationsIds associated with the specified cohortIds
+            var ids = _dbContext.CityPopulations
+                .Where(p => p.CityPopulationCohorts.Any(c => cohortIds.Contains(c.Id)))
+                .Select(p => p.Id)
+                .ToList();
 
-        //    // Filter CityPopulations where ProductId is not null and matches one of the ProductIds
-        //    return query.Where(entity => entity.ProductId.HasValue && productIds.Contains(entity.ProductId.Value));
-        //}
+            // Filter CityPopulations where Id is not null and matches one of the ids
+            return query.Where(entity => ids.Contains(entity.Id));
+        }
 
-        //public override IQueryable<CityPopulation> EnsureCohortQuery(IQueryable<CityPopulation> query, int cohortId)
-        //{
-        //    return from entity in query
-        //           join product in _dbContext.Products on entity.ProductId equals product.Id
-        //           where product.Cohorts.Any(c => c.Id == cohortId)
-        //           select entity;
-        //}
+        public override IQueryable<CityPopulation> EnsureCohortQuery(IQueryable<CityPopulation> query, int cohortId)
+        {
+            return from entity in query
+                   join cityPop in _dbContext.CityPopulations on entity.Id equals cityPop.Id
+                   where cityPop.CityPopulationCohorts.Any(c => c.Id == cohortId)
+                   select entity;
+        }
     }
 }
