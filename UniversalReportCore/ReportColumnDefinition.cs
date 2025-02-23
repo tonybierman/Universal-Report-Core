@@ -5,6 +5,7 @@
         public string DisplayName { get; set; } = default!;
         public string PropertyName { get; set; } = default!;
         public string? ViewModelName { get; set; } = default!;
+        public bool IsDisplayKey { get; set; } // TODO: Enforce one and one column must be display key
         public bool IsSortable { get; set; } = false;
         public string? DefaultSort { get; set; } = default!;
         public bool IsSortDescending { get; set; } = false; // New property for toggling sort direction

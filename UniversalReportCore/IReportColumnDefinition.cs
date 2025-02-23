@@ -4,6 +4,7 @@
     {
         string DisplayName { get; set; }
         bool IsSortable { get; set; }
+        bool IsDisplayKey { get; set; }
         string? DefaultSort { get; set; }
         bool IsSortDescending { get; set; }
         string PropertyName { get; set; }

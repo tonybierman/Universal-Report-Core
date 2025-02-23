@@ -12,6 +12,7 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             {
                 new ReportColumnDefinition
                 {
+                    IsDisplayKey = true,
                     DisplayName = "City",
                     PropertyName = "City",
                     IsSortable = true,
