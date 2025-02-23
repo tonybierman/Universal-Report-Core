@@ -3,6 +3,19 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ignore test coverage results
+coverage/
+CoverageReport/
+*.coverage
+*.coveragexml
+*.cobertura.xml
+TestResults/
+*.trx
+html/
+lcov-report/
+coverage-reports/
+*.codecov
+
 # User-specific files
 *.rsuser
 *.suo

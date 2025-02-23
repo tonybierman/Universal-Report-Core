@@ -2,21 +2,22 @@
 
 name: publish
 on:
-  workflow_dispatch: # Allow running the workflow manually from the GitHub UI
+  workflow_dispatch:
   push:
     branches:
-      - 'master'       # Run the workflow when pushing to the master branch
+      - 'master'
   pull_request:
     branches:
-      - '*'          # Run the workflow for all pull requests
+      - '*'
   release:
     types:
-      - published    # Run the workflow when a new GitHub release is published
+      - published
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
   NuGetDirectory: ${{ github.workspace }}/nuget
+  CoverageReport: ${{ github.workspace }}/coverage
 
 defaults:
   run:
@@ -28,9 +29,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+        fetch-depth: 0 
 
-    # Install the .NET SDKs (9.0 and 8.0)
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -38,14 +38,11 @@ jobs:
           9.0.x
           8.0.x
 
-    # Copy the README.md from the solution root to the package project directory
     - name: Copy README.md for NuGet package
       run: cp README.md UniversalReportCore/
 
-    # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
 
-    # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
       with:
         name: nuget
@@ -80,14 +77,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           9.0.x
           8.0.x
-    - name: Run tests
-      run: dotnet test UniversalReportCore.Tests --configuration Release
+
+    - name: Install Coverlet for Code Coverage
+      run: dotnet tool install --global coverlet.console
+
+    - name: Run tests with code coverage
+      run: |
+        dotnet test UniversalReportCore.Tests --configuration Release --collect:"XPlat Code Coverage" --results-directory ${{ env.CoverageReport }}
+
+    - name: Convert Coverage to Cobertura Format
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator -reports:${{ env.CoverageReport }}/**/coverage.cobertura.xml -targetdir:${{ env.CoverageReport }}/html -reporttypes:Cobertura
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: ${{ env.CoverageReport }}/html
 
   deploy:
     if: github.event_name == 'release'

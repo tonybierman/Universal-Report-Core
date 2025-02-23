@@ -1,4 +1,11 @@
+## Docker
 docker build -t universal-report-demo -f UniversalReportDemo/Dockerfile .
 docker exec -it UniversalReportDemo /bin/bash
 
+## Conitnuous Integration
 https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
+
+## Code Coverage
+dotnet test /p:CollectCoverage=true --collect:"XPlat Code Coverage"
+// If needed: dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:CoverageReport" -reporttypes:Html
