@@ -22,6 +22,7 @@ namespace UniversalReportCoreTests.Data
         public string? Reliability { get; set; }
         public int? SourceYear { get; set; }
         public decimal? Value { get; set; }
+        public int? IntValue { get; set; }
         public string? ValueFootnotes { get; set; }
 
     }

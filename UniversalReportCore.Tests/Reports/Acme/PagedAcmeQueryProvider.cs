@@ -1,5 +1,8 @@
 ﻿using UniversalReportCore.PagedQueries;
 using UniversalReportCoreTests.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace UniversalReportCore.Tests.Reports.Acme
 {
@@ -7,41 +10,89 @@ namespace UniversalReportCore.Tests.Reports.Acme
     {
         private readonly AcmeDbContext _dbContext;
 
+        //public PagedAcmeQueryProvider() : this(null)
+        //{
+        //}
+
         public PagedAcmeQueryProvider(AcmeDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public override string Slug => throw new NotImplementedException();
+        public override string Slug => "acme-query-provider";
 
-        protected async override Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<Widget> query)
+        public override PagedQueryParameters<Widget> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
-            return new Dictionary<string, dynamic>();
+            return new PagedQueryParameters<Widget>(
+                columns,
+                pageIndex,
+                sort,
+                ipp,
+                cohortIds,
+                query => ApplyFilters(query),
+                async (IQueryable<Widget> src) => await ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
+                async (IQueryable<Widget> src) => await ComputeMetaAsync(src)
+            );
         }
 
-        //public override IQueryable<CityPopulation> EnsureAggregateQuery(IQueryable<CityPopulation> query, int[]? cohortIds)
-        //{
-        //    if (cohortIds == null || cohortIds.Length == 0)
-        //    {
-        //        return query;  // No filtering needed
-        //    }
+        protected override async Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<Widget> query)
+        {
+            return new Dictionary<string, dynamic>(); // Placeholder for metadata logic
+        }
 
-        //    // Fetch all ProductIds associated with the specified cohortIds
-        //    var productIds = _dbContext.Products
-        //        .Where(p => p.Cohorts.Any(c => cohortIds.Contains(c.Id)))
-        //        .Select(p => p.Id)
-        //        .ToList();
+        /// <summary>
+        /// Computes aggregates based on cohort IDs.
+        /// </summary>
+        public async Task<Dictionary<string, dynamic>> ComputeAggregatesWithCohortsAsync(IQueryable<Widget> src, IReportColumnDefinition[] columns, int[]? cohortIds)
+        {
+            var aggregates = new Dictionary<string, dynamic>();
+            var filteredQuery = ApplyFilters(src);
 
-        //    // Filter CityPopulations where ProductId is not null and matches one of the ProductIds
-        //    return query.Where(entity => entity.ProductId.HasValue && productIds.Contains(entity.ProductId.Value));
-        //}
+            if (cohortIds == null || cohortIds.Length == 0)
+            {
+                return await ComputeAggregates(filteredQuery, columns);
+            }
 
-        //public override IQueryable<CityPopulation> EnsureCohortQuery(IQueryable<CityPopulation> query, int cohortId)
-        //{
-        //    return from entity in query
-        //           join product in _dbContext.Products on entity.ProductId equals product.Id
-        //           where product.Cohorts.Any(c => c.Id == cohortId)
-        //           select entity;
-        //}
+            var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
+
+            foreach (var key in totalAggregates.Keys)
+            {
+                aggregates[$"{key}"] = totalAggregates[key];
+            }
+
+            foreach (var cohortId in cohortIds)
+            {
+                var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
+                var cohortResults = await ComputeAggregates(cohortQuery, columns);
+                foreach (var key in cohortResults.Keys)
+                {
+                    aggregates[$"{key}_{cohortId}"] = cohortResults[key];
+                }
+            }
+
+            return aggregates;
+        }
+
+        public async override Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<Widget> query, IReportColumnDefinition[] columns)
+        {
+            return await base.ComputeAggregates(query, columns);
+        }
+
+        /// <summary>
+        /// Computes metadata for the query.
+        /// </summary>
+        private async Task<Dictionary<string, dynamic>> ComputeMetaAsync(IQueryable<Widget> src)
+        {
+            var meta = new Dictionary<string, dynamic>();
+            var filteredQuery = ApplyFilters(src);
+
+            var metaDictionary = await EnsureMeta(filteredQuery);
+            foreach (var key in metaDictionary.Keys)
+            {
+                meta[$"{key}"] = metaDictionary[key];
+            }
+
+            return meta;
+        }
     }
 }

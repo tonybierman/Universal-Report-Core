@@ -30,7 +30,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="query">The source query.</param>
         /// <param name="columns">Columns on which aggregation is performed.</param>
         /// <returns>A dictionary containing aggregated values.</returns>
-        protected virtual async Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query, IReportColumnDefinition[] columns)
+        public virtual async Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query, IReportColumnDefinition[] columns)
         {
             var aggregateResults = new Dictionary<string, dynamic>();
 
@@ -147,6 +147,8 @@ namespace UniversalReportCore.PagedQueries
             return query;
         }
 
+
+
         /// <summary>
         /// Generates a paged query parameter object with applied filtering, aggregation, and metadata retrieval.
         /// </summary>
@@ -156,7 +158,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="ipp">Items per page.</param>
         /// <param name="cohortIds">Array of cohort IDs.</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing query settings.</returns>
-        public PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public virtual PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             return new PagedQueryParameters<T>(
                 columns,
@@ -165,49 +167,54 @@ namespace UniversalReportCore.PagedQueries
                 ipp,
                 cohortIds,
                 query => ApplyFilters((IQueryable<T>)query),
-                async (IQueryable<T> src) =>
-                {
-                    var aggregates = new Dictionary<string, dynamic>();
-                    var filteredQuery = ApplyFilters(src);
-
-                    if (cohortIds == null || cohortIds.Length == 0)
-                    {
-                        return await ComputeAggregates(filteredQuery, columns);
-                    }
-
-                    var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
-
-                    foreach (var key in totalAggregates.Keys)
-                    {
-                        aggregates[$"{key}"] = totalAggregates[key];
-                    }
-
-                    foreach (var cohortId in cohortIds)
-                    {
-                        var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
-                        var cohortResults = await ComputeAggregates(cohortQuery, columns);
-                        foreach (var key in cohortResults.Keys)
-                        {
-                            aggregates[$"{key}_{cohortId}"] = cohortResults[key];
-                        }
-                    }
-
-                    return aggregates;
-                },
-                async (IQueryable<T> src) =>
-                {
-                    var meta = new Dictionary<string, dynamic>();
-                    var filteredQuery = ApplyFilters(src);
-
-                    var metaDictionary = await EnsureMeta(filteredQuery);
-                    foreach (var key in metaDictionary.Keys)
-                    {
-                        meta[$"{key}"] = metaDictionary[key];
-                    }
-
-                    return meta;
-                }
+                src => ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
+                src => ComputeMetaAsync(src)
             );
         }
+
+        private async Task<Dictionary<string, dynamic>> ComputeAggregatesWithCohortsAsync(IQueryable<T> src, IReportColumnDefinition[] columns, int[]? cohortIds)
+        {
+            var aggregates = new Dictionary<string, dynamic>();
+            var filteredQuery = ApplyFilters(src);
+
+            if (cohortIds == null || cohortIds.Length == 0)
+            {
+                return await ComputeAggregates(filteredQuery, columns);
+            }
+
+            var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
+
+            foreach (var key in totalAggregates.Keys)
+            {
+                aggregates[$"{key}"] = totalAggregates[key];
+            }
+
+            foreach (var cohortId in cohortIds)
+            {
+                var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
+                var cohortResults = await ComputeAggregates(cohortQuery, columns);
+                foreach (var key in cohortResults.Keys)
+                {
+                    aggregates[$"{key}_{cohortId}"] = cohortResults[key];
+                }
+            }
+
+            return aggregates;
+        }
+
+        private async Task<Dictionary<string, dynamic>> ComputeMetaAsync(IQueryable<T> src)
+        {
+            var meta = new Dictionary<string, dynamic>();
+            var filteredQuery = ApplyFilters(src);
+
+            var metaDictionary = await EnsureMeta(filteredQuery);
+            foreach (var key in metaDictionary.Keys)
+            {
+                meta[$"{key}"] = metaDictionary[key];
+            }
+
+            return meta;
+        }
+
     }
 }
