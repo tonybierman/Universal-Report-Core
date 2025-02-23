@@ -92,7 +92,10 @@ namespace UniversalReport.Services
 
             stopwatch.Stop();
 
-            retval.Meta["QueryDuration"] = $"{stopwatch.Elapsed.TotalMilliseconds:N2} ms";
+            if (retval.Meta != null)
+            {
+                retval.Meta["QueryDuration"] = $"{stopwatch.Elapsed.TotalMilliseconds:N2} ms";
+            }
 
             return retval;
         }
