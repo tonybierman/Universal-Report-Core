@@ -1,6 +1,6 @@
-﻿using UniversalReportHeavyDemo.ViewModels;
+﻿using UniversalReportCore.ViewModels;
 
-namespace UniversalReportHeavyDemo.Data
+namespace UniversalReportHeavyDemo.ViewModels
 {
     public class NationalGdpViewModel : IEntityViewModel<int>
     {

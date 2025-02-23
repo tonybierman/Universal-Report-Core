@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using UniversalReportCore.ViewModels;
 
 namespace UniversalReportHeavyDemo.ViewModels
 {

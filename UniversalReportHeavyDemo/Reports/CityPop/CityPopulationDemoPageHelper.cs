@@ -22,16 +22,6 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
 
         private IQueryable<CityPopulation> GetLatestCityPopulation(IQueryable<CityPopulation> query)
         {
-            //var latestYears = query
-            //    .Where(cp => cp.Year.HasValue && !string.IsNullOrEmpty(cp.Sex) && !string.IsNullOrEmpty(cp.City))
-            //    .GroupBy(cp => new { cp.City, cp.Sex })
-            //    .Select(g => new { g.Key.City, g.Key.Sex, MaxYear = g.Max(cp => cp.Year) });
-
-            //return from cp in query
-            //       join ly in latestYears
-            //       on new { cp.City, cp.Sex, cp.Year } equals new { ly.City, ly.Sex, Year = ly.MaxYear }
-            //       select cp;
-
             var latestYears = query
                 .Where(cp => cp.Year.HasValue && cp.City != null && cp.Sex != null)
                 .GroupBy(cp => new { cp.City, cp.Sex })
