@@ -13,6 +13,11 @@
 		<ProjectReference Include="..\UniversalReportCore.Ui\UniversalReportCore.Ui.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath=""/>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
 	<PropertyGroup>
 		<PackageId>BiermanTech.UniversalReportCore</PackageId>
 		<Authors>Tony Bierman</Authors>
