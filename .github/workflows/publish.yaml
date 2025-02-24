@@ -37,7 +37,7 @@ jobs:
 
     # Build the solution file explicitly
     - name: Build Solution
-      run: dotnet build UniversalReportCore.sln --configuration Release
+      run: dotnet build UniversalReport.sln --configuration Release
 
     # Pack the UniversalReportCore.Packaging project
     - name: Create NuGet Package
