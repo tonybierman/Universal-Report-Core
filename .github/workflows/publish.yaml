@@ -41,7 +41,17 @@ jobs:
     - name: Copy README.md for NuGet package
       run: cp README.md UniversalReportCore/
 
-    - run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
+    # Build both projects before packaging
+    - name: Build UniversalReportCore and UniversalReportCore.Ui
+      run: |
+        dotnet build UniversalReportCore --configuration Release
+        dotnet build UniversalReportCore.Ui --configuration Release
+
+    # Pack both projects into NuGet
+    - name: Create NuGet Package
+      run: |
+        dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
+        dotnet pack UniversalReportCore.Ui --configuration Release --output ${{ env.NuGetDirectory }}
 
     - uses: actions/upload-artifact@v4
       with:
@@ -124,4 +134,3 @@ jobs:
         run: |
           foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
               dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
