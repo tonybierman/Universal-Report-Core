@@ -72,7 +72,7 @@ jobs:
 
       - name: Validate package
         run: |
-          Get-ChildItem "${{ env.NuGetDirectory }}/*.nupkg" | ForEach-Object { meziantou.validate-nuget-package $_.FullName }
+          find "${{ env.NuGetDirectory }}" -name "*.nupkg" -print0 | xargs -0 -I {} meziantou.validate-nuget-package "{}"
 
   run_test:
     runs-on: ubuntu-latest
