@@ -1,3 +1,22 @@
+name: publish
+
+on:
+  workflow_dispatch:  # Allow manual execution from GitHub UI
+  push:
+    branches:
+      - 'master'  # Runs on push to master branch
+  pull_request:
+    branches:
+      - '*'  # Runs on any pull request
+  release:
+    types:
+      - published  # Runs when a release is published
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NuGetDirectory: ${{ github.workspace }}/nuget
+
 jobs:
   create_nuget:
     runs-on: ubuntu-latest
@@ -16,11 +35,11 @@ jobs:
     - name: Copy README.md for NuGet package
       run: cp README.md UniversalReportCore.Packaging/
 
-    # Build all dependencies before packing
+    # Build all projects before packaging
     - name: Build Projects
       run: dotnet build --configuration Release
 
-    # Create a single NuGet package including both projects
+    # Pack the UniversalReportCore.Packaging project
     - name: Create NuGet Package
       run: dotnet pack UniversalReportCore.Packaging --configuration Release --output ${{ env.NuGetDirectory }}
 
