@@ -53,7 +53,7 @@ namespace UniversalReportHeavyDemo.Pages
         public async Task<IActionResult> ReportPageGetAsync(string slug)
         {
             // Page Helper
-            var pageHelper = (dynamic)_pageHelperFactory.GetHelper(Params.Slug.ReportType);  // `dynamic` to call generic methods without reflection headaches.
+            var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType);  // `dynamic` to call generic methods without reflection headaches.
 
             // Define report columns dynamically based on the query type
             ReportColumns = pageHelper.GetReportColumns(Params.Slug.Value);

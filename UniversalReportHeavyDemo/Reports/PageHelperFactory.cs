@@ -20,7 +20,7 @@ namespace UniversalReportHeavyDemo.Reports
         };
         }
 
-        public object GetHelper(string reportType)
+        public IReportPageHelperBase GetHelper(string reportType)
         {
             if (!_helperMap.TryGetValue(reportType, out var types))
             {
@@ -28,7 +28,10 @@ namespace UniversalReportHeavyDemo.Reports
             }
 
             var helperType = typeof(IReportPageHelper<,>).MakeGenericType(types.EntityType, types.ViewModelType);
-            return _serviceProvider.GetService(helperType) ?? throw new InvalidOperationException($"Failed to resolve {helperType.Name}");
+            var helperInstance = _serviceProvider.GetService(helperType);
+
+            return helperInstance as IReportPageHelperBase
+                ?? throw new InvalidOperationException($"Failed to resolve {helperType.Name}");
         }
     }
 }

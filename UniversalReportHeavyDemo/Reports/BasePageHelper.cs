@@ -34,6 +34,11 @@ namespace UniversalReportHeavyDemo.Reports
             DefaultSort = "Product.SkuDesc";
         }
 
+        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        {
+            return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds);
+        }
+
         public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             throw new NotImplementedException();
@@ -106,5 +111,34 @@ namespace UniversalReportHeavyDemo.Reports
             return obj;
         }
 
+        #region IReportPageHelperBase
+
+        public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters)
+        {
+            if (parameters is PagedQueryParameters<TEntity> typedParameters)
+            {
+                var result = await GetPagedDataAsync(typedParameters);
+                return result;
+            }
+            throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");
+        }
+
+        //public virtual Task<List<IReportColumnDefinition>> GetReportColumns(string slug)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public virtual Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        #endregion
+
     }
-}
+    }
