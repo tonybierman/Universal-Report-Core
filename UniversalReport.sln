@@ -15,6 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "var", "var", "{C8B472CA-D63
 		screenshot.png = screenshot.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Ui", "UniversalReportCore.Ui\UniversalReportCore.Ui.csproj", "{F15CF384-F766-D461-B0E2-9D01E9105D03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Packaging", "UniversalReportCore.Packaging\UniversalReportCore.Packaging.csproj", "{5B621718-0D48-B362-3A6D-A4018B0F8490}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,8 +35,22 @@ Global
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3FE93CC9-5B0B-40B9-B9B2-F4EA5C85715C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {579F4262-93BC-4ACA-A6CC-A416272F80AF}
 	EndGlobalSection
 EndGlobal
