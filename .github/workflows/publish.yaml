@@ -1,16 +1,16 @@
 name: publish
 
 on:
-  workflow_dispatch:  # Allow manual execution from GitHub UI
+  workflow_dispatch:
   push:
     branches:
-      - 'master'  # Runs on push to master branch
+      - 'master'
   pull_request:
     branches:
-      - '*'  # Runs on any pull request
+      - '*'
   release:
     types:
-      - published  # Runs when a release is published
+      - published
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -35,13 +35,13 @@ jobs:
     - name: Copy README.md for NuGet package
       run: cp README.md UniversalReportCore.Packaging/
 
-    # Build all projects before packaging
-    - name: Build Projects
-      run: dotnet build --configuration Release
+    # Build the solution file explicitly
+    - name: Build Solution
+      run: dotnet build UniversalReportCore.sln --configuration Release
 
     # Pack the UniversalReportCore.Packaging project
     - name: Create NuGet Package
-      run: dotnet pack UniversalReportCore.Packaging --configuration Release --output ${{ env.NuGetDirectory }}
+      run: dotnet pack UniversalReportCore.Packaging/UniversalReportCore.Packaging.csproj --configuration Release --output ${{ env.NuGetDirectory }}
 
     - uses: actions/upload-artifact@v4
       with:
