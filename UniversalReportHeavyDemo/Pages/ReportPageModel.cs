@@ -7,6 +7,7 @@ using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
 using UniversalReportCore.Helpers;
 using UniversalReportCore.PageMetadata;
+using UniversalReportCore.Ui;
 using UniversalReportCore.ViewModels;
 using UniversalReportHeavyDemo.Reports;
 

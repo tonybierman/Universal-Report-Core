@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Routing;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
 
-namespace UniversalReportHeavyDemo.Reports
+namespace UniversalReportCore.Ui
 {
     public class ReportQueryParamsBinder : IModelBinder
     {

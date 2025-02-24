@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using UniversalReportCore.HardQuerystringVariables;
 
-namespace UniversalReportHeavyDemo.Reports
+namespace UniversalReportCore.Ui
 {
 
     public class ReportQueryParamsBinderProvider : IModelBinderProvider
