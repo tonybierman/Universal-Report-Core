@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using UniversalReportHeavyDemo.Import;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace UniversalReportHeavyDemo.Data
 {
@@ -135,10 +136,13 @@ namespace UniversalReportHeavyDemo.Data
         {
             logger.LogInformation("Creating CityPopulations prefix index.");
 
-            string indexSql = @"
-        CREATE INDEX IF NOT EXISTS idx_city_sex_year 
-        ON CityPopulations (City(100), Sex(10), Year DESC);";
+            string indexSql = @"CREATE INDEX IF NOT EXISTS idx_city_sex_year_id ON CityPopulations (City(100), Sex(10), Year DESC, Id);";
+            context.Database.ExecuteSqlRaw(indexSql);
 
+            indexSql = @"CREATE INDEX IF NOT EXISTS idx_city_population_cohort ON CityPopulationCohorts(Id);";
+            context.Database.ExecuteSqlRaw(indexSql);
+
+            indexSql = @"CREATE INDEX IF NOT EXISTS idx_city_population_cohort_mapping ON CityPopulationCohortMapping(CityPopulationId, CohortId);";
             context.Database.ExecuteSqlRaw(indexSql);
         }
     }
