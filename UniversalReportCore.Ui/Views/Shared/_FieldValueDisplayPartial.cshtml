@@ -1,4 +1,4 @@
-﻿@model (dynamic Item, string PropertyName)
+﻿@model UniversalReportCore.Ui.ViewModels.FieldValueDisplayViewModel
 
 @{
     var fieldVal = Model.Item.GetType().GetProperty(Model.PropertyName)?.GetValue(Model.Item);

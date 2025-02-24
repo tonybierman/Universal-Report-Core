@@ -9,6 +9,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore", "UniversalReportCore\UniversalReportCore.csproj", "{7BA89CFF-59B9-4007-AE5E-F2835D670F3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Ui", "UniversalReportCore.Ui\UniversalReportCore.Ui.csproj", "{F15CF384-F766-D461-B0E2-9D01E9105D03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +29,15 @@ Global
 		{7BA89CFF-59B9-4007-AE5E-F2835D670F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BA89CFF-59B9-4007-AE5E-F2835D670F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BA89CFF-59B9-4007-AE5E-F2835D670F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AC09BD5-48C0-4E96-9523-E292D886F052}
 	EndGlobalSection
 EndGlobal

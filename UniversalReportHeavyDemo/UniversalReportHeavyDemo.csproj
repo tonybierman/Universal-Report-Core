@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UniversalReportCore.Ui\UniversalReportCore.Ui.csproj" />
     <ProjectReference Include="..\UniversalReportCore\UniversalReportCore.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace UniversalReportHeavyDemo.ViewModels
+﻿namespace UniversalReportCore.Ui.ViewModels
 {
     public class EntityFieldViewModel
     {

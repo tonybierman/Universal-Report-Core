@@ -1,8 +1,5 @@
-﻿@using UniversalReportCore.HardQuerystringVariables
-@using UniversalReportCore.HardQuerystringVariables.Hardened
-@using UniversalReportCore
-@using UniversalReportHeavyDemo.Reports
-@model (string? CurrentSort, ReportQueryParams Params, IPaginatedList Items)
+﻿@using UniversalReportCore.PagedQueries
+@model UniversalReportCore.Ui.ViewModels.ReportPagingNavigationViewModel
 @{
     var prevDisabled = !@Model.Items.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !@Model.Items.HasNextPage ? "disabled" : "";

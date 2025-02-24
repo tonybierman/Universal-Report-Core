@@ -1,5 +1,4 @@
 ﻿@page "{slug}"
-@using UniversalReportCore.ViewModels
 @using UniversalReportHeavyDemo.ViewModels
 @model UniversalReportHeavyDemo.Pages.Reports.IndexModel
 @{
@@ -139,11 +138,11 @@
     <div class="text-center">
         @if (@Model?.Items?.Count > 0)
         {
-            @await Html.PartialAsync("_ReportItemsPerPageSelectorPartial", (Model?.Params, Model?.Items))
+            @await Html.PartialAsync("_ReportItemsPerPageSelectorPartial", new ItemsPerPageSelectorViewModel (Model?.Params, Model?.Items))
         }
         @if (Model?.Items?.HasMultiplePages == true)
         {
-            @await Html.PartialAsync("_ReportPagingNavigationPartial", (Model?.CurrentSort, Model?.Params, Model?.Items))
+            @await Html.PartialAsync("_ReportPagingNavigationPartial", new ReportPagingNavigationViewModel() { CurrentSort = Model?.CurrentSort, Params = Model?.Params, Items = Model?.Items })
         }
         @if (Model?.Items?.Meta?.ContainsKey("QueryDuration") == true)
         {

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Policy;
 using UniversalReportCore;
-using UniversalReportHeavyDemo.ViewModels;
+using UniversalReportCore.Ui.ViewModels;
 
-namespace UniversalReportHeavyDemo
+namespace UniversalReportCore.Ui
 {
     [HtmlTargetElement("render-column")]
     public class ColumnTagHelper : TagHelper
@@ -41,7 +41,7 @@ namespace UniversalReportHeavyDemo
             IHtmlContent content = Column switch
             {
                 _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModel(Item) { Slug = Slug }),
-                _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial", (Item, Column.ViewModelName ?? Column.PropertyName))
+                _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial", new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
             };
 
             output.Content.SetHtmlContent(content);

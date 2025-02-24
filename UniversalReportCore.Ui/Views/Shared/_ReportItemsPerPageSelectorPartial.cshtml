@@ -1,7 +1,6 @@
 ﻿@using UniversalReportCore
 @using UniversalReportCore.HardQuerystringVariables
-@using UniversalReportHeavyDemo.Reports
-@model (ReportQueryParams Params, IPaginatedList Items)
+@model UniversalReportCore.Ui.ViewModels.ItemsPerPageSelectorViewModel
 <p class="mt-2">@Model.Items.DisplayMessage</p>
 <form method="get" class="d-inline">
     <label for="Ipp">Items Per Page:</label>
