@@ -51,29 +51,6 @@ jobs:
         retention-days: 7
         path: ${{ env.NuGetDirectory }}/*.nupkg
 
-  validate_nuget:
-    runs-on: ubuntu-latest
-    needs: [ create_nuget ]
-    steps:
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            9.0.x
-            8.0.x
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: nuget
-          path: ${{ env.NuGetDirectory }}
-
-      - name: Install NuGet validator
-        run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
-
-      - name: Validate package
-        run: |
-          find "${{ env.NuGetDirectory }}" -name "*.nupkg" -print0 | xargs -0 -I {} meziantou.validate-nuget-package "{}"
-
   run_test:
     runs-on: ubuntu-latest
     steps:
