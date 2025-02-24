@@ -168,26 +168,31 @@ namespace UniversalReportCore
         /// Optimized to minimize database trips and use No-Tracking queries.
         /// </summary>
         public static async Task<PaginatedList<TResult>> CreateMappedWithAggregatesAsync<TSource, TResult>(
-            IQueryable<TSource> source,
-            int pageIndex,
-            int pageSize,
-            Func<TSource, TResult> mapFunction,
-            Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>> aggregateFunction,
-            Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>>? metaFunction = null)
-            where TSource : class
+    IQueryable<TSource> source,
+    int pageIndex,
+    int pageSize,
+    Func<TSource, TResult> mapFunction,
+    Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>> aggregateFunction,
+    Func<IQueryable<TSource>, Task<Dictionary<string, dynamic>>>? metaFunction = null)
+    where TSource : class
         {
             source = source.AsNoTracking();
 
-            // Fetch total count
-            int count = await source.CountAsync();
-
             // Fetch paginated data
-            // Determine if full dataset should be returned
-            var dataQuery = (pageSize == 0)
-                ? source  // Return all records
-                : source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            List<TSource> data;
+            if (pageSize == 0)
+            {
+                data = await source.ToListAsync(); // Fetch all records
+            }
+            else
+            {
+                data = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
 
-            var data = await dataQuery.ToListAsync();
+            // Fetch total count only if pagination is used
+            int count = (pageSize == 0) ? data.Count : await source.CountAsync();
+
+            // Transform data (mapping remains single-threaded for simplicity)
             var mappedItems = data.Select(mapFunction).ToList();
 
             // Fetch aggregates
@@ -198,5 +203,7 @@ namespace UniversalReportCore
 
             return new PaginatedList<TResult>(mappedItems, count, pageIndex, pageSize, aggregates, meta);
         }
+
+
     }
 }
