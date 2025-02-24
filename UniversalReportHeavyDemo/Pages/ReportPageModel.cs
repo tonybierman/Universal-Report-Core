@@ -12,7 +12,7 @@ using UniversalReportHeavyDemo.Reports;
 
 namespace UniversalReportHeavyDemo.Pages
 {
-    public class BaseReportPageModel : PageModel
+    public class ReportPageModel : PageModel
     {
         // Fields
         private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ namespace UniversalReportHeavyDemo.Pages
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
 
-        public BaseReportPageModel(
+        public ReportPageModel(
             ILogger logger,
             IMapper mapper,
             IPageMetaFactory pageMetaFactory,

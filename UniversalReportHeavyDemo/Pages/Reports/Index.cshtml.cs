@@ -9,7 +9,7 @@ using UniversalReportHeavyDemo.Reports;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {
-    public class IndexModel : BaseReportPageModel
+    public class IndexModel : ReportPageModel
     {
         public IndexModel(ILogger<IndexModel> logger,
             IMapper mapper,
