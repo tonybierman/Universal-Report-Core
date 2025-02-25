@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
 name: publish
+
 on:
   workflow_dispatch:
   push:
@@ -38,17 +39,21 @@ jobs:
           9.0.x
           8.0.x
 
-    # Build both projects before packaging
-    - name: Build UniversalReportCore and UniversalReportCore.Ui
-      run: |
-        dotnet build UniversalReportCore --configuration Release
-        dotnet build UniversalReportCore.Ui --configuration Release
+    # Build UniversalReportCore first, so UniversalReportCore.Ui can reference it
+    - name: Build UniversalReportCore
+      run: dotnet build UniversalReportCore --configuration Release
 
-    # Pack both projects into NuGet
-    - name: Create NuGet Package
-      run: |
-        dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
-        dotnet pack UniversalReportCore.Ui --configuration Release --output ${{ env.NuGetDirectory }}
+    # Build UniversalReportCore.Ui, which depends on UniversalReportCore
+    - name: Build UniversalReportCore.Ui
+      run: dotnet build UniversalReportCore.Ui --configuration Release
+
+    # Pack UniversalReportCore first
+    - name: Create UniversalReportCore NuGet Package
+      run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
+
+    # Pack UniversalReportCore.Ui after UniversalReportCore is built
+    - name: Create UniversalReportCore.Ui NuGet Package
+      run: dotnet pack UniversalReportCore.Ui --configuration Release --output ${{ env.NuGetDirectory }}
 
     - uses: actions/upload-artifact@v4
       with:
@@ -127,7 +132,12 @@ jobs:
             9.0.x
             8.0.x
 
-      - name: Publish NuGet package
+      # Publish UniversalReportCore first
+      - name: Publish UniversalReportCore NuGet package
         run: |
-          foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
-              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push "${{ env.NuGetDirectory }}/UniversalReportCore.*.nupkg" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      # Publish UniversalReportCore.Ui after UniversalReportCore is already published
+      - name: Publish UniversalReportCore.Ui NuGet package
+        run: |
+          dotnet nuget push "${{ env.NuGetDirectory }}/UniversalReportCore.Ui.*.nupkg" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
