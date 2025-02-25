@@ -12,7 +12,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// <summary>
         /// Gets or sets the query parameters for the report.
         /// </summary>
-        public ReportQueryParamsBase Params { get; set; }
+        public IReportQueryParamsBase Params { get; set; }
 
         /// <summary>
         /// Gets or sets the paginated list of items.

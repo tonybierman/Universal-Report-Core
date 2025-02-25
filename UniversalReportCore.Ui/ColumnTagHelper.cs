@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Policy;
 using UniversalReportCore;
 using UniversalReportCore.Ui.ViewModels;
+using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui
 {
@@ -12,7 +13,7 @@ namespace UniversalReportCore.Ui
     public class ColumnTagHelper : TagHelper
     {
         public IReportColumnDefinition Column { get; set; }
-        public object Item { get; set; }
+        public IEntityViewModel<int> Item { get; set; }
         public string Slug { get; set; }
 
         private readonly IHtmlHelper<dynamic> _htmlHelper;
@@ -40,7 +41,7 @@ namespace UniversalReportCore.Ui
 
             IHtmlContent content = Column switch
             {
-                _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModel(Item) { Slug = Slug }),
+                _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModelBase<IEntityViewModel<int>>(Item) { Slug = Slug }),
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial", new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
             };
 

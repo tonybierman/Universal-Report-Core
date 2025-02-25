@@ -1,5 +1,6 @@
 ﻿@page "{slug}"
 @using UniversalReportHeavyDemo.ViewModels
+@using UniversalReportCore.ViewModels
 @model UniversalReportHeavyDemo.Pages.Reports.IndexModel
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
@@ -42,7 +43,7 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model?.Items)
+                @foreach (IEntityViewModel<int> item in Model?.Items)
                 {
                     <tr>
                         <td class="align-middle text-center m-0">
