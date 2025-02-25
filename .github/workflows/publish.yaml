@@ -39,6 +39,9 @@ jobs:
           9.0.x
           8.0.x
 
+    - name: Run MinVer to determine package version
+      run: dotnet minver
+
     # Build & Pack UniversalReportCore
     - name: Build UniversalReportCore
       run: dotnet build UniversalReportCore --configuration Release
