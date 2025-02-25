@@ -137,19 +137,23 @@ jobs:
       # 🔧 Fix: Find and Push UniversalReportCore
       - name: Publish UniversalReportCore NuGet package
         run: |
-          file=$(find "${{ env.NuGetDirectory }}" -name "UniversalReportCore.*.nupkg" | head -n 1)
-          if [ -f "$file" ]; then
-            dotnet nuget push "$file" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          else
-            echo "ERROR: UniversalReportCore package not found!" && exit 1
-          fi
+          $file = Get-ChildItem -Path "${{ env.NuGetDirectory }}" -Filter "UniversalReportCore.*.nupkg" | Select-Object -First 1
+          if ($file) {
+              dotnet nuget push $file.FullName --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          } else {
+              Write-Host "❌ ERROR: UniversalReportCore package not found!"
+              exit 1
+          }
+        shell: pwsh
 
       # 🔧 Fix: Find and Push UniversalReportCore.Ui
       - name: Publish UniversalReportCore.Ui NuGet package
         run: |
-          file=$(find "${{ env.NuGetDirectory }}" -name "UniversalReportCore.Ui.*.nupkg" | head -n 1)
-          if [ -f "$file" ]; then
-            dotnet nuget push "$file" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          else
-            echo "ERROR: UniversalReportCore.Ui package not found!" && exit 1
-          fi
+          $file = Get-ChildItem -Path "${{ env.NuGetDirectory }}" -Filter "UniversalReportCore.Ui.*.nupkg" | Select-Object -First 1
+          if ($file) {
+              dotnet nuget push $file.FullName --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          } else {
+              Write-Host "❌ ERROR: UniversalReportCore.Ui package not found!"
+              exit 1
+          }
+        shell: pwsh
