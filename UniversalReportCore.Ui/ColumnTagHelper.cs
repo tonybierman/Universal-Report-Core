@@ -41,7 +41,7 @@ namespace UniversalReportCore.Ui
 
             IHtmlContent content = Column switch
             {
-                _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModelBase<IEntityViewModel<int>>(Item) { Slug = Slug }),
+                _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModel(Item) { Slug = Slug }),
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial", new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
             };
 

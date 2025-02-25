@@ -2,12 +2,12 @@
 
 namespace UniversalReportCore.Ui.ViewModels
 {
-    public class EntityFieldViewModelBase<T> where T : IEntityViewModel<int>
+    public class EntityFieldViewModel
     {
-        public T Parent { get; private set; }
+        public IEntityViewModel<int> Parent { get; private set; }
         public string? Slug { get; set; }
 
-        public EntityFieldViewModelBase(T parent)
+        public EntityFieldViewModel(IEntityViewModel<int> parent)
         {
             Parent = parent;
         }
