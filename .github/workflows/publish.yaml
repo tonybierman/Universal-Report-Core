@@ -43,7 +43,7 @@ jobs:
       run: dotnet tool install --global minver-cli
 
     - name: Run MinVer to determine package version
-      run: dotnet minver
+      run: minver
 
     # Build & Pack UniversalReportCore
     - name: Build UniversalReportCore
