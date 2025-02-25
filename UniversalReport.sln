@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "var", "var", "{C8B472CA-D630-49A2-8F1E-A61264C1EC15}"
 	ProjectSection(SolutionItems) = preProject
+		build-nuget.ps1 = build-nuget.ps1
 		global.json = global.json
 		NOTES.txt = NOTES.txt
 		README.md = README.md
