@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "var", "var", "{C8B472CA-D63
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Ui", "UniversalReportCore.Ui\UniversalReportCore.Ui.csproj", "{F15CF384-F766-D461-B0E2-9D01E9105D03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Packaging", "UniversalReportCore.Packaging\UniversalReportCore.Packaging.csproj", "{5B621718-0D48-B362-3A6D-A4018B0F8490}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Global
@@ -39,10 +37,6 @@ Global
 		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F15CF384-F766-D461-B0E2-9D01E9105D03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B621718-0D48-B362-3A6D-A4018B0F8490}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

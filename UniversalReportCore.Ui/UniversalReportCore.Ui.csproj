@@ -1,28 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
-	
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UniversalReportCore\UniversalReportCore.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\UniversalReportCore\UniversalReportCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath=""/>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>BiermanTech.UniversalReportCore.Ui</PackageId>
+		<Authors>Tony Bierman</Authors>
+		<Description>UI components for Universal Report Core - a fast and versatile framework for presenting tabular reports in ASP.NET Core</Description>
+		<PackageProjectUrl>https://github.com/tonybierman/Universal-Report-Core</PackageProjectUrl>
+		<PackageTags>
+			reporting, reports, paginated, pagination, ASP.NET, ASP.NET Core, Entity Framework,
+			EF Core, data, datatable, query, filtering, sorting, dynamic queries, AutoMapper,
+			LINQ, UniversalReport, analytics, dashboard, data visualization, tabular data
+		</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+
+		<!-- Add Repository Information -->
+		<RepositoryUrl>https://github.com/tonybierman/Universal-Report-Core.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageSourceUrl>https://www.nuget.org/packages/BiermanTech.UniversalReportCore/</PackageSourceUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<MinVerTagPrefix>v</MinVerTagPrefix>
+		<MinVerAutoIncrement>patch</MinVerAutoIncrement>
+	</PropertyGroup>
 </Project>
