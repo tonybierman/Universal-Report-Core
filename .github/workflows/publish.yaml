@@ -39,21 +39,23 @@ jobs:
           9.0.x
           8.0.x
 
-    # Build UniversalReportCore first, so UniversalReportCore.Ui can reference it
+    # Build & Pack UniversalReportCore
     - name: Build UniversalReportCore
       run: dotnet build UniversalReportCore --configuration Release
 
-    # Build UniversalReportCore.Ui, which depends on UniversalReportCore
+    - name: Pack UniversalReportCore
+      run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
+
+    # Build & Pack UniversalReportCore.Ui
     - name: Build UniversalReportCore.Ui
       run: dotnet build UniversalReportCore.Ui --configuration Release
 
-    # Pack UniversalReportCore first
-    - name: Create UniversalReportCore NuGet Package
-      run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
-
-    # Pack UniversalReportCore.Ui after UniversalReportCore is built
-    - name: Create UniversalReportCore.Ui NuGet Package
+    - name: Pack UniversalReportCore.Ui
       run: dotnet pack UniversalReportCore.Ui --configuration Release --output ${{ env.NuGetDirectory }}
+
+    # 🔍 Debug: List NuGet Packages
+    - name: Debug - List NuGet Files
+      run: ls -la ${{ env.NuGetDirectory }}
 
     - uses: actions/upload-artifact@v4
       with:
@@ -114,45 +116,6 @@ jobs:
       with:
         name: coverage-report
         path: ${{ env.CoverageReport }}/html
-
-  create_nuget:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          9.0.x
-          8.0.x
-
-    # Build & Pack UniversalReportCore
-    - name: Build UniversalReportCore
-      run: dotnet build UniversalReportCore --configuration Release
-
-    - name: Pack UniversalReportCore
-      run: dotnet pack UniversalReportCore --configuration Release --output ${{ env.NuGetDirectory }}
-
-    # Build & Pack UniversalReportCore.Ui
-    - name: Build UniversalReportCore.Ui
-      run: dotnet build UniversalReportCore.Ui --configuration Release
-
-    - name: Pack UniversalReportCore.Ui
-      run: dotnet pack UniversalReportCore.Ui --configuration Release --output ${{ env.NuGetDirectory }}
-
-    # 🔍 Debug: List NuGet Packages
-    - name: Debug - List NuGet Files
-      run: ls -la ${{ env.NuGetDirectory }}
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: nuget
-        if-no-files-found: error
-        retention-days: 7
-        path: ${{ env.NuGetDirectory }}/*.nupkg
 
   deploy:
     if: github.event_name == 'release'
