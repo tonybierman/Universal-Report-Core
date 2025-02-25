@@ -39,6 +39,9 @@ jobs:
           9.0.x
           8.0.x
 
+    - name: Install MinVer
+      run: dotnet tool install --global minver-cli
+
     - name: Run MinVer to determine package version
       run: dotnet minver
 
