@@ -5,7 +5,7 @@ namespace UniversalReportCore.HardQuerystringVariables
     /// <summary>
     /// Represents the query parameters for a report, enforcing hardening and sanity checks.
     /// </summary>
-    public class ReportQueryParams
+    public class ReportQueryParamsBase : IReportQueryParamsBase
     {
         /// <summary>
         /// Gets an enumerable collection of all query parameters as <see cref="IHardVariable"/>.
@@ -48,14 +48,14 @@ namespace UniversalReportCore.HardQuerystringVariables
         public bool IsSane => Array.All(a => a?.IsSane ?? false);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportQueryParams"/> class.
+        /// Initializes a new instance of the <see cref="ReportQueryParamsBase"/> class.
         /// </summary>
         /// <param name="pi">The paging index parameter.</param>
         /// <param name="ipp">The items-per-page parameter.</param>
         /// <param name="sortOrder">The column sorting parameter.</param>
         /// <param name="cohortIds">The cohort identifiers parameter.</param>
         /// <param name="slug">The report slug parameter.</param>
-        public ReportQueryParams(HardenedPagingIndex pi,
+        public ReportQueryParamsBase(HardenedPagingIndex pi,
             HardenedItemsPerPage ipp,
             HardenedColumnSort sortOrder,
             HardenedCohortIdentifiers cohortIds,

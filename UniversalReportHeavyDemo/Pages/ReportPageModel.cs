@@ -24,8 +24,8 @@ namespace UniversalReportHeavyDemo.Pages
 
         // Querystring Properties
         [BindProperty(SupportsGet = true)]
-        [ModelBinder(BinderType = typeof(ReportQueryParamsBinder))]
-        public ReportQueryParams Params { get; set; }
+        [ModelBinder(BinderType = typeof(ReportQueryParamsBinderBase))]
+        public ReportQueryParamsBase Params { get; set; }
         [BindProperty(SupportsGet = true)] public string? Id { get; set; }
         
         // Properties

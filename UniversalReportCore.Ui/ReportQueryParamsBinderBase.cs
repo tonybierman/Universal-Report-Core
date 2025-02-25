@@ -5,9 +5,9 @@ using UniversalReportCore.HardQuerystringVariables.Hardened;
 
 namespace UniversalReportCore.Ui
 {
-    public class ReportQueryParamsBinder : IModelBinder
+    public class ReportQueryParamsBinderBase : IModelBinder
     {
-        public Task BindModelAsync(ModelBindingContext bindingContext)
+        public virtual Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var httpContext = bindingContext.HttpContext;
             var query = httpContext.Request.Query;
@@ -16,7 +16,7 @@ namespace UniversalReportCore.Ui
             var slug = routeData.Values["slug"]?.ToString();  // Get slug from route data
             var sku = routeData.Values["sku"]?.ToString();  // Get slug from route data
 
-            var model = new ReportQueryParams
+            var model = new ReportQueryParamsBase
             (
                 new HardenedPagingIndex(ConvertToNullableInt(query["Pi"])),
                 new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"])),

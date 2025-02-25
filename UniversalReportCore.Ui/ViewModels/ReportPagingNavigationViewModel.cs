@@ -10,7 +10,7 @@ namespace UniversalReportCore.Ui.ViewModels
     public class ReportPagingNavigationViewModel
     {
         public string? CurrentSort { get; set; }
-        public ReportQueryParams Params { get; set; } = default!;
+        public ReportQueryParamsBase Params { get; set; } = default!;
         public IPaginatedList Items { get; set; } = default!;
     }
 }

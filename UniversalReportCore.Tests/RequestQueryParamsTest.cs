@@ -39,9 +39,9 @@ namespace UniversalReportCore.Tests
 
         // --- Helper Methods ---
 
-        private ReportQueryParams CreateReportQueryParams(bool isHard, bool isSane, bool checkSanity)
+        private ReportQueryParamsBase CreateReportQueryParams(bool isHard, bool isSane, bool checkSanity)
         {
-            return new ReportQueryParams(
+            return new ReportQueryParamsBase(
                 MockVariable<HardenedPagingIndex>(isHard, isSane, checkSanity),
                 MockVariable<HardenedItemsPerPage>(isHard, isSane, checkSanity),
                 MockVariable<HardenedColumnSort>(isHard, isSane, checkSanity),
