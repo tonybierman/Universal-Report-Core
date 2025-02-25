@@ -18,6 +18,10 @@ env:
   NuGetDirectory: ${{ github.workspace }}/nuget
   CoverageReport: ${{ github.workspace }}/coverage
 
+defaults:
+  run:
+    shell: pwsh  # Set PowerShell as the default shell for all steps
+
 jobs:
   create_nuget:
     runs-on: ubuntu-latest
@@ -34,7 +38,7 @@ jobs:
           8.0.x
 
     - name: Copy README.md for NuGet package
-      run: cp README.md UniversalReportCore.Packaging/
+      run: Copy-Item README.md UniversalReportCore.Packaging/
 
     # Build the solution file explicitly
     - name: Build Solution
@@ -100,5 +104,6 @@ jobs:
 
       - name: Publish NuGet package
         run: |
-          foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
-              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg | ForEach-Object {
+              dotnet nuget push $_.FullName --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
