@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using UniversalReportCore;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
@@ -9,16 +10,15 @@ using UniversalReportCore.Helpers;
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.Ui;
 using UniversalReportCore.ViewModels;
-using UniversalReportHeavyDemo.Reports;
 
-namespace UniversalReportHeavyDemo.Pages
+namespace UniversalReportCore.Ui.Pages
 {
     public class ReportPageModel : PageModel
     {
         // Fields
         private readonly IMapper _mapper;
         private readonly IReportColumnFactory _reportColumnFactory;
-        private readonly PageHelperFactory _pageHelperFactory;
+        private readonly IReportPageHelperFactory _pageHelperFactory;
         protected readonly IPageMetaFactory _pageMetaFactory;
         protected readonly ILogger _logger;
 
@@ -41,7 +41,7 @@ namespace UniversalReportHeavyDemo.Pages
             IMapper mapper,
             IPageMetaFactory pageMetaFactory,
             IReportColumnFactory reportColumnFactory,
-            PageHelperFactory pageHelperFactory)
+            IReportPageHelperFactory pageHelperFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _pageMetaFactory = pageMetaFactory;

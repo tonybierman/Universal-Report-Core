@@ -45,9 +45,8 @@ builder.Services.AddScoped<IUniversalReportService>(provider =>
 
 // Universal Reports
 builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
-builder.Services.AddTransient<IPageMetaFactory, PageMetaFactory>();
 builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
-builder.Services.AddScoped<PageHelperFactory>();
+builder.Services.AddScoped<IReportPageHelperFactory, PageHelperFactory>();
 
 // ** CityPopulation
 // Entity Type

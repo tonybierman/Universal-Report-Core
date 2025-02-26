@@ -5,7 +5,7 @@ using UniversalReportHeavyDemo.ViewModels;
 
 namespace UniversalReportHeavyDemo.Reports
 {
-    public class PageHelperFactory : ReportPageHelperFactoryBase
+    public class PageHelperFactory : ReportPageHelperFactoryBase, IReportPageHelperFactory
     {
         public PageHelperFactory(IServiceProvider serviceProvider) : base(serviceProvider)
         {

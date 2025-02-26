@@ -6,6 +6,7 @@ using UniversalReportCore.PageMetadata;
 using UniversalReportCore.ViewModels;
 using UniversalReportCore;
 using UniversalReportHeavyDemo.Reports;
+using UniversalReportCore.Ui.Pages;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {
@@ -15,7 +16,7 @@ namespace UniversalReportHeavyDemo.Pages.Reports
             IMapper mapper,
             IReportColumnFactory reportColumnFactory,
             IPageMetaFactory pageMetaFactory,
-            PageHelperFactory pageHelperFactory) :
+            IReportPageHelperFactory pageHelperFactory) :
             base(logger, mapper, pageMetaFactory,
                 reportColumnFactory, pageHelperFactory)
         {
