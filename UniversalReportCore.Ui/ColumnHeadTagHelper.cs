@@ -29,7 +29,10 @@ namespace UniversalReportCore.Ui
         public IReportQueryParams? Model { get; set; }
 
         [HtmlAttributeName("sort")]
-        public string sort { get; set; }
+        public string Sort { get; set; }
+
+        [HtmlAttributeName("page")]
+        public string Page { get; set; }
 
         [ViewContext]
         public ViewContext ViewContext { get; set; } = null!;
@@ -47,7 +50,7 @@ namespace UniversalReportCore.Ui
             {
                 var newSortOrder = Column.IsSortDescending ? $"{Column.PropertyName}Asc" : $"{Column.PropertyName}Desc";
 
-                var url = urlHelper.Page("/Reports/Index", new
+                var url = urlHelper.Page(Page, new
                 {
                     slug = Model?.Slug.Value,
                     ipp = Model?.Ipp.Value,
@@ -62,7 +65,7 @@ namespace UniversalReportCore.Ui
                 output.Content.AppendHtml(linkTag);
 
                 // Show sort indicator
-                if (Column.PropertyName == sort.Replace("Asc", "").Replace("Desc", ""))
+                if (Column.PropertyName == Sort.Replace("Asc", "").Replace("Desc", ""))
                 {
                     var sortIndicator = Column.IsSortDescending ? "↓" : "↑";
                     var spanTag = new TagBuilder("span");
