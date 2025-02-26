@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalReportCore.Data;
 using UniversalReportCore.PagedQueries;
 
 namespace UniversalReportCore
@@ -14,5 +15,6 @@ namespace UniversalReportCore
         List<IReportColumnDefinition> GetReportColumns(string slug);
         Task<ICohort[]?> GetCohortsAsync(int[] cohortIds);
         PagedQueryParametersBase CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
+        List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
     }
 }
