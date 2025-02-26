@@ -5,33 +5,15 @@ using UniversalReportHeavyDemo.ViewModels;
 
 namespace UniversalReportHeavyDemo.Reports
 {
-    public class PageHelperFactory
+    public class PageHelperFactory : ReportPageHelperFactoryBase
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly Dictionary<string, (Type EntityType, Type ViewModelType)> _helperMap;
-
-        public PageHelperFactory(IServiceProvider serviceProvider)
+        public PageHelperFactory(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _serviceProvider = serviceProvider;
             _helperMap = new Dictionary<string, (Type, Type)>
-        {
-            { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) },
-            { "NationalGdpReports", (typeof(NationalGdp), typeof(NationalGdpViewModel)) }
-        };
-        }
-
-        public IReportPageHelperBase GetHelper(string reportType)
-        {
-            if (!_helperMap.TryGetValue(reportType, out var types))
             {
-                throw new ArgumentException($"No PageHelper found for report type {reportType}");
-            }
-
-            var helperType = typeof(IReportPageHelper<,>).MakeGenericType(types.EntityType, types.ViewModelType);
-            var helperInstance = _serviceProvider.GetService(helperType);
-
-            return helperInstance as IReportPageHelperBase
-                ?? throw new InvalidOperationException($"Failed to resolve {helperType.Name}");
+                { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) },
+                { "NationalGdpReports", (typeof(NationalGdp), typeof(NationalGdpViewModel)) }
+            };
         }
     }
 }

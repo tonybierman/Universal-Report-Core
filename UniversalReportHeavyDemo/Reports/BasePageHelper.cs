@@ -2,6 +2,7 @@
 using System.Reflection;
 using UniversalReport.Services;
 using UniversalReportCore;
+using UniversalReportCore.Data;
 using UniversalReportCore.Helpers;
 using UniversalReportCore.PagedQueries;
 using UniversalReportHeavyDemo.Data;
