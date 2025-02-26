@@ -7,6 +7,7 @@ using UniversalReportCore.ViewModels;
 using UniversalReportCore;
 using UniversalReportHeavyDemo.Reports;
 using UniversalReportCore.Ui.Pages;
+using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {
@@ -22,6 +23,7 @@ namespace UniversalReportHeavyDemo.Pages.Reports
         {
 
         }
+
         public async Task<IActionResult> OnGetAsync()
         {
             // Check and validate query parameters

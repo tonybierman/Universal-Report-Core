@@ -2,7 +2,7 @@
 
 namespace UniversalReportCore.HardQuerystringVariables
 {
-    public interface IReportQueryParamsBase
+    public interface IReportQueryParams
     {
         IEnumerable<IHardVariable> Array { get; }
         HardenedCohortIdentifiers CohortIds { get; }

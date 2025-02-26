@@ -9,7 +9,7 @@ namespace UniversalReportCore.Ui
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if (context.Metadata.ModelType == typeof(IReportQueryParamsBase))
+            if (context.Metadata.ModelType == typeof(IReportQueryParams))
             {
                 return new BinderTypeModelBinder(typeof(ReportQueryParamsBinderBase));
             }

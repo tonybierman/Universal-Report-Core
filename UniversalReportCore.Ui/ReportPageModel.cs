@@ -25,7 +25,7 @@ namespace UniversalReportCore.Ui.Pages
         // Querystring Properties
         [BindProperty(SupportsGet = true)]
         [ModelBinder(BinderType = typeof(ReportQueryParamsBinderBase))]
-        public ReportQueryParamsBase Params { get; set; }
+        public virtual IReportQueryParams Params { get; set; }
         [BindProperty(SupportsGet = true)] public string? Id { get; set; }
         
         // Properties

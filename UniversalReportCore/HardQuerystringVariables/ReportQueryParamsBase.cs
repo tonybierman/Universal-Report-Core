@@ -5,7 +5,7 @@ namespace UniversalReportCore.HardQuerystringVariables
     /// <summary>
     /// Represents the query parameters for a report, enforcing hardening and sanity checks.
     /// </summary>
-    public class ReportQueryParamsBase : IReportQueryParamsBase
+    public class ReportQueryParamsBase : IReportQueryParams
     {
         /// <summary>
         /// Gets an enumerable collection of all query parameters as <see cref="IHardVariable"/>.
