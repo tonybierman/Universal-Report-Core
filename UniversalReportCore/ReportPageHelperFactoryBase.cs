@@ -10,7 +10,7 @@ namespace UniversalReportCore
     public class ReportPageHelperFactoryBase
     {
         protected readonly IServiceProvider _serviceProvider;
-        protected readonly Dictionary<string, (Type EntityType, Type ViewModelType)> _helperMap = new Dictionary<string, (Type EntityType, Type ViewModelType)>();
+        protected Dictionary<string, (Type EntityType, Type ViewModelType)> _helperMap = new Dictionary<string, (Type EntityType, Type ViewModelType)>();
 
         public ReportPageHelperFactoryBase(IServiceProvider serviceProvider)
         {
