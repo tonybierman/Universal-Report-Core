@@ -51,10 +51,10 @@ namespace UniversalReportCore.Ui.Pages
             PageMeta = new PageMetaViewModel { Title = "Demo", Subtitle = "Lorem Ipsum" };
         }
         
-        public async Task<IActionResult> ReportPageGetAsync(string slug)
+        public async Task<IActionResult> ReportPageGetAsync(string slug, string? displayKey = null)
         {
             // Page Helper
-            var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType);  // `dynamic` to call generic methods without reflection headaches.
+            var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType);
 
             // Define report columns dynamically based on the query type
             ReportColumns = pageHelper.GetReportColumns(Params.Slug.Value);
@@ -82,6 +82,7 @@ namespace UniversalReportCore.Ui.Pages
 
             // Load data
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);
+            parameters.DisplayKey = displayKey;
 
             Items = (IPaginatedList)await pageHelper.GetPagedDataAsync(parameters);
 
