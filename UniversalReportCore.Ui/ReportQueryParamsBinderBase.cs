@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Primitives;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
 
@@ -22,11 +21,7 @@ namespace UniversalReportCore.Ui
                 new HardenedPagingIndex(ConvertToNullableInt(query["Pi"])),
                 new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"])),
                 new HardenedColumnSort(query["SortOrder"]),
-                new HardenedCohortIdentifiers(
-                    query.TryGetValue("CohortIds", out StringValues value) && !StringValues.IsNullOrEmpty(value)
-                        ? value.Where(v => int.TryParse(v, out _)).Select(int.Parse).ToArray()
-                        : Array.Empty<int>()
-                ),
+                new HardenedCohortIdentifiers(query["CohortIds"].Select(int.Parse).ToArray()),
                 new HardenedReportSlug(slug)  // Use the slug from route data
             );
 

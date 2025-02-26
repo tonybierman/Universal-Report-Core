@@ -11,7 +11,7 @@ namespace UniversalReportCore.PagedQueries
         /// <summary>
         /// Gets or sets an optional SKU filter, if applicable.
         /// </summary>
-        public string? Sku { get; set; } // TODO: Rename this to be a primary column indicator
+        public string? DisplayKey { get; set; } // TODO: Rename this to be a primary column indicator
 
         /// <summary>
         /// Gets or sets the index of the page to be retrieved.
