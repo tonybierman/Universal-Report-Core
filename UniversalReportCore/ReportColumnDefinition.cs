@@ -6,6 +6,7 @@ namespace UniversalReportCore
     {
         public ReportColumnDefinition()
         {
+            
         }
 
         public string DisplayName { get; set; } = default!;
@@ -18,6 +19,6 @@ namespace UniversalReportCore
         public string? RenderPartial { get; set; } // Optional Razor partial for custom rendering
         public bool HideInPortrait { get; set; }
         public AggregationType Aggregation { get; set; }
-        public Type? ViewModelType => null;
+        public Type? ViewModelType { get; set; }
     }
 }

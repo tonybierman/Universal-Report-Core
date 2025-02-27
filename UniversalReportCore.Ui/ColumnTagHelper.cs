@@ -48,10 +48,11 @@ namespace UniversalReportCore.Ui
             IHtmlContent content = Column switch
             {
                 _ when !string.IsNullOrEmpty(Column.RenderPartial) =>
-                    await _htmlHelper.PartialAsync(Column.RenderPartial, viewModelInstance),
+                    await _htmlHelper.PartialAsync(Column.RenderPartial, 
+                        viewModelInstance),
 
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial",
-                    new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
+                        new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
             };
 
             output.Content.SetHtmlContent(content);
