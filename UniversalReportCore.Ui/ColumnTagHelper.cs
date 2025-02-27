@@ -43,7 +43,7 @@ namespace UniversalReportCore.Ui
             Type viewModelType = Column.ViewModelType ?? typeof(FieldValueDisplayViewModel);
 
             // Use Activator.CreateInstance to dynamically instantiate the ViewModel
-            object viewModelInstance = Activator.CreateInstance(viewModelType, Item, Slug)!;
+            object viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
 
             IHtmlContent content = Column switch
             {
