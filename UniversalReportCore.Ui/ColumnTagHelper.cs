@@ -43,7 +43,19 @@ namespace UniversalReportCore.Ui
             Type viewModelType = Column.ViewModelType ?? typeof(EntityFieldViewModel);
 
             // Use Activator.CreateInstance to dynamically instantiate the ViewModel
-            object viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
+            object viewModelInstance;
+            try
+            {
+                viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
+            }
+            catch (MissingMethodException ex)
+            {
+                throw new InvalidOperationException(
+                    $"Constructor not found for type '{viewModelType.FullName}' with parameter type '{Item?.GetType().FullName ?? "null"}'. " +
+                    $"Ensure the constructor exists and matches the expected parameter.",
+                    ex
+                );
+            }
 
             IHtmlContent content = Column switch
             {
