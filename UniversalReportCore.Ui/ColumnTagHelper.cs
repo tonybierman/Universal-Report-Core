@@ -46,7 +46,7 @@ namespace UniversalReportCore.Ui
             object viewModelInstance;
             try
             {
-                viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
+                viewModelInstance = Activator.CreateInstance(viewModelType, Item, Column)!;
             }
             catch (MissingMethodException ex)
             {
@@ -64,7 +64,7 @@ namespace UniversalReportCore.Ui
                         viewModelInstance),
 
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial",
-                        new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
+                        new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName)) // TODO: Pass the column instead of the propertyname
             };
 
             output.Content.SetHtmlContent(content);
