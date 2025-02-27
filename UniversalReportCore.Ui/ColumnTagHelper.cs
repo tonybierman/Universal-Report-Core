@@ -40,7 +40,7 @@ namespace UniversalReportCore.Ui
             output.Attributes.Add("class", cssClasses);
 
             // Determine the correct ViewModel type or default to EntityFieldViewModel
-            Type viewModelType = Column.ViewModelType ?? typeof(FieldValueDisplayViewModel);
+            Type viewModelType = Column.ViewModelType ?? typeof(EntityFieldViewModel);
 
             // Use Activator.CreateInstance to dynamically instantiate the ViewModel
             object viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
