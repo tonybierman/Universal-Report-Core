@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui.ViewModels
 {
@@ -22,11 +23,11 @@ namespace UniversalReportCore.Ui.ViewModels
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicPropertyViewModel"/> class.
+        /// Initializes a new instance of the <see cref="FieldValueDisplayViewModel"/> class.
         /// </summary>
-        /// <param name="item">The dynamic object.</param>
+        /// <param name="item">The IEntityViewModel<int> object.</param>
         /// <param name="propertyName">The property name to be accessed.</param>
-        public FieldValueDisplayViewModel(dynamic item, string propertyName)
+        public FieldValueDisplayViewModel(IEntityViewModel<int> item, string propertyName)
         {
             Item = item;
             PropertyName = propertyName;

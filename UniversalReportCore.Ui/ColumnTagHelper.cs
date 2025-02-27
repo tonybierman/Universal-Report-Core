@@ -39,10 +39,19 @@ namespace UniversalReportCore.Ui
 
             output.Attributes.Add("class", cssClasses);
 
+            // Determine the correct ViewModel type or default to EntityFieldViewModel
+            Type viewModelType = Column.ViewModelType ?? typeof(FieldValueDisplayViewModel);
+
+            // Use Activator.CreateInstance to dynamically instantiate the ViewModel
+            object viewModelInstance = Activator.CreateInstance(viewModelType, Item)!;
+
             IHtmlContent content = Column switch
             {
-                _ when !string.IsNullOrEmpty(Column.RenderPartial) => await _htmlHelper.PartialAsync(Column.RenderPartial, new EntityFieldViewModel(Item) { Slug = Slug }),
-                _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial", new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
+                _ when !string.IsNullOrEmpty(Column.RenderPartial) =>
+                    await _htmlHelper.PartialAsync(Column.RenderPartial, viewModelInstance),
+
+                _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial",
+                    new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName))
             };
 
             output.Content.SetHtmlContent(content);
