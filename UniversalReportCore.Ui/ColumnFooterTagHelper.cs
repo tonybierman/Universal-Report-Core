@@ -21,21 +21,25 @@ namespace UniversalReportCoreUi
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            // Skip rendering for display key columns
+            // Set up the <th> element
+            output.TagName = "th";
+
+            // Apply CSS class based on visibility rules
+            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "hide-in-portrait" : "");
+
+            // If the column is a display key, render an empty <th>
             if (Column.IsDisplayKey)
             {
-                output.SuppressOutput();
+                output.Content.SetContent(""); // Ensure an empty <th> is rendered
                 return;
             }
 
+            // Retrieve the aggregate value
             var value = Items?.Aggregates?.ContainsKey(Column.PropertyName) == true
                 ? Items.Aggregates[Column.PropertyName]
                 : null;
 
-            // Set up the <th> element
-            output.TagName = "th";
-            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "hide-in-portrait" : "");
-
+            // Render the formatted value if it exists
             if (value != null)
             {
                 string formattedValue = value is double or float or decimal
