@@ -12,7 +12,7 @@ using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.Ui
 {
-    [HtmlTargetElement("render-columnhead")]
+    [HtmlTargetElement("column-heading")]
     public class ColumnHeadTagHelper : TagHelper
     {
         private readonly IUrlHelperFactory _urlHelperFactory;

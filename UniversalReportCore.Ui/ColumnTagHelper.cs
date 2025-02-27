@@ -9,7 +9,7 @@ using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui
 {
-    [HtmlTargetElement("render-column")]
+    [HtmlTargetElement("column-field")]
     public class ColumnTagHelper : TagHelper
     {
         public IReportColumnDefinition Column { get; set; }
