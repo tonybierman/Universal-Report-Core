@@ -18,32 +18,25 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 To install via NuGet:
 
 ```sh
-dotnet add package BiermanTech.UniversalReportCore
+dotnet add package BiermanTech.UniversalReportCore.Ui
 ```
 
 Or add it to your `csproj` file:
 
 ```xml
-<PackageReference Include="BiermanTech.UniversalReportCore" />
+<PackageReference Include="BiermanTech.UniversalReportCore.Ui" />
 ```
 
 ## Usage
 
 ### 1. Register report services in `Program.cs`
 
-https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Program.cs#L52-L59
-
 ### 2. Create an entity that represents a row your report:
-
-https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Data/CityPopulation.cs#L10-L27
 
 ### 3. Define the report's columns
 
-https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Reports/CityPop/CityPopulationDemoReportColumnProvider.cs#L5-L53
-
 ### 4. Define the base query for the report
 
-https://github.com/tonybierman/Universal-Report-Core/blob/b9da70afed1f5bb7d0ab7aa4ceeababf5b33a814/UniversalReportDemo/Reports/CityPop/CityPopulationDemoPageHelper.cs#L23-L41
 
 ## Contributing
 

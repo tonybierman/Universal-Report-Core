@@ -24,6 +24,6 @@ namespace UniversalReportCore.HardQuerystringVariables
         /// <summary>
         /// Gets or sets the value of the hardened variable.
         /// </summary>
-        public T Value { get; set; }
+        public T? Value { get; set; }
     }
 }

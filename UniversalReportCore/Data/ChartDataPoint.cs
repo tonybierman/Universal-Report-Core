@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets or sets the label for the data point (e.g., date, product name).
         /// </summary>
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary containing values for different datasets.

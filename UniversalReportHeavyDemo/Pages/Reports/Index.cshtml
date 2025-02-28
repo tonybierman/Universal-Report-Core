@@ -51,7 +51,7 @@
                         </td>
                         @foreach (var column in Model?.ReportColumns)
                         {
-                            <render-column column="column" item="item" slug="@Model?.Params.Slug.Value"></render-column>
+                            <column-field column="column" item="item" slug="@Model?.Params.Slug.Value"></column-field>
                         }
                     </tr>
                 }
