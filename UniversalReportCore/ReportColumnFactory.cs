@@ -37,7 +37,17 @@ namespace UniversalReportCore
                 throw new InvalidOperationException($"Unsupported report type: {slug}");
             }
 
-            return provider.GetColumns();
+            var columns = provider.GetColumns();
+
+            // Ensure exactly one column has IsDisplayKey == true
+            int displayKeyCount = columns.Count(c => c.IsDisplayKey);
+            if (displayKeyCount != 1)
+            {
+                throw new InvalidOperationException($"Expected exactly one column with IsDisplayKey set to true, but found {displayKeyCount}.");
+            }
+
+            return columns;
         }
+
     }
 }
