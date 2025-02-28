@@ -30,10 +30,12 @@ namespace UniversalReport.Services
         /// <typeparam name="TEntity">The type of the database entity.</typeparam>
         /// <typeparam name="TViewModel">The type of the resulting view model.</typeparam>
         /// <param name="parameters">Query parameters for filtering, sorting, pagination, and custom logic.</param>
+        /// <param name="totalCount">Total count of record set.</param>
         /// <param name="query">An optional initial query. If null, it defaults to querying all records of <typeparamref name="TEntity"/>.</param>
         /// <returns>A paginated list of <typeparamref name="TViewModel"/> with aggregates and metadata.</returns>
         public async Task<PaginatedList<TViewModel>> GetPagedAsync<TEntity, TViewModel>(
             PagedQueryParameters<TEntity> parameters,
+            int totalCount,
             IQueryable<TEntity>? query = null
         ) where TEntity : class where TViewModel : class
         {
@@ -89,6 +91,14 @@ namespace UniversalReport.Services
                 parameters.AggregateLogic,
                 parameters.MetaLogic
             );
+
+            // Get the totalCount if it is not known
+            if (totalCount == 0)
+            {
+                totalCount = await query.CountAsync();
+            }
+
+            retval.EnsureTotalItemsCount(totalCount);
 
             stopwatch.Stop();
 

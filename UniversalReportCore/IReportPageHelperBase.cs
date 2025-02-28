@@ -11,7 +11,7 @@ namespace UniversalReportCore
     public interface IReportPageHelperBase
     {
         string DefaultSort { get; }
-        Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters);
+        Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters, int totalCount = 0);
         List<IReportColumnDefinition> GetReportColumns(string slug);
         Task<ICohort[]?> GetCohortsAsync(int[] cohortIds);
         PagedQueryParametersBase CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);

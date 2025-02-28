@@ -7,7 +7,7 @@ namespace UniversalReportCore
         where TEntity : class
         where TViewModel : class
     {
-        Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters);
+        Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0);
 #pragma warning disable CS0108
         PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
 #pragma warning restore CS0108

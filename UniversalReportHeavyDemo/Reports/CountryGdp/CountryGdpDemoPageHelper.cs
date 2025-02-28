@@ -33,11 +33,11 @@ namespace UniversalReportHeavyDemo.Reports.CountryGdp
                    select cp;
         }
 
-        public override async Task<PaginatedList<NationalGdpViewModel>> GetPagedDataAsync(PagedQueryParameters<NationalGdp> parameters)
+        public override async Task<PaginatedList<NationalGdpViewModel>> GetPagedDataAsync(PagedQueryParameters<NationalGdp> parameters, int totalCount)
         {
             IQueryable<NationalGdp> query = GetLatestNationalGdp(_dbContext.NationalGdps);
 
-            return await _reportService.GetPagedAsync<NationalGdp, NationalGdpViewModel>(parameters, query);
+            return await _reportService.GetPagedAsync<NationalGdp, NationalGdpViewModel>(parameters, totalCount, query);
         }
 
         public override List<IReportColumnDefinition> GetReportColumns(string slug)

@@ -84,12 +84,16 @@ namespace UniversalReportCore.Ui.Pages
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);
             parameters.DisplayKey = displayKey;
 
-            Items = (IPaginatedList)await pageHelper.GetPagedDataAsync(parameters);
+            int totalCount = (TempData["TotalCount"] as int?) ?? 0;
+
+            Items = (IPaginatedList)await pageHelper.GetPagedDataAsync(parameters, totalCount);
 
             if (Items == null)
             {
                 return Page();
             }
+
+            TempData["TotalCount"] = Items.TotalItems;
 
             // Paging Index Validation
             int totalPages = Items?.TotalPages ?? 0;

@@ -39,11 +39,11 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             return optimizedQuery;
         }
 
-        public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters)
+        public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters, int totalCount)
         {
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
-            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, query);
+            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, totalCount, query);
         }
 
         public override async Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)

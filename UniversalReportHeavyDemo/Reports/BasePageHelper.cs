@@ -45,7 +45,7 @@ namespace UniversalReportHeavyDemo.Reports
             throw new NotImplementedException();
         }
 
-        public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters)
+        public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0)
         {
             throw new NotImplementedException();
         }
@@ -114,11 +114,11 @@ namespace UniversalReportHeavyDemo.Reports
 
         #region IReportPageHelperBase
 
-        public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters)
+        public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters, int totalCount = 0)
         {
             if (parameters is PagedQueryParameters<TEntity> typedParameters)
             {
-                var result = await GetPagedDataAsync(typedParameters);
+                var result = await GetPagedDataAsync(typedParameters, totalCount);
                 return result;
             }
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");

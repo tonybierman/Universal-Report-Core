@@ -6,7 +6,7 @@ namespace UniversalReport.Services
 {
     public interface IUniversalReportService
     {
-        Task<PaginatedList<TViewModel>> GetPagedAsync<TEntity, TViewModel>(PagedQueryParameters<TEntity> parameters, IQueryable<TEntity>? query = null)
+        Task<PaginatedList<TViewModel>> GetPagedAsync<TEntity, TViewModel>(PagedQueryParameters<TEntity> parameters, int totalCount, IQueryable<TEntity>? query = null)
             where TEntity : class
             where TViewModel : class;
     }

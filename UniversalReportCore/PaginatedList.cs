@@ -40,17 +40,12 @@ namespace UniversalReportCore
         /// <param name="pageSize">The number of items per page.</param>
         /// <param name="aggregates">Optional aggregate values (e.g., SUM, AVG).</param>
         /// <param name="meta">Optional metadata for the list.</param>
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize, Dictionary<string, dynamic>? aggregates = null, Dictionary<string, dynamic>? meta = null)
+        public PaginatedList(List<T> items, int pageIndex, int pageSize, Dictionary<string, dynamic>? aggregates = null, Dictionary<string, dynamic>? meta = null)
         {
             PageIndex = pageIndex;
-            TotalItems = count;
             PageSize = pageSize;
             Aggregates = aggregates;
             Meta = meta;
-
-            // Calculate the total number of pages. If pageSize is 0, everything is on one page.
-            TotalPages = pageSize > 0 ? (int)Math.Ceiling(count / (double)pageSize) : 1;
-
             AddRange(items);  // Add the items to the paginated list
         }
 
@@ -95,6 +90,14 @@ namespace UniversalReportCore
         /// </summary>
         public string DisplayMessage => $"Showing items {StartItem} through {EndItem} of {TotalItems}";
 
+        public void EnsureTotalItemsCount(int totalCount)
+        {
+            TotalItems = totalCount;
+
+            // Calculate the total number of pages. If pageSize is 0, everything is on one page.
+            TotalPages = PageSize > 0 ? (int)Math.Ceiling(totalCount / (double)PageSize) : 1;
+        }
+
         /// <summary>
         /// Returns an enumerator for the paginated list.
         /// </summary>
@@ -110,12 +113,11 @@ namespace UniversalReportCore
         public static async Task<PaginatedList<T>> CreateAsync(
             IQueryable<T> source, int pageIndex, int pageSize)
         {
-            var count = await source.CountAsync();  // Count the total number of items
             var items = pageSize > 0
                 ? await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync()
                 : await source.ToListAsync();  // Fetch items for the current page
 
-            return new PaginatedList<T>(items, count, pageIndex, pageSize);
+            return new PaginatedList<T>(items, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -134,14 +136,13 @@ namespace UniversalReportCore
             int pageSize,
             Func<TSource, TResult> mapFunction)
         {
-            var count = await source.CountAsync();
             var items = pageSize > 0
                 ? await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync()
                 : await source.ToListAsync();
 
             var mappedItems = items.Select(mapFunction).ToList();  // Map each item to the result type
 
-            return new PaginatedList<TResult>(mappedItems, count, pageIndex, pageSize);
+            return new PaginatedList<TResult>(mappedItems, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -152,7 +153,6 @@ namespace UniversalReportCore
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>> aggregateFunction,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? metaFunction = null)
         {
-            var count = await source.CountAsync();
             var items = pageSize > 0
                 ? await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync()
                 : await source.ToListAsync();
@@ -160,7 +160,7 @@ namespace UniversalReportCore
             var aggregates = await aggregateFunction(source);  // Compute aggregates (e.g., total sum)
             var meta = metaFunction == null ? null : await metaFunction(source);
 
-            return new PaginatedList<T>(items, count, pageIndex, pageSize, aggregates, meta);
+            return new PaginatedList<T>(items, pageIndex, pageSize, aggregates, meta);
         }
 
         /// <summary>
@@ -189,9 +189,6 @@ namespace UniversalReportCore
                 data = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             }
 
-            // Fetch total count only if pagination is used
-            int count = (pageSize == 0) ? data.Count : await source.CountAsync();
-
             // Transform data (mapping remains single-threaded for simplicity)
             var mappedItems = data.Select(mapFunction).ToList();
 
@@ -201,9 +198,7 @@ namespace UniversalReportCore
             // Fetch metadata if provided
             Dictionary<string, dynamic>? meta = metaFunction != null ? await metaFunction(source) : null;
 
-            return new PaginatedList<TResult>(mappedItems, count, pageIndex, pageSize, aggregates, meta);
+            return new PaginatedList<TResult>(mappedItems, pageIndex, pageSize, aggregates, meta);
         }
-
-
     }
 }
