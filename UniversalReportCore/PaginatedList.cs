@@ -98,6 +98,11 @@ namespace UniversalReportCore
             TotalPages = PageSize > 0 ? (int)Math.Ceiling(totalCount / (double)PageSize) : 1;
         }
 
+        public void EnsureAggregates(Dictionary<string, dynamic>? newAggregates)
+        {
+            this.Aggregates = newAggregates;
+        }
+
         /// <summary>
         /// Returns an enumerator for the paginated list.
         /// </summary>
@@ -192,7 +197,7 @@ namespace UniversalReportCore
             // Transform data (mapping remains single-threaded for simplicity)
             var mappedItems = data.Select(mapFunction).ToList();
 
-            // Fetch aggregates
+            // TODO: Fetch aggregates only on first call
             var aggregates = await aggregateFunction(source);
 
             // Fetch metadata if provided

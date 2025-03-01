@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using UniversalReportCore;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
 using UniversalReportCore.Helpers;
+using UniversalReportCore.PagedQueries;
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.Ui;
 using UniversalReportCore.ViewModels;
+using Microsoft.CSharp.RuntimeBinder;
+using UniversalReportCore.Ui.Helpers;
 
 namespace UniversalReportCore.Ui.Pages
 {
@@ -83,6 +88,7 @@ namespace UniversalReportCore.Ui.Pages
             // Load data
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);
             parameters.DisplayKey = displayKey;
+            parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value);
 
             int totalCount = (TempData["TotalCount"] as int?) ?? 0;
 
@@ -103,6 +109,14 @@ namespace UniversalReportCore.Ui.Pages
             // Final check
             if (Params.IsHard)
             {
+                if (!parameters.ShouldAggregate)
+                {
+                    var agg = TempDataHelper.DeserializeAggregatesFromTempData(TempData);
+                    Items?.EnsureAggregates(agg);
+                }
+
+                TempDataHelper.SerializeAggregatesToTempData(TempData, Items?.Aggregates);
+
                 return Page();
             }
 

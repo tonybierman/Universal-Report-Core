@@ -38,5 +38,10 @@ namespace UniversalReportCore.PagedQueries
         /// Gets or sets an array of cohort identifiers for filtering data.
         /// </summary>
         public int[]? CohortIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether aggregation should be performed.
+        /// </summary>
+        public bool ShouldAggregate { get; set; }
     }
 }

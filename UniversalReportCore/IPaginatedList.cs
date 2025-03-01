@@ -18,5 +18,6 @@
         int TotalPages { get; }
         bool Any();
         int Count { get; }
+        void EnsureAggregates(Dictionary<string, dynamic>? newAggregates);
     }
 }

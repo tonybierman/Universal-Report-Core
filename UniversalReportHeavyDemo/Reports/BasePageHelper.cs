@@ -118,6 +118,11 @@ namespace UniversalReportHeavyDemo.Reports
         {
             if (parameters is PagedQueryParameters<TEntity> typedParameters)
             {
+                if (!typedParameters.ShouldAggregate)
+                {
+                    typedParameters.AggregateLogic = null;
+                }
+
                 var result = await GetPagedDataAsync(typedParameters, totalCount);
                 return result;
             }
