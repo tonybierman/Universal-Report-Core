@@ -49,11 +49,11 @@ namespace UniversalReportCore.Tests.Reports.Acme
             return optimizedQuery;
         }
 
-        public override async Task<PaginatedList<WidgetViewModel>> GetPagedDataAsync(PagedQueryParameters<Widget> parameters)
+        public override async Task<PaginatedList<WidgetViewModel>> GetPagedDataAsync(PagedQueryParameters<Widget> parameters, int totalCount)
         {
             IQueryable<Widget> query = GetLatestCityPopulation(_dbContext.Widgets);
 
-            return await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, query);
+            return await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, totalCount, query);
         }
 
         public override List<IReportColumnDefinition> GetReportColumns(string slug)

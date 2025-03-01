@@ -55,6 +55,7 @@ namespace UniversalReportCore.Tests
 
             // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            result.EnsureTotalItemsCount(query.ToList().Count);
 
             // Assert
             Assert.NotNull(result);
@@ -69,10 +70,11 @@ namespace UniversalReportCore.Tests
         public async Task CreateAsync_ShouldCalculateTotalPagesCorrectly()
         {
             // Arrange
-            var query = _dbContext.Widgets.AsQueryable();
+            var query = _dbContext.Widgets.AsQueryable();  
 
             // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            result.EnsureTotalItemsCount(query.ToList().Count);
 
             // Assert
             Assert.Equal(3, result.TotalPages); // 5 items with page size of 2 should give 3 total pages
@@ -110,6 +112,7 @@ namespace UniversalReportCore.Tests
 
             // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
+            result.EnsureTotalItemsCount(query.ToList().Count);
 
             // Assert
             Assert.True(result.HasNextPage);

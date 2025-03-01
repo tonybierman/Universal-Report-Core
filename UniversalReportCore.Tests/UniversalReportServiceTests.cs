@@ -78,7 +78,7 @@ namespace UniversalReportCore.Tests
                 columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 2, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 2);
 
             // Assert
             Assert.NotNull(result);
@@ -101,7 +101,7 @@ namespace UniversalReportCore.Tests
                 columns, pageIndex: 1, sort: "CityDesc", itemsPerPage: 5, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 0);
             var sortedCities = result.Select(r => r.City).ToList();
 
             // Assert
@@ -128,7 +128,7 @@ namespace UniversalReportCore.Tests
                 columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 10, cohortIds: null);
 
             // Act
-            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters);
+            var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 0);
 
             // Assert
             Assert.NotNull(result);

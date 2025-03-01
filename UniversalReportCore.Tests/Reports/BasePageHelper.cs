@@ -45,7 +45,7 @@ namespace UniversalReportCoreTests.Reports
             throw new NotImplementedException();
         }
 
-        public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters)
+        public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0)
         {
             throw new NotImplementedException();
         }
@@ -114,10 +114,15 @@ namespace UniversalReportCoreTests.Reports
 
         #region IReportPageHelperBase
 
-        public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters)
+        public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters, int totalCount = 0)
         {
             if (parameters is PagedQueryParameters<TEntity> typedParameters)
             {
+                if (!typedParameters.ShouldAggregate)
+                {
+                    typedParameters.AggregateLogic = null;
+                }
+
                 var result = await GetPagedDataAsync(typedParameters);
                 return result;
             }
