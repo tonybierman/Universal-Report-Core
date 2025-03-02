@@ -4,20 +4,24 @@ using System.Diagnostics;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
+using UniversalReportCore.Ui;
 using UniversalReportHeavyDemo.Data;
 using UniversalReportHeavyDemo.ViewModels;
 
 namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public class CityPopulationDemoPageHelper : BasePageHelper<CityPopulation, CityPopulationViewModel>
+    public class CityPopulationDemoPageHelper : PageHelperBase<CityPopulation, CityPopulationViewModel>
     {
+        private readonly ApplicationDbContext _dbContext;
+
         public CityPopulationDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
             ApplicationDbContext dbContext,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, dbContext, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, mapper)
         {
+            _dbContext = dbContext;
             DefaultSort = "CityAsc";
         }
 

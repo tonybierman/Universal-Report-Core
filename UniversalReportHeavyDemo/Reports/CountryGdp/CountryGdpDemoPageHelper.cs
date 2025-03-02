@@ -3,20 +3,24 @@ using Microsoft.EntityFrameworkCore;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
+using UniversalReportCore.Ui;
 using UniversalReportHeavyDemo.Data;
 using UniversalReportHeavyDemo.ViewModels;
 
 namespace UniversalReportHeavyDemo.Reports.CountryGdp
 {
-    public class CountryGdpDemoPageHelper : BasePageHelper<NationalGdp, NationalGdpViewModel>
+    public class CountryGdpDemoPageHelper : PageHelperBase<NationalGdp, NationalGdpViewModel>
     {
+        private ApplicationDbContext _dbContext;
+
         public CountryGdpDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<NationalGdp> queryFactory,
             ApplicationDbContext dbContext,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, dbContext, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, mapper)
         {
+            _dbContext = dbContext;
             DefaultSort = "CountryNameAsc";
         }
 

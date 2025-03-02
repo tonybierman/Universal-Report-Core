@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using System.Reflection;
 using UniversalReport.Services;
-using UniversalReportCore;
 using UniversalReportCore.Data;
-using UniversalReportCore.Helpers;
 using UniversalReportCore.PagedQueries;
-using UniversalReportHeavyDemo.Data;
 
-namespace UniversalReportHeavyDemo.Reports
+namespace UniversalReportCore.Ui
 {
-    public class BasePageHelper<TEntity, TViewModel> : IReportPageHelper<TEntity, TViewModel>
+    public class PageHelperBase<TEntity, TViewModel> : IReportPageHelper<TEntity, TViewModel>
         where TViewModel : class, new()
         where TEntity : class
     {
@@ -17,21 +14,18 @@ namespace UniversalReportHeavyDemo.Reports
         protected readonly IUniversalReportService _reportService;
         protected readonly IReportColumnFactory _reportColumnFactory;
         protected readonly IQueryFactory<TEntity> _queryFactory;
-        protected readonly ApplicationDbContext _dbContext;
         public string DefaultSort { get; set; }
 
-        public BasePageHelper(
+        public PageHelperBase(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<TEntity> queryFactory,
-            ApplicationDbContext dbContext,
             IMapper mapper)
         {
             _mapper = mapper;
             _reportService = reportService;
             _reportColumnFactory = reportColumnFactory;
             _queryFactory = queryFactory;
-            _dbContext = dbContext;
             DefaultSort = "Product.SkuDesc";
         }
 
@@ -128,21 +122,6 @@ namespace UniversalReportHeavyDemo.Reports
             }
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");
         }
-
-        //public virtual Task<List<IReportColumnDefinition>> GetReportColumns(string slug)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public virtual Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         #endregion
 
