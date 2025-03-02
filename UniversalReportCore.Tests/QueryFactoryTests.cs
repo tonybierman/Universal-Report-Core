@@ -13,70 +13,65 @@ using UniversalReportCoreTests.Data;
 
 namespace UniversalReportCore.Tests
 {
-
-    namespace UniversalReportCore.Tests.PagedQueries
+    public class QueryFactoryTests
     {
-        public class QueryFactoryTests
+        private class MockPagedQueryProvider : IPagedQueryProvider<Widget>
         {
-            private class MockPagedQueryProvider : IPagedQueryProvider<Widget>
+            public string Slug => "CityPopulationDemo";
+
+            public IQueryable<Widget> EnsureAggregateQuery(IQueryable<Widget> query, int[]? cohortIds)
             {
-                public string Slug => "CityPopulationDemo";
-
-                public IQueryable<Widget> EnsureAggregateQuery(IQueryable<Widget> query, int[]? cohortIds)
-                {
-                    throw new NotImplementedException();
-                }
-
-                public IQueryable<Widget> EnsureCohortQuery(IQueryable<Widget> query, int cohortId)
-                {
-                    throw new NotImplementedException();
-                }
-
-                public PagedQueryParameters<Widget> GetQuery(
-                    IReportColumnDefinition[] columns,
-                    int? pageIndex,
-                    string? sort,
-                    int? ipp,
-                    int[]? cohortIds)
-                {
-                    return new PagedQueryParameters<Widget>(columns, pageIndex, sort, ipp, cohortIds);
-                }
+                throw new NotImplementedException();
             }
 
-            [Fact]
-            public void CreateQueryParameters_ValidSlug_ReturnsQueryParameters()
+            public IQueryable<Widget> EnsureCohortQuery(IQueryable<Widget> query, int cohortId)
             {
-                // Arrange
-                var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
-                var queryFactory = new QueryFactory<Widget>(providers);
-                var columns = new IReportColumnDefinition[] { };
-
-                // Act
-                var result = queryFactory.CreateQueryParameters("CityPopulationDemo", columns, 1, "YearAsc", 50, new int[] { 1, 2, 3 });
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.Equal(1, result.PageIndex);
-                Assert.Equal("YearAsc", result.Sort);
-                Assert.Equal(50, result.ItemsPerPage);
-                Assert.Equal(new int[] { 1, 2, 3 }, result.CohortIds);
+                throw new NotImplementedException();
             }
 
-            [Fact]
-            public void CreateQueryParameters_InvalidSlug_ThrowsException()
+            public PagedQueryParameters<Widget> GetQuery(
+                IReportColumnDefinition[] columns,
+                int? pageIndex,
+                string? sort,
+                int? ipp,
+                int[]? cohortIds)
             {
-                // Arrange
-                var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
-                var queryFactory = new QueryFactory<Widget>(providers);
-                var columns = new IReportColumnDefinition[] { };
-
-                // Act & Assert
-                var ex = Assert.Throws<InvalidOperationException>(() =>
-                    queryFactory.CreateQueryParameters("InvalidSlug", columns, 1, "YearAsc", 50, new int[] { 1, 2, 3 }));
-
-                Assert.Equal("Unsupported query type: InvalidSlug", ex.Message);
+                return new PagedQueryParameters<Widget>(columns, pageIndex, sort, ipp, cohortIds);
             }
         }
-    }
 
+        [Fact]
+        public void CreateQueryParameters_ValidSlug_ReturnsQueryParameters()
+        {
+            // Arrange
+            var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
+            var queryFactory = new QueryFactory<Widget>(providers);
+            var columns = new IReportColumnDefinition[] { };
+
+            // Act
+            var result = queryFactory.CreateQueryParameters("CityPopulationDemo", columns, 1, "YearAsc", 50, new int[] { 1, 2, 3 });
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.PageIndex);
+            Assert.Equal("YearAsc", result.Sort);
+            Assert.Equal(50, result.ItemsPerPage);
+            Assert.Equal(new int[] { 1, 2, 3 }, result.CohortIds);
+        }
+
+        [Fact]
+        public void CreateQueryParameters_InvalidSlug_ThrowsException()
+        {
+            // Arrange
+            var providers = new List<IPagedQueryProvider<Widget>> { new MockPagedQueryProvider() };
+            var queryFactory = new QueryFactory<Widget>(providers);
+            var columns = new IReportColumnDefinition[] { };
+
+            // Act & Assert
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                queryFactory.CreateQueryParameters("InvalidSlug", columns, 1, "YearAsc", 50, new int[] { 1, 2, 3 }));
+
+            Assert.Equal("Unsupported query type: InvalidSlug", ex.Message);
+        }
+    }
 }
