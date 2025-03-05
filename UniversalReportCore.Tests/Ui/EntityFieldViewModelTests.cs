@@ -15,7 +15,7 @@ namespace UniversalReportCore.Tests
             var mockColumn = new Mock<IReportColumnDefinition>();
 
             // Act
-            var viewModel = new EntityFieldViewModel(mockParent.Object, mockColumn.Object);
+            var viewModel = new EntityFieldViewModel(mockParent.Object, mockColumn.Object, null);
 
             // Assert
             Assert.Equal(mockParent.Object, viewModel.Parent);
@@ -28,7 +28,7 @@ namespace UniversalReportCore.Tests
             // Arrange
             var mockParent = new Mock<IEntityViewModel<int>>();
             var mockColumn = new Mock<IReportColumnDefinition>();
-            var viewModel = new EntityFieldViewModel(mockParent.Object, mockColumn.Object);
+            var viewModel = new EntityFieldViewModel(mockParent.Object, mockColumn.Object, null);
 
             // Act
             viewModel.Slug = "test-slug";
