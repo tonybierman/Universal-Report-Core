@@ -46,7 +46,7 @@ namespace UniversalReportCore.Ui
             object viewModelInstance;
             try
             {
-                viewModelInstance = Activator.CreateInstance(viewModelType, Item, Column)!;
+                viewModelInstance = Activator.CreateInstance(viewModelType, Item, Column, Slug)!;
             }
             catch (MissingMethodException ex)
             {

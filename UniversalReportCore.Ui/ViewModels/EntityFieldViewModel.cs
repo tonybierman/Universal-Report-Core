@@ -27,10 +27,12 @@ namespace UniversalReportCore.Ui.ViewModels
         /// </summary>
         /// <param name="parent">The parent entity containing the field data.</param>
         /// <param name="column">The report column definition.</param>
-        public EntityFieldViewModel(IEntityViewModel<int> parent, IReportColumnDefinition column)
+        /// <param name="slug">The slug used for routing or identification.</param>
+        public EntityFieldViewModel(IEntityViewModel<int> parent, IReportColumnDefinition column, string? slug)
         {
             Parent = parent;
             Column = column;
+            Slug = slug;
         }
     }
 }
