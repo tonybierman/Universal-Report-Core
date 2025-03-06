@@ -123,7 +123,7 @@ namespace UniversalReportCore.Ui.Pages
             return StatusCode(400);// "Invalid value for querystring variable.");
         }
 
-        public async Task<IActionResult> OnPostBulkActionAsync(string bulkAction)
+        public virtual async Task<IActionResult> OnPostBulkActionAsync(string bulkAction)
         {
             throw new NotImplementedException();
         }
