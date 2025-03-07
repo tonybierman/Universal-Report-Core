@@ -15,20 +15,17 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
     public class CityPopulationDemoPageHelper : PageHelperBase<CityPopulation, CityPopulationViewModel>
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IFilterProviderRegistry<CityPopulation> _registry;
-        private readonly FilterFactory<CityPopulation> _filterFactory;
+
 
         public CityPopulationDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
             ApplicationDbContext dbContext,
-            IFilterProviderRegistry<CityPopulation> registry,
+            IFilterProviderRegistry<CityPopulation> filterRegistry,
             FilterFactory<CityPopulation> filterFactory,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterRegistry, filterFactory, mapper)
         {
-            _registry = registry;
-            _filterFactory = filterFactory;
             _dbContext = dbContext;
             DefaultSort = "CityAsc";
         }
@@ -57,25 +54,7 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
         {
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
-            if (parameters.FilterKeys != null && parameters.FilterKeys.Any())
-            {
-                var combinedPredicate = PredicateBuilder.New<CityPopulation>(true); // Start with 'false' for OR chaining
-
-                foreach (var key in parameters.FilterKeys)
-                {
-                    var provider = _registry.GetProvider(key);
-                    if (provider != null)
-                    {
-                        var predicate = _filterFactory.BuildPredicate(provider);
-                        combinedPredicate = combinedPredicate.And(predicate); // Change to Or for OR chaining
-                    }
-                }
-
-                parameters.AdditionalFilter = (query) =>
-                {
-                    return query.Where(combinedPredicate);
-                };
-            }
+            EnsureUserFilter(parameters);
 
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(
                 parameters, totalCount, query);

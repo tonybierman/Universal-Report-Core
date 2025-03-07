@@ -69,11 +69,13 @@ builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpV
 builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
 
 // Filters
+builder.Services.AddScoped<IFilterProviderRegistry<CityPopulation>, FilterProviderRegistry<CityPopulation>>();
+builder.Services.AddScoped<FilterFactory<CityPopulation>>();
 builder.Services.AddScoped<IFilterProvider<CityPopulation>, CanadaFilterProvider>();
 builder.Services.AddScoped<IFilterProvider<CityPopulation>, MaleFilterProvider>();
 builder.Services.AddScoped<IFilterProvider<CityPopulation>, FemaleFilterProvider>();
-builder.Services.AddScoped<IFilterProviderRegistry<CityPopulation>, FilterProviderRegistry<CityPopulation>>();
-builder.Services.AddScoped<FilterFactory<CityPopulation>>();
+builder.Services.AddScoped<IFilterProviderRegistry<NationalGdp>, FilterProviderRegistry<NationalGdp>>();
+builder.Services.AddScoped<FilterFactory<NationalGdp>>();
 
 builder.Services.AddRazorPages();
 

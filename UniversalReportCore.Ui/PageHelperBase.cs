@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using LinqKit;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Reflection;
 using UniversalReport.Services;
 using UniversalReportCore.Data;
@@ -14,18 +16,25 @@ namespace UniversalReportCore.Ui
         protected readonly IUniversalReportService _reportService;
         protected readonly IReportColumnFactory _reportColumnFactory;
         protected readonly IQueryFactory<TEntity> _queryFactory;
+        private readonly IFilterProviderRegistry<TEntity> _filterRegistry;
+        private readonly FilterFactory<TEntity> _filterFactory;
+
         public string DefaultSort { get; set; }
 
         public PageHelperBase(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<TEntity> queryFactory,
+            IFilterProviderRegistry<TEntity> filterRegistry,
+            FilterFactory<TEntity> filterFactory,
             IMapper mapper)
         {
             _mapper = mapper;
             _reportService = reportService;
             _reportColumnFactory = reportColumnFactory;
             _queryFactory = queryFactory;
+            _filterRegistry = filterRegistry;
+            _filterFactory = filterFactory;
             DefaultSort = "Product.SkuDesc";
         }
 
@@ -37,6 +46,29 @@ namespace UniversalReportCore.Ui
         public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             throw new NotImplementedException();
+        }
+
+        protected virtual void EnsureUserFilter(PagedQueryParameters<TEntity> parameters)
+        {
+            if (parameters.FilterKeys != null && parameters.FilterKeys.Any())
+            {
+                var combinedPredicate = PredicateBuilder.New<TEntity>(true); // Start with 'false' for OR chaining
+
+                foreach (var key in parameters.FilterKeys)
+                {
+                    var provider = _filterRegistry.GetProvider(key);
+                    if (provider != null)
+                    {
+                        var predicate = _filterFactory.BuildPredicate(provider);
+                        combinedPredicate = combinedPredicate.And(predicate); // Change to Or for OR chaining
+                    }
+                }
+
+                parameters.AdditionalFilter = (query) =>
+                {
+                    return query.Where(combinedPredicate);
+                };
+            }
         }
 
         public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0)
