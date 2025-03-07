@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
@@ -13,14 +15,20 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
     public class CityPopulationDemoPageHelper : PageHelperBase<CityPopulation, CityPopulationViewModel>
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFilterProviderRegistry<CityPopulation> _registry;
+        private readonly FilterFactory<CityPopulation> _filterFactory;
 
         public CityPopulationDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
             ApplicationDbContext dbContext,
+            IFilterProviderRegistry<CityPopulation> registry,
+            FilterFactory<CityPopulation> filterFactory,
             IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, mapper)
         {
+            _registry = registry;
+            _filterFactory = filterFactory;
             _dbContext = dbContext;
             DefaultSort = "CityAsc";
         }
@@ -43,11 +51,21 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             return optimizedQuery;
         }
 
-        public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(PagedQueryParameters<CityPopulation> parameters, int totalCount)
+        public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(
+            PagedQueryParameters<CityPopulation> parameters,
+            int totalCount)
         {
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
-            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(parameters, totalCount, query);
+            var provider = _registry.GetProvider("CanadianMales");
+            var predicate = _filterFactory.BuildPredicate(provider);
+            parameters.AdditionalFilter = (query) =>
+            {
+               return query.Where(predicate);
+            };
+
+            return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(
+                parameters, totalCount, query);
         }
 
         public override async Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)

@@ -16,6 +16,8 @@ using UniversalReportHeavyDemo.Reports;
 using UniversalReportHeavyDemo.ViewModels;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Mvc.Filters;
+using UniversalReportHeavyDemo.Reports.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,11 @@ builder.Services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
 builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
 builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
 builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
+
+// Filters
+builder.Services.AddScoped<IFilterProvider<CityPopulation>, CanadaFilterProvider>();
+builder.Services.AddScoped<IFilterProviderRegistry<CityPopulation>, FilterProviderRegistry<CityPopulation>>();
+builder.Services.AddScoped<FilterFactory<CityPopulation>>();
 
 builder.Services.AddRazorPages();
 

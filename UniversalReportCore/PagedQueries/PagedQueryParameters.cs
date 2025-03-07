@@ -19,7 +19,7 @@ namespace UniversalReportCore.PagedQueries
         public IReportColumnDefinition[] ReportColumns { get; set; }
 
         /// <summary>
-        /// Gets or sets an optional additional filter function that applies extra filtering logic to the query.
+        /// Gets or sets an optional additional filter function that applies AND filtering logic to the query.
         /// </summary>
         public Func<IQueryable<T>, IQueryable<T>>? AdditionalFilter { get; set; }
 
