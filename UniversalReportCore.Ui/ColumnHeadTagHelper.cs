@@ -55,7 +55,8 @@ namespace UniversalReportCore.Ui
                     slug = Model?.Slug.Value,
                     ipp = Model?.Ipp.Value,
                     sortOrder = newSortOrder,
-                    cohortIds = Model?.CohortIds.Value
+                    cohortIds = Model?.CohortIds.Value,
+                    filters = Model?.FilterKeys.Value
                 });
 
                 var linkTag = new TagBuilder("a");

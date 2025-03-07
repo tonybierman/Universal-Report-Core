@@ -43,5 +43,10 @@ namespace UniversalReportCore.PagedQueries
         /// Gets or sets whether aggregation should be performed.
         /// </summary>
         public bool ShouldAggregate { get; set; }
+
+        /// <summary>
+        /// Gets or sets keys for use in user filtering.
+        /// </summary>
+        public string[]? FilterKeys { get; set; }
     }
 }

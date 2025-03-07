@@ -57,12 +57,21 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
         {
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
 
-            var provider = _registry.GetProvider("CanadianMales");
-            var predicate = _filterFactory.BuildPredicate(provider);
-            parameters.AdditionalFilter = (query) =>
+            if (parameters.FilterKeys != null && parameters.FilterKeys.Any())
             {
-               return query.Where(predicate);
-            };
+                foreach (var key in parameters.FilterKeys)
+                {
+                    var provider = _registry.GetProvider(key);
+                    if (provider != null)
+                    {
+                        var predicate = _filterFactory.BuildPredicate(provider);
+                        parameters.AdditionalFilter = (query) =>
+                        {
+                            return query.Where(predicate);
+                        };
+                    }
+                }
+            }
 
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(
                 parameters, totalCount, query);

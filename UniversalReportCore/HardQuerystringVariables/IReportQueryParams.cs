@@ -12,6 +12,7 @@ namespace UniversalReportCore.HardQuerystringVariables
         HardenedPagingIndex Pi { get; }
         HardenedReportSlug Slug { get; }
         HardenedColumnSort SortOrder { get; set; }
+        HardenedFilterKeys FilterKeys { get; set; }
 
         bool CheckSanity();
     }

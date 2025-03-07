@@ -8,9 +8,9 @@ namespace UniversalReportCore.Ui.Helpers
         /// <summary>
         /// Determines if aggregates need to be recalculated by tracking changes in slug and cohort IDs.
         /// </summary>
-        public static bool ShouldRecalculateAggregates(ITempDataDictionary tempData, string slug, int[]? cohortIds)
+        public static bool ShouldRecalculateAggregates(ITempDataDictionary tempData, string slug, int[]? cohortIds, string[]? filterKeys)
         {
-            var parametersSnapshot = new { Slug = slug, CohortIds = cohortIds };
+            var parametersSnapshot = new { Slug = slug, CohortIds = cohortIds, FilterKeys = filterKeys };
             var newJson = JsonSerializer.Serialize(parametersSnapshot);
 
             var existingJson = tempData["QueryParameters"] as string;

@@ -38,6 +38,11 @@ namespace UniversalReportCore.HardQuerystringVariables
         public HardenedReportSlug Slug { get; }
 
         /// <summary>
+        /// Gets the hardened filter keys parameter.
+        /// </summary>
+        public HardenedFilterKeys FilterKeys { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether all query parameters are hardened.
         /// </summary>
         public bool IsHard => Array.All(a => a?.IsHard ?? false);
@@ -59,13 +64,15 @@ namespace UniversalReportCore.HardQuerystringVariables
             HardenedItemsPerPage ipp,
             HardenedColumnSort sortOrder,
             HardenedCohortIdentifiers cohortIds,
-            HardenedReportSlug slug)
+            HardenedReportSlug slug,
+            HardenedFilterKeys filterKeys)
         {
             Pi = pi;
             Ipp = ipp;
             SortOrder = sortOrder;
             CohortIds = cohortIds;
             Slug = slug;
+            FilterKeys = filterKeys;
         }
 
         /// <summary>

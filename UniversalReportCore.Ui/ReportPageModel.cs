@@ -88,9 +88,10 @@ namespace UniversalReportCore.Ui.Pages
             // Load data
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);
             parameters.DisplayKey = displayKey;
-            parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value);
+            parameters.FilterKeys = Params.FilterKeys.Value;
+            parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value, Params.FilterKeys.Value);
 
-            int totalCount = (TempData["TotalCount"] as int?) ?? 0;
+            int totalCount = parameters.ShouldAggregate ? 0 : (TempData["TotalCount"] as int?) ?? 0;
 
             Items = (IPaginatedList)await pageHelper.GetPagedDataAsync(parameters, totalCount);
 

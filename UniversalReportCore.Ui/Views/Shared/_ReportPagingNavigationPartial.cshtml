@@ -5,12 +5,12 @@
     var nextDisabled = !@Model.Items.HasNextPage ? "disabled" : "";
 }
 <div class="mt-2">
-    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex - 1, cohortIds = Model.Params.CohortIds.Value })"
+    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex - 1, cohortIds = Model.Params.CohortIds.Value, filters = Model.Params.FilterKeys.Value })"
        class="btn btn-sm btn-primary @prevDisabled">
         Previous
     </a>
 
-    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex + 1, cohortIds = Model.Params.CohortIds.Value })"
+    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex + 1, cohortIds = Model.Params.CohortIds.Value, filters = Model.Params.FilterKeys.Value })"
        class="btn btn-sm btn-primary @nextDisabled">
         Next
     </a>
