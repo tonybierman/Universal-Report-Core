@@ -4,12 +4,12 @@ using UniversalReportHeavyDemo.Data;
 
 namespace UniversalReportHeavyDemo.Reports.Filters
 {
-    public class CanadaFilterProvider : IFilterProvider<CityPopulation>
+    public class FemaleFilterProvider : IFilterProvider<CityPopulation>
     {
-        public string Key => "Canada";
+        public string Key => "Female";
 
         public IEnumerable<Expression<Func<CityPopulation, bool>>> GetAndFilters() =>
-            new Expression<Func<CityPopulation, bool>>[] { x => x.CountryOrArea == "Canada" };
+            new Expression<Func<CityPopulation, bool>>[] { x => x.Sex == "Female" };
 
         public IEnumerable<Expression<Func<CityPopulation, bool>>> GetOrFilters() =>
             Enumerable.Empty<Expression<Func<CityPopulation, bool>>>();

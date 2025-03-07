@@ -59,18 +59,22 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
 
             if (parameters.FilterKeys != null && parameters.FilterKeys.Any())
             {
+                var combinedPredicate = PredicateBuilder.New<CityPopulation>(true); // Start with 'false' for OR chaining
+
                 foreach (var key in parameters.FilterKeys)
                 {
                     var provider = _registry.GetProvider(key);
                     if (provider != null)
                     {
                         var predicate = _filterFactory.BuildPredicate(provider);
-                        parameters.AdditionalFilter = (query) =>
-                        {
-                            return query.Where(predicate);
-                        };
+                        combinedPredicate = combinedPredicate.And(predicate); // Change to Or for OR chaining
                     }
                 }
+
+                parameters.AdditionalFilter = (query) =>
+                {
+                    return query.Where(combinedPredicate);
+                };
             }
 
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(

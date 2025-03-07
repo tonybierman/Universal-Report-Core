@@ -70,6 +70,8 @@ builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQuery
 
 // Filters
 builder.Services.AddScoped<IFilterProvider<CityPopulation>, CanadaFilterProvider>();
+builder.Services.AddScoped<IFilterProvider<CityPopulation>, MaleFilterProvider>();
+builder.Services.AddScoped<IFilterProvider<CityPopulation>, FemaleFilterProvider>();
 builder.Services.AddScoped<IFilterProviderRegistry<CityPopulation>, FilterProviderRegistry<CityPopulation>>();
 builder.Services.AddScoped<FilterFactory<CityPopulation>>();
 
