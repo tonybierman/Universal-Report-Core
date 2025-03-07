@@ -15,7 +15,7 @@ namespace UniversalReportCore.Tests
             var tempData = new Mock<ITempDataDictionary>();
             tempData.Setup(t => t["QueryParameters"]).Returns(null);
 
-            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "test-slug", new[] { 1, 2 });
+            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "test-slug", new[] { 1, 2 }, new[] { "test-filter" });
 
             Assert.True(result);
             tempData.VerifySet(t => t["QueryParameters"] = It.IsAny<string>(), Times.Once);
@@ -24,11 +24,11 @@ namespace UniversalReportCore.Tests
         [Fact]
         public void ShouldRecalculateAggregates_ReturnsFalse_WhenParametersUnchanged()
         {
-            var snapshot = JsonSerializer.Serialize(new { Slug = "test-slug", CohortIds = new[] { 1, 2 } });
+            var snapshot = JsonSerializer.Serialize(new { Slug = "test-slug", CohortIds = new[] { 1, 2 }, FilterKeys = new[] { "test-filter" } });
             var tempData = new Mock<ITempDataDictionary>();
             tempData.Setup(t => t["QueryParameters"]).Returns(snapshot);
 
-            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "test-slug", new[] { 1, 2 });
+            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "test-slug", new[] { 1, 2 } , new[] { "test-filter" });
 
             Assert.False(result);
             tempData.VerifySet(t => t["QueryParameters"] = snapshot, Times.Once);
@@ -41,7 +41,7 @@ namespace UniversalReportCore.Tests
             var tempData = new Mock<ITempDataDictionary>();
             tempData.Setup(t => t["QueryParameters"]).Returns(snapshot);
 
-            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "new-slug", new[] { 1, 2 });
+            var result = TempDataHelper.ShouldRecalculateAggregates(tempData.Object, "new-slug", new[] { 1, 2 }, new[] { "test-filter" });
 
             Assert.True(result);
             tempData.VerifySet(t => t["QueryParameters"] = It.IsAny<string>(), Times.Once);
