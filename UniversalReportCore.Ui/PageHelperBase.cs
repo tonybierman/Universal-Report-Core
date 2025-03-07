@@ -64,7 +64,7 @@ namespace UniversalReportCore.Ui
                     }
                 }
 
-                parameters.AdditionalFilter = (query) =>
+                parameters.UserFilter = (query) =>
                 {
                     return query.Where(combinedPredicate);
                 };
@@ -148,8 +148,9 @@ namespace UniversalReportCore.Ui
                 {
                     typedParameters.AggregateLogic = null;
                 }
-
+                EnsureUserFilter(typedParameters);
                 var result = await GetPagedDataAsync(typedParameters, totalCount);
+
                 return result;
             }
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");

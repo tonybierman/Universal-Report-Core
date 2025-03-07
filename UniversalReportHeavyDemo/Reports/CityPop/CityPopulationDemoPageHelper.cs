@@ -53,9 +53,6 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             int totalCount)
         {
             IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
-
-            EnsureUserFilter(parameters);
-
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(
                 parameters, totalCount, query);
         }

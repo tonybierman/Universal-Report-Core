@@ -44,11 +44,11 @@ namespace UniversalReport.Services
             // If no query is provided, initialize it with the DbSet for TEntity
             query = query ?? _dbContext.Set<TEntity>();
 
-            // SKU Filter: Apply a filter if the "Sku" property exists on the entity and a SKU value is specified in the parameters
-            //if (!string.IsNullOrEmpty(parameters.Sku) && typeof(TEntity).GetProperty("Sku") != null)
-            //{
-            //    query = query.Where(e => EF.Property<string>(e, "Sku") == parameters.Sku);
-            //}
+            // User Filters: Apply custom filters provided in the UserFilter delegate
+            if (parameters.UserFilter != null)
+            {
+                query = parameters.UserFilter(query);
+            }
 
             // Apply Date Range filter
             if (parameters.DateFilter != null && parameters.DateFilter.HasValue)
@@ -60,12 +60,6 @@ namespace UniversalReport.Services
             if (parameters.CohortIds != null && parameters.CohortIds.Any() && parameters.CohortLogic != null)
             {
                 query = parameters.CohortLogic(query, parameters.CohortIds);
-            }
-
-            // Additional Filters: Apply custom filters provided in the AdditionalFilter delegate
-            if (parameters.AdditionalFilter != null)
-            {
-                query = parameters.AdditionalFilter(query);
             }
 
             // Sorting: Apply sorting if a sort order is specified in the parameters

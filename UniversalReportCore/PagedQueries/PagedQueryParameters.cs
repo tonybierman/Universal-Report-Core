@@ -21,7 +21,7 @@ namespace UniversalReportCore.PagedQueries
         /// <summary>
         /// Gets or sets an optional additional filter function that applies AND filtering logic to the query.
         /// </summary>
-        public Func<IQueryable<T>, IQueryable<T>>? AdditionalFilter { get; set; }
+        public Func<IQueryable<T>, IQueryable<T>>? UserFilter { get; set; }
 
         /// <summary>
         /// Gets or sets an optional function for computing aggregate values (sum, count, average, etc.) on the query results.
@@ -67,7 +67,7 @@ namespace UniversalReportCore.PagedQueries
             Sort = sort;
             ItemsPerPage = itemsPerPage;
             CohortIds = cohortIds;
-            AdditionalFilter = additionalFilter;
+            UserFilter = additionalFilter;
             AggregateLogic = aggregateLogic;
             MetaLogic = metaLogic;
         }
