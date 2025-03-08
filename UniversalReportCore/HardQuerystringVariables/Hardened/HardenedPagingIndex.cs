@@ -35,7 +35,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         /// <returns>True if the index is within the valid range; otherwise, false.</returns>
         public bool Validate(int totalPages)
         {
-            IsValid = Value == null || Value <= totalPages;
+            // TODO: totalPages == 0 is not really valid condition here
+            IsValid = Value == null || Value <= totalPages || totalPages == 0;
             return IsValid;
         }
     }

@@ -17,7 +17,6 @@ using UniversalReportHeavyDemo.ViewModels;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Mvc.Filters;
-using UniversalReportHeavyDemo.Reports.Filters;
 using UniversalReportCore.Ui;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,14 +68,23 @@ builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProv
 builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
 builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
 
-// Filters
-builder.Services.AddScoped<IFilterProviderRegistry<CityPopulation>, FilterProviderRegistry<CityPopulation>>();
-builder.Services.AddScoped<FilterFactory<CityPopulation>>();
-builder.Services.AddScoped<IFilterProvider<CityPopulation>, CanadaFilterProvider>();
-builder.Services.AddScoped<IFilterProvider<CityPopulation>, MaleFilterProvider>();
-builder.Services.AddScoped<IFilterProvider<CityPopulation>, FemaleFilterProvider>();
-builder.Services.AddScoped<IFilterProviderRegistry<NationalGdp>, FilterProviderRegistry<NationalGdp>>();
-builder.Services.AddScoped<FilterFactory<NationalGdp>>();
+// Register all filter providers for each entity type
+builder.Services.AddSingleton<IFilterProvider<CityPopulation>, CityPopulationFilterProvider>();
+builder.Services.AddSingleton<IFilterProvider<NationalGdp>, NationalGdpFilterProvider>();
+
+// Register FilterProviderRegistry<T> as IFilterProviderRegistry<T>
+builder.Services.AddSingleton<IFilterProviderRegistry<CityPopulation>>(sp =>
+    new FilterProviderRegistry<CityPopulation>(sp.GetServices<IFilterProvider<CityPopulation>>()));
+
+builder.Services.AddSingleton<IFilterProviderRegistry<NationalGdp>>(sp =>
+    new FilterProviderRegistry<NationalGdp>(sp.GetServices<IFilterProvider<NationalGdp>>()));
+
+// Register FilterFactory<T> for predicate building
+builder.Services.AddTransient<FilterFactory<CityPopulation>>();
+builder.Services.AddTransient<FilterFactory<NationalGdp>>();
+
+
+
 
 builder.Services.AddRazorPages();
 

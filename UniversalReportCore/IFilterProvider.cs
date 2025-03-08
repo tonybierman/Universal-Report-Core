@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UniversalReportCore
 {
+    /// <summary>
+    /// Provides filtering logic for a specific entity type.
+    /// Supports faceted filtering with AND/OR combinations.
+    /// </summary>
+    /// <typeparam name="T">The type of entity being filtered.</typeparam>
     public interface IFilterProvider<T>
     {
-        string Key { get; }
-        string DisplayName { get; }
-        IEnumerable<Expression<Func<T, bool>>> GetAndFilters();
-        IEnumerable<Expression<Func<T, bool>>> GetOrFilters();
+        Dictionary<string, Expression<Func<T, bool>>> Filters { get; }
+        IEnumerable<IEnumerable<string>> GetFacetKeys();
+        Expression<Func<T, bool>> GetFilter(string key);
     }
-
 }

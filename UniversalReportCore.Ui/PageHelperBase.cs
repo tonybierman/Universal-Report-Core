@@ -2,6 +2,8 @@
 using LinqKit;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Win32;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml;
 using UniversalReport.Services;
@@ -18,7 +20,8 @@ namespace UniversalReportCore.Ui
         protected readonly IUniversalReportService _reportService;
         protected readonly IReportColumnFactory _reportColumnFactory;
         protected readonly IQueryFactory<TEntity> _queryFactory;
-        private readonly IFilterProviderRegistry<TEntity> _filterRegistry;
+
+        private readonly IFilterProvider<TEntity> _filterProvider;
         private readonly FilterFactory<TEntity> _filterFactory;
 
         public string DefaultSort { get; set; }
@@ -35,7 +38,7 @@ namespace UniversalReportCore.Ui
             _reportService = reportService;
             _reportColumnFactory = reportColumnFactory;
             _queryFactory = queryFactory;
-            _filterRegistry = filterRegistry;
+            _filterProvider = filterRegistry.GetProvider();
             _filterFactory = filterFactory;
             DefaultSort = "Product.SkuDesc";
         }
@@ -48,29 +51,6 @@ namespace UniversalReportCore.Ui
         public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
         {
             throw new NotImplementedException();
-        }
-
-        protected virtual void EnsureUserFilter(PagedQueryParameters<TEntity> parameters)
-        {
-            if (parameters.FilterKeys != null && parameters.FilterKeys.Any())
-            {
-                var combinedPredicate = PredicateBuilder.New<TEntity>(true); // Start with 'false' for OR chaining
-
-                foreach (var key in parameters.FilterKeys)
-                {
-                    var provider = _filterRegistry.GetProvider(key);
-                    if (provider != null)
-                    {
-                        var predicate = _filterFactory.BuildPredicate(provider);
-                        combinedPredicate = combinedPredicate.And(predicate); // Change to Or for OR chaining
-                    }
-                }
-
-                parameters.UserFilter = (query) =>
-                {
-                    return query.Where(combinedPredicate);
-                };
-            }
         }
 
         public virtual Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0)
@@ -140,6 +120,16 @@ namespace UniversalReportCore.Ui
             return obj;
         }
 
+        protected virtual void EnsureUserFilter(PagedQueryParameters<TEntity> parameters)
+        {
+            var predicate = _filterFactory.BuildPredicate(parameters.FilterKeys);
+
+            parameters.UserFilter = (query) =>
+            {
+                return query.Where(predicate);
+            };
+        }
+
         #region IReportPageHelperBase
 
         public async Task<object> GetPagedDataAsync(PagedQueryParametersBase parameters, int totalCount = 0)
@@ -158,17 +148,38 @@ namespace UniversalReportCore.Ui
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");
         }
 
-        public List<SelectListItem> GetFilterSelectList()
+        public List<SelectListItem> GetFilterSelectList(string[]? keys)
         {
-            var filters = _filterRegistry.GetAllProviders();
-            return filters.Select(provider => new SelectListItem
-            {
-                Text = provider.DisplayName, // Friendly name for UI
-                Value = provider.Key // Unique key for filtering logic
-            }).ToList();
+            return _filterProvider
+                .GetFacetKeys()  // Get grouped filter keys (e.g., ["Canada", "Mexico"], ["Male", "Female"])
+                .SelectMany(facetGroup => facetGroup
+                    .Where(key => _filterProvider.Filters.ContainsKey(key))  // Ensure key exists in Filters
+                    .Select(key => new SelectListItem
+                    {
+                        Text = key, // Use the filter key as label (or customize)
+                        Value = key, // Use key for serialization
+                        Selected = keys?.Contains(key) == true
+                    })
+                ).ToList();
         }
 
+
         #endregion
+
+        private string ExtractFilterLabel(Expression<Func<TEntity, bool>> filter)
+        {
+            if (filter.Body is BinaryExpression binaryExpr &&
+                binaryExpr.Right is ConstantExpression constant)
+            {
+                return constant.Value?.ToString() ?? "";
+            }
+            return filter.ToString();
+        }
+
+        private string SerializeExpression(Expression<Func<TEntity, bool>> filter)
+        {
+            return filter.Body.ToString(); // Unique string for passing in query params
+        }
 
     }
 }

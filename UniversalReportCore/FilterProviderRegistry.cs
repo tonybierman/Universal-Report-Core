@@ -1,63 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using UniversalReportCore;
 
-namespace UniversalReportCore
+public class FilterProviderRegistry<T> : IFilterProviderRegistry<T>
 {
-    /// <summary>
-    /// Maintains a registry of filter providers, allowing retrieval based on a unique key.
-    /// </summary>
-    /// <typeparam name="T">The type of entity that the filter providers operate on.</typeparam>
-    public class FilterProviderRegistry<T> : IFilterProviderRegistry<T>
+    private readonly IDictionary<Type, IFilterProvider<T>> _providers;
+
+    public FilterProviderRegistry(IEnumerable<IFilterProvider<T>> providers)
     {
-        private readonly IDictionary<string, IFilterProvider<T>> _providers;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilterProviderRegistry{T}"/> class.
-        /// </summary>
-        /// <param name="providers">A collection of filter providers to be registered.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="providers"/> is null.</exception>
-        public FilterProviderRegistry(IEnumerable<IFilterProvider<T>> providers)
-        {
-            if (providers == null)
-            {
-                throw new ArgumentNullException(nameof(providers), "Providers collection cannot be null.");
-            }
-
-            _providers = providers.ToDictionary(p => p.Key, p => p);
-        }
-
-        /// <summary>
-        /// Retrieves the filter provider registered under the specified key.
-        /// </summary>
-        /// <param name="key">The unique key identifying the filter provider.</param>
-        /// <returns>The <see cref="IFilterProvider{T}"/> associated with the given key.</returns>
-        /// <exception cref="KeyNotFoundException">
-        /// Thrown if no filter provider is registered with the specified key.
-        /// </exception>
-        public IFilterProvider<T> GetProvider(string key)
-        {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key), "Key cannot be null.");
-            }
-
-            if (_providers.TryGetValue(key, out var provider))
-            {
-                return provider;
-            }
-
-            throw new KeyNotFoundException($"No filter provider registered with key '{key}'.");
-        }
-
-        /// <summary>
-        /// Retrieves all registered filter providers.
-        /// </summary>
-        /// <returns>An enumerable collection of all registered filter providers.</returns>
-        public IEnumerable<IFilterProvider<T>> GetAllProviders()
-        {
-            return _providers.Values;
-        }
+        _providers = providers.ToDictionary(p => p.GetType(), p => p);
     }
 
+    public IFilterProvider<T> GetProvider()
+    {
+        return _providers.Values.FirstOrDefault()
+            ?? throw new InvalidOperationException($"No filter provider registered for entity type '{typeof(T).Name}'.");
+    }
+
+    public IEnumerable<IFilterProvider<T>> GetAllProviders()
+    {
+        return _providers.Values;
+    }
 }

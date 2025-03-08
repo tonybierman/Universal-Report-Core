@@ -61,28 +61,24 @@ namespace UniversalReportCore.Ui.Pages
         
         public async Task<IActionResult> ReportPageGetAsync(string slug, string? displayKey = null)
         {
-
-            if (!string.IsNullOrEmpty(SelectedFilter))
+            if (Params.FilterKeys.Value == null)
             {
-                if (Params.FilterKeys.Value == null)
+                Params.FilterKeys = new HardenedFilterKeys(new List<string> { SelectedFilter }.ToArray());
+            }
+            else
+            {
+                var filterList = Params.FilterKeys.Value.ToList();
+                if (filterList.Contains(SelectedFilter))
                 {
-                    Params.FilterKeys = new HardenedFilterKeys(new List<string> { SelectedFilter }.ToArray());
+                    // Remove if it already exists
+                    filterList.Remove(SelectedFilter);
                 }
                 else
                 {
-                    var filterList = Params.FilterKeys.Value.ToList();
-                    if (filterList.Contains(SelectedFilter))
-                    {
-                        // Remove if it already exists
-                        filterList.Remove(SelectedFilter);
-                    }
-                    else
-                    {
-                        // Add if not present
-                        filterList.Add(SelectedFilter);
-                    }
-                    Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
+                    // Add if not present
+                    filterList.Add(SelectedFilter);
                 }
+                Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
             }
 
             // Page Helper
@@ -137,7 +133,7 @@ namespace UniversalReportCore.Ui.Pages
             // Final check
             if (Params.IsHard)
             {
-                FilterOptions = pageHelper.GetFilterSelectList();
+                FilterOptions = pageHelper.GetFilterSelectList(Params.FilterKeys.Value);
 
                 if (!parameters.ShouldAggregate)
                 {

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniversalReportCore;
 
-namespace UniversalReportCore
+public interface IFilterProviderRegistry<T>
 {
-    public interface IFilterProviderRegistry<T>
-    {
-        IFilterProvider<T> GetProvider(string key);
-        IEnumerable<IFilterProvider<T>> GetAllProviders();
-    }
+    IFilterProvider<T> GetProvider(); // Remove <TFilter> from method signature
+    IEnumerable<IFilterProvider<T>> GetAllProviders();
 }
