@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversalReportCore
+namespace UniversalReportCore.Ui
 {
     public class ReportPageHelperFactoryBase
     {

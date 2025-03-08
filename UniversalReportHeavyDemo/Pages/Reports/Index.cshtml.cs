@@ -9,6 +9,7 @@ using UniversalReportHeavyDemo.Reports;
 using UniversalReportCore.Ui.Pages;
 using UniversalReportCore.HardQuerystringVariables;
 using Microsoft.CSharp.RuntimeBinder;
+using UniversalReportCore.Ui;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {

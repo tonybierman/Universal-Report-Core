@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using LinqKit;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection;
+using System.Xml;
 using UniversalReport.Services;
 using UniversalReportCore.Data;
 using UniversalReportCore.PagedQueries;
@@ -154,6 +156,16 @@ namespace UniversalReportCore.Ui
                 return result;
             }
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");
+        }
+
+        public List<SelectListItem> GetFilterSelectList()
+        {
+            var filters = _filterRegistry.GetAllProviders();
+            return filters.Select(provider => new SelectListItem
+            {
+                Text = provider.DisplayName, // Friendly name for UI
+                Value = provider.Key // Unique key for filtering logic
+            }).ToList();
         }
 
         #endregion

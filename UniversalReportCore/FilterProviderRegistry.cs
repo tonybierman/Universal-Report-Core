@@ -49,5 +49,15 @@ namespace UniversalReportCore
 
             throw new KeyNotFoundException($"No filter provider registered with key '{key}'.");
         }
+
+        /// <summary>
+        /// Retrieves all registered filter providers.
+        /// </summary>
+        /// <returns>An enumerable collection of all registered filter providers.</returns>
+        public IEnumerable<IFilterProvider<T>> GetAllProviders()
+        {
+            return _providers.Values;
+        }
     }
+
 }

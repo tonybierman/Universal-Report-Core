@@ -9,5 +9,6 @@ namespace UniversalReportCore
     public interface IFilterProviderRegistry<T>
     {
         IFilterProvider<T> GetProvider(string key);
+        IEnumerable<IFilterProvider<T>> GetAllProviders();
     }
 }

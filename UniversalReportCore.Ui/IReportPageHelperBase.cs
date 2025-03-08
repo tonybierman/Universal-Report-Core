@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 using UniversalReportCore.Data;
 using UniversalReportCore.PagedQueries;
 
-namespace UniversalReportCore
+namespace UniversalReportCore.Ui
 {
     public interface IReportPageHelperBase
     {
@@ -16,5 +17,6 @@ namespace UniversalReportCore
         Task<ICohort[]?> GetCohortsAsync(int[] cohortIds);
         PagedQueryParametersBase CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
         List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
+        List<SelectListItem> GetFilterSelectList();
     }
 }

@@ -7,6 +7,7 @@ namespace UniversalReportHeavyDemo.Reports.Filters
     public class CanadaFilterProvider : IFilterProvider<CityPopulation>
     {
         public string Key => "Canada";
+        public string DisplayName => "Canada";
 
         public IEnumerable<Expression<Func<CityPopulation, bool>>> GetAndFilters() =>
             new Expression<Func<CityPopulation, bool>>[] { x => x.CountryOrArea == "Canada" };

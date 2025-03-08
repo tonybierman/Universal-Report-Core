@@ -15,6 +15,7 @@ using UniversalReportCore.Ui;
 using UniversalReportCore.ViewModels;
 using Microsoft.CSharp.RuntimeBinder;
 using UniversalReportCore.Ui.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace UniversalReportCore.Ui.Pages
 {
@@ -40,6 +41,8 @@ namespace UniversalReportCore.Ui.Pages
         public ICohort[] Cohorts { get; set; }
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
+        public List<SelectListItem> FilterOptions { get; private set; }
+        public string? SelectedFilter { get; set; }
 
         public ReportPageModel(
             ILogger logger,
@@ -58,6 +61,30 @@ namespace UniversalReportCore.Ui.Pages
         
         public async Task<IActionResult> ReportPageGetAsync(string slug, string? displayKey = null)
         {
+
+            if (!string.IsNullOrEmpty(SelectedFilter))
+            {
+                if (Params.FilterKeys.Value == null)
+                {
+                    Params.FilterKeys = new HardenedFilterKeys(new List<string> { SelectedFilter }.ToArray());
+                }
+                else
+                {
+                    var filterList = Params.FilterKeys.Value.ToList();
+                    if (filterList.Contains(SelectedFilter))
+                    {
+                        // Remove if it already exists
+                        filterList.Remove(SelectedFilter);
+                    }
+                    else
+                    {
+                        // Add if not present
+                        filterList.Add(SelectedFilter);
+                    }
+                    Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
+                }
+            }
+
             // Page Helper
             var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType);
 
@@ -110,6 +137,8 @@ namespace UniversalReportCore.Ui.Pages
             // Final check
             if (Params.IsHard)
             {
+                FilterOptions = pageHelper.GetFilterSelectList();
+
                 if (!parameters.ShouldAggregate)
                 {
                     var agg = TempDataHelper.DeserializeAggregatesFromTempData(TempData);

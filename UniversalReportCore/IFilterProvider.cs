@@ -10,6 +10,7 @@ namespace UniversalReportCore
     public interface IFilterProvider<T>
     {
         string Key { get; }
+        string DisplayName { get; }
         IEnumerable<Expression<Func<T, bool>>> GetAndFilters();
         IEnumerable<Expression<Func<T, bool>>> GetOrFilters();
     }

@@ -1,4 +1,4 @@
-﻿namespace UniversalReportCore
+﻿namespace UniversalReportCore.Ui
 {
     public interface IReportPageHelperFactory
     {

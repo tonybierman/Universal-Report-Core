@@ -9,6 +9,38 @@
 <div class="container mt-4">
     @if (Model.Items != null && Model.Items.Any())
     {
+        <form method="get">
+            <label>Select Filters:</label>
+            <div>
+                @foreach (var filter in Model.FilterOptions)
+                {
+                    bool isSelected = Model.Params.FilterKeys?.Contains(filter.Value) == true;
+
+                    <label>
+                        <input type="checkbox" name="filters" value="@filter.Value" checked="@isSelected"
+                               onchange="this.form.submit()" />
+                        @filter.Text
+                    </label>
+                }
+            </div>
+
+            <!-- Preserve other query parameters -->
+            <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+            <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+            <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+            <input type="hidden" name="pi" value="@Model.Items.PageIndex" />
+
+            @if (Model.Params.CohortIds.Value != null)
+            {
+                @foreach (var cohortId in Model.Params.CohortIds.Value)
+                {
+                    <input type="hidden" name="cohortIds" value="@cohortId" />
+                }
+            }
+        </form>
+
+
+
         <table class="table table-striped mt-3">
             <thead>
                 <tr class="bg-light">

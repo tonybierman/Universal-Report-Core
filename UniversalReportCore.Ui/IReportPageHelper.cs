@@ -1,7 +1,7 @@
 ﻿using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
 
-namespace UniversalReportCore
+namespace UniversalReportCore.Ui
 {
     public interface IReportPageHelper<TEntity, TViewModel> : IReportPageHelperBase
         where TEntity : class

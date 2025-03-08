@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Mvc.Filters;
 using UniversalReportHeavyDemo.Reports.Filters;
+using UniversalReportCore.Ui;
 
 var builder = WebApplication.CreateBuilder(args);
 
