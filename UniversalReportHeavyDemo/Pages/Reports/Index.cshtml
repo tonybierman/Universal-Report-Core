@@ -10,11 +10,10 @@
     @if (Model.Items != null && Model.Items.Any())
     {
         <form method="get">
-            <label>Select Filters:</label>
             @foreach (var filterGroup in Model.FilterOptions)
             {
-                <fieldset>
-                    <legend>@filterGroup.Heading</legend> <!-- Show heading like "Country" or "Gender" -->
+                <fieldset class="border p-3">
+                    <legend class="w-100 bg-light text-dark text-center py-1">@filterGroup.Heading</legend>
                     @foreach (var filter in filterGroup.Options)
                     {
                         bool isSelected = filter.Selected;
@@ -46,41 +45,13 @@
             }
         </form>
 
-
-
-
-
-
-
         <table class="table table-striped mt-3">
             <thead>
                 <tr class="bg-light">
                     <th class="align-middle text-center m-0"><input class="m-0" type="checkbox" id="selectAll" /></th> <!-- Select All Checkbox -->
                     @foreach (var column in Model?.ReportColumns)
                     {
-                        <th class="align-middle @(column.HideInPortrait ? "hide-in-portrait" : "")">
-                            @if (column.IsSortable)
-                            {
-                                var newSortOrder = column.IsSortDescending
-                                ? $"{column.PropertyName}Asc"
-                                : $"{column.PropertyName}Desc";
-
-                                <a href="@Url.Page("/Reports/Index", new { slug = Model?.Params.Slug.Value, ipp=Model?.Params.Ipp.Value, sortOrder = newSortOrder, cohortIds = Model?.Params.CohortIds.Value })">
-                                    @column.DisplayName
-                                </a>
-
-                                @if (column.PropertyName == Model?.CurrentSort.Replace("Asc", "").Replace("Desc", ""))
-                                {
-                                    <span class="sort-indicator">
-                                        @(column.IsSortDescending ? "↓" : "↑")
-                                    </span>
-                                }
-                            }
-                            else
-                            {
-                                @column.DisplayName
-                            }
-                        </th>
+                        <column-heading column="@column" model="@Model?.Params" sort="@Model?.CurrentSort" page="/Reports/Index"></column-heading>
                     }
                 </tr>
             </thead>
@@ -111,41 +82,7 @@
                                 <td></td>
                                 @foreach (var column in Model?.ReportColumns)
                                 {
-                                    bool hasBeenKeyed = false;
-                                    <td class="@(column.HideInPortrait ? "hide-in-portrait" : "")">
-                                        @if (column.IsDisplayKey && !hasBeenKeyed)
-                                        {
-                                            hasBeenKeyed = true;
-                                            var cohort = Model?.Cohorts.FirstOrDefault(c => c.Id == cohortId);
-                                            <a class="m-0 btn-sm btn-link" href="@Url.Page("/Reports/Index", new {
-                                                    slug = Model?.Params.Slug.Value,
-                                                    ipp = Model?.Params.Ipp.Value,
-                                                    sortOrder = Model?.CurrentSort,
-                                                    cohortIds = cohortId })">
-                                                @(cohort != null ? cohort.Name : $"Cohort {cohortId} Totals")
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            var cohortKey = $"{column.PropertyName}_{cohortId}";
-                                            var value = Model?.Items?.Aggregates?.ContainsKey(cohortKey) == true
-                                            ? Model.Items.Aggregates[cohortKey]
-                                            : null;
-
-                                            if (value != null)
-                                            {
-                                                string formattedValue = value is double or float or decimal
-                                                ? $"{value:N2}" // Format with 2 decimal places
-                                                : $"{value}";   // Default formatting for other types
-
-                                                @formattedValue
-                                            }
-                                            else
-                                            {
-
-                                            }
-                                        }
-                                    </td>
+                                    <cohort-footer column="@column" model="@Model?.Params" cohort-id="@cohortId" items="Model?.Items" cohorts="Model?.Cohorts" page="/Reports/Index"></cohort-footer>
                                 }
                             </tr>
                         }
@@ -155,20 +92,7 @@
                         <th></th>
                         @foreach (var column in Model?.ReportColumns)
                         {
-                            var value = Model?.Items?.Aggregates?.ContainsKey(column.PropertyName) == true
-                            ? Model.Items.Aggregates[column.PropertyName]
-                            : null;
-
-                            <th class="@(column.HideInPortrait ? "hide-in-portrait" : "")">
-                                @if (value != null)
-                                {
-                                    string formattedValue = value is double or float or decimal
-                                    ? $"{value:N2}" // Format with 2 decimal places
-                                    : $"{value}";   // Default formatting for other types
-
-                                    @formattedValue
-                                }
-                            </th>
+                            <column-footer column="@column" model="@Model?.Params" items="Model?.Items"></column-footer>
                         }
                     </tr>
                 </tfoot>
