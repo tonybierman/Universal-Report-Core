@@ -18,9 +18,9 @@ namespace UniversalReportHeavyDemo.Reports.CountryGdp
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<NationalGdp> queryFactory,
             ApplicationDbContext dbContext,
-            IFilterProviderRegistry<NationalGdp> filterRegistry,
+            IFilterProvider<NationalGdp> filterProvider,
             FilterFactory<NationalGdp> filterFactory,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterRegistry, filterFactory, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterProvider, filterFactory, mapper)
         {
             _dbContext = dbContext;
             DefaultSort = "CountryNameAsc";

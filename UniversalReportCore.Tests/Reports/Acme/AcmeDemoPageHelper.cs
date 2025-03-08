@@ -3,22 +3,27 @@ using Microsoft.EntityFrameworkCore;
 using UniversalReport.Services;
 using UniversalReportCore;
 using UniversalReportCore.PagedQueries;
+using UniversalReportCore.Ui;
 using UniversalReportCoreTests.Data;
 using UniversalReportCoreTests.Reports;
 using UniversalReportCoreTests.ViewModels;
 
 namespace UniversalReportCore.Tests.Reports.Acme
 {
-    public class AcmeDemoPageHelper : BasePageHelper<Widget, WidgetViewModel>
+    public class AcmeDemoPageHelper : PageHelperBase<Widget, WidgetViewModel>
     {
+        AcmeDbContext _dbContext;
         public AcmeDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<Widget> queryFactory,
             AcmeDbContext dbContext,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, dbContext, mapper)
+            IFilterProviderRegistry<Widget> filterRegistry,
+            FilterFactory<Widget> filterFactory,
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterRegistry, filterFactory, mapper)
         {
             DefaultSort = "CityAsc";
+            _dbContext = dbContext;
         }
 
         private IQueryable<Widget> GetLatestCityPopulation(IQueryable<Widget> query)

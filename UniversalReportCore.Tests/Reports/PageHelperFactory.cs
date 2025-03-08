@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using UniversalReportCore;
+using UniversalReportCore.Ui;
 using UniversalReportCoreTests.Data;
 using UniversalReportCoreTests.ViewModels;
 

@@ -30,7 +30,7 @@ namespace UniversalReportCore.Ui
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<TEntity> queryFactory,
-            IFilterProviderRegistry<TEntity> filterRegistry,
+            IFilterProvider<TEntity> filterProvider,
             FilterFactory<TEntity> filterFactory,
             IMapper mapper)
         {
@@ -38,7 +38,7 @@ namespace UniversalReportCore.Ui
             _reportService = reportService;
             _reportColumnFactory = reportColumnFactory;
             _queryFactory = queryFactory;
-            _filterProvider = filterRegistry.GetProvider();
+            _filterProvider = filterProvider;
             _filterFactory = filterFactory;
             DefaultSort = "Product.SkuDesc";
         }

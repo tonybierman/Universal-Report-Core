@@ -16,15 +16,14 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
     {
         private readonly ApplicationDbContext _dbContext;
 
-
         public CityPopulationDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,
             ApplicationDbContext dbContext,
-            IFilterProviderRegistry<CityPopulation> filterRegistry,
+            IFilterProvider<CityPopulation> filterProvider,
             FilterFactory<CityPopulation> filterFactory,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterRegistry, filterFactory, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterProvider, filterFactory, mapper)
         {
             _dbContext = dbContext;
             DefaultSort = "CityAsc";

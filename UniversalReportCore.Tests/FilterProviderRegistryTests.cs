@@ -2,60 +2,72 @@
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using UniversalReportCore;
 using Xunit;
 
 namespace UniversalReportCore.Tests
 {
     public class FilterProviderRegistryTests
     {
-        public interface ITestFilterProvider : IFilterProvider<string> { }
+        public class TestEntity1 { }
+
+        private readonly Mock<IFilterProvider<TestEntity1>> _mockProvider1;
+        private readonly Mock<IFilterProvider<TestEntity1>> _mockProvider2;
+
+        public FilterProviderRegistryTests()
+        {
+            _mockProvider1 = new Mock<IFilterProvider<TestEntity1>>();
+            _mockProvider2 = new Mock<IFilterProvider<TestEntity1>>();
+        }
 
         [Fact]
-        public void GetProvider_ShouldReturnProvider_WhenKeyExists()
+        public void Constructor_ShouldThrowArgumentNullException_WhenProvidersAreNull()
         {
-            // Arrange
-            var mockProvider = new Mock<ITestFilterProvider>();
-            mockProvider.Setup(p => p.Key).Returns("test-key");
+            Assert.Throws<ArgumentNullException>(() => new FilterProviderRegistry<TestEntity1>(null!));
+        }
 
-            var registry = new FilterProviderRegistry<string>(new List<IFilterProvider<string>> { mockProvider.Object });
+        [Fact]
+        public void GetProvider_ShouldReturnFirstProvider_WhenProvidersExist()
+        {
+            var providers = new List<IFilterProvider<TestEntity1>> { _mockProvider1.Object, _mockProvider2.Object };
+            var registry = new FilterProviderRegistry<TestEntity1>(providers);
 
-            // Act
-            var result = registry.GetProvider("test-key");
+            var provider = registry.GetProvider();
 
-            // Assert
+            Assert.NotNull(provider);
+            Assert.Contains(provider, providers);
+        }
+
+        [Fact]
+        public void GetProvider_ShouldThrowInvalidOperationException_WhenNoProvidersExist()
+        {
+            var registry = new FilterProviderRegistry<TestEntity1>(new List<IFilterProvider<TestEntity1>>());
+
+            var exception = Assert.Throws<InvalidOperationException>(() => registry.GetProvider());
+            Assert.Equal($"No filter provider registered for entity type '{typeof(TestEntity1).Name}'.", exception.Message);
+        }
+
+        [Fact]
+        public void GetAllProviders_ShouldReturnAllProviders_WhenProvidersExist()
+        {
+            var providers = new List<IFilterProvider<TestEntity1>> { _mockProvider1.Object, _mockProvider2.Object };
+            var registry = new FilterProviderRegistry<TestEntity1>(providers);
+
+            var result = registry.GetAllProviders();
+
+            Assert.Equal(providers.Count, result.Count());
+            Assert.All(providers, provider => Assert.Contains(provider, result));
+        }
+
+        [Fact]
+        public void GetAllProviders_ShouldReturnEmptyCollection_WhenNoProvidersExist()
+        {
+            var registry = new FilterProviderRegistry<TestEntity1>(new List<IFilterProvider<TestEntity1>>());
+
+            var result = registry.GetAllProviders();
+
             Assert.NotNull(result);
-            Assert.Equal("test-key", result.Key);
-        }
-
-        [Fact]
-        public void GetProvider_ShouldThrowKeyNotFoundException_WhenKeyDoesNotExist()
-        {
-            // Arrange
-            var registry = new FilterProviderRegistry<string>(new List<IFilterProvider<string>>());
-
-            // Act & Assert
-            var exception = Assert.Throws<KeyNotFoundException>(() => registry.GetProvider("non-existent-key"));
-            Assert.Contains("No filter provider registered with key 'non-existent-key'", exception.Message);
-        }
-
-        [Fact]
-        public void Constructor_ShouldInitializeWithMultipleProviders()
-        {
-            // Arrange
-            var mockProvider1 = new Mock<ITestFilterProvider>();
-            mockProvider1.Setup(p => p.Key).Returns("key1");
-
-            var mockProvider2 = new Mock<ITestFilterProvider>();
-            mockProvider2.Setup(p => p.Key).Returns("key2");
-
-            var providers = new List<IFilterProvider<string>> { mockProvider1.Object, mockProvider2.Object };
-
-            // Act
-            var registry = new FilterProviderRegistry<string>(providers);
-
-            // Assert
-            Assert.NotNull(registry.GetProvider("key1"));
-            Assert.NotNull(registry.GetProvider("key2"));
+            Assert.Empty(result);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Moq;
 using System;
 using System.Collections.Generic;
+using UniversalReportCore.Ui;
 using Xunit;
 
 namespace UniversalReportCore.Tests

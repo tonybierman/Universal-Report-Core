@@ -72,19 +72,9 @@ builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQuery
 builder.Services.AddSingleton<IFilterProvider<CityPopulation>, CityPopulationFilterProvider>();
 builder.Services.AddSingleton<IFilterProvider<NationalGdp>, NationalGdpFilterProvider>();
 
-// Register FilterProviderRegistry<T> as IFilterProviderRegistry<T>
-builder.Services.AddSingleton<IFilterProviderRegistry<CityPopulation>>(sp =>
-    new FilterProviderRegistry<CityPopulation>(sp.GetServices<IFilterProvider<CityPopulation>>()));
-
-builder.Services.AddSingleton<IFilterProviderRegistry<NationalGdp>>(sp =>
-    new FilterProviderRegistry<NationalGdp>(sp.GetServices<IFilterProvider<NationalGdp>>()));
-
 // Register FilterFactory<T> for predicate building
 builder.Services.AddTransient<FilterFactory<CityPopulation>>();
 builder.Services.AddTransient<FilterFactory<NationalGdp>>();
-
-
-
 
 builder.Services.AddRazorPages();
 

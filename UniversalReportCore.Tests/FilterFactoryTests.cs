@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using LinqKit;
+using Moq;
 using UniversalReportCore;
 using Xunit;
 
@@ -10,115 +12,104 @@ namespace UniversalReportCore.Tests
 {
     public class FilterFactoryTests
     {
-        private class TestEntity
+        public class TestEntity2
         {
-            public string Name { get; set; } = string.Empty;
-            public int Age { get; set; }
-            public string City { get; set; } = string.Empty;
+            public string Category { get; set; } = string.Empty;
+            public string Gender { get; set; } = string.Empty;
         }
 
-        private class TestFilterProvider : IFilterProvider<TestEntity>
+        private readonly Mock<IFilterProvider<TestEntity2>> _mockProvider;
+        private readonly FilterFactory<TestEntity2> _filterFactory;
+
+        public FilterFactoryTests()
         {
-            private readonly List<Expression<Func<TestEntity, bool>>> _andFilters;
-            private readonly List<Expression<Func<TestEntity, bool>>> _orFilters;
+            _mockProvider = new Mock<IFilterProvider<TestEntity2>>();
 
-            public TestFilterProvider(List<Expression<Func<TestEntity, bool>>> andFilters, List<Expression<Func<TestEntity, bool>>> orFilters)
+            // Simulated filters
+            var filters = new Dictionary<string, Expression<Func<TestEntity2, bool>>>
             {
-                _andFilters = andFilters ?? new();
-                _orFilters = orFilters ?? new();
-            }
-
-            public string Key => throw new NotImplementedException();
-
-            public List<Expression<Func<TestEntity, bool>>> GetAndFilters() => _andFilters;
-            public List<Expression<Func<TestEntity, bool>>> GetOrFilters() => _orFilters;
-
-            IEnumerable<Expression<Func<TestEntity, bool>>> IFilterProvider<TestEntity>.GetAndFilters()
-            {
-                return GetAndFilters();
-            }
-
-            IEnumerable<Expression<Func<TestEntity, bool>>> IFilterProvider<TestEntity>.GetOrFilters()
-            {
-                return GetOrFilters();
-            }
-        }
-
-        [Fact]
-        public void BuildPredicate_ShouldApplyAndFiltersCorrectly()
-        {
-            // Arrange: AND filters - must be "Tom" AND Age > 18
-            var andFilters = new List<Expression<Func<TestEntity, bool>>>
-            {
-                e => e.Name == "Tom",
-                e => e.Age > 18
+                { "Canada", e => e.Category == "Canada" },
+                { "Mexico", e => e.Category == "Mexico" },
+                { "Male", e => e.Gender == "Male" },
+                { "Female", e => e.Gender == "Female" }
             };
 
-            var provider = new TestFilterProvider(andFilters, new());
-            var factory = new FilterFactory<TestEntity>();
+            var facetKeys = new Dictionary<string, List<string>>
+            {
+                { "Country", new List<string> { "Canada", "Mexico" } },
+                { "Gender", new List<string> { "Male", "Female" } }
+            };
 
-            // Act
-            var predicate = factory.BuildPredicate(provider);
-            var compiled = predicate.Compile();
+            _mockProvider.Setup(p => p.Filters).Returns(filters);
+            _mockProvider.Setup(p => p.GetFacetKeys()).Returns(facetKeys);
 
-            // Assert
-            Assert.True(compiled(new TestEntity { Name = "Tom", Age = 25 })); // ✅ Matches both conditions
-            Assert.False(compiled(new TestEntity { Name = "Tom", Age = 17 })); // ❌ Age too low
-            Assert.False(compiled(new TestEntity { Name = "Bob", Age = 25 })); // ❌ Wrong Name
+            _filterFactory = new FilterFactory<TestEntity2>(_mockProvider.Object);
         }
 
         [Fact]
-        public void BuildPredicate_ShouldApplyOrFiltersCorrectly()
+        public void Constructor_ShouldThrow_WhenProviderIsNull()
         {
-            // Arrange: OR filters - must be from "New York" OR "Los Angeles"
-            var orFilters = new List<Expression<Func<TestEntity, bool>>>
-            {
-                e => e.City == "New York",
-                e => e.City == "Los Angeles"
-            };
-
-            var provider = new TestFilterProvider(new(), orFilters);
-            var factory = new FilterFactory<TestEntity>();
-
-            // Act
-            var predicate = factory.BuildPredicate(provider);
-            var compiled = predicate.Compile();
-
-            // Assert
-            Assert.True(compiled(new TestEntity { City = "New York" })); // ✅ Matches first OR condition
-            Assert.True(compiled(new TestEntity { City = "Los Angeles" })); // ✅ Matches second OR condition
-            Assert.False(compiled(new TestEntity { City = "Chicago" })); // ❌ Doesn't match either
+            Assert.Throws<ArgumentNullException>(() => new FilterFactory<TestEntity2>(null!));
         }
 
         [Fact]
-        public void BuildPredicate_ShouldCombineAndOrFiltersCorrectly()
+        public void BuildPredicate_ShouldReturnTruePredicate_WhenNoFiltersSelected()
         {
-            // Arrange: 
-            // AND: Must be Age > 18
-            // OR: Must be from "New York" OR "Los Angeles"
-            var andFilters = new List<Expression<Func<TestEntity, bool>>>
-            {
-                e => e.Age > 18
-            };
+            var predicate = _filterFactory.BuildPredicate(new List<string>());
+            var testEntity = new TestEntity2 { Category = "Canada", Gender = "Male" };
 
-            var orFilters = new List<Expression<Func<TestEntity, bool>>>
-            {
-                e => e.City == "New York",
-                e => e.City == "Los Angeles"
-            };
+            Assert.True(predicate.Compile().Invoke(testEntity));
+        }
 
-            var provider = new TestFilterProvider(andFilters, orFilters);
-            var factory = new FilterFactory<TestEntity>();
+        [Fact]
+        public void BuildPredicate_ShouldFilterBySingleKey()
+        {
+            var predicate = _filterFactory.BuildPredicate(new List<string> { "Canada" });
+            var match = new TestEntity2 { Category = "Canada", Gender = "Male" };
+            var noMatch = new TestEntity2 { Category = "Mexico", Gender = "Male" };
 
-            // Act
-            var predicate = factory.BuildPredicate(provider);
-            var compiled = predicate.Compile();
+            Assert.True(predicate.Compile().Invoke(match));
+            Assert.False(predicate.Compile().Invoke(noMatch));
+        }
 
-            // Assert
-            Assert.True(compiled(new TestEntity { Age = 25, City = "New York" })); // ✅ Matches both AND & OR
-            Assert.True(compiled(new TestEntity { Age = 30, City = "Los Angeles" })); // ✅ Matches both AND & OR
-            Assert.False(compiled(new TestEntity { Age = 25, City = "Chicago" })); // ❌ Passes AND but fails OR
-            Assert.False(compiled(new TestEntity { Age = 17, City = "New York" })); // ❌ Passes OR but fails AND
+        [Fact]
+        public void BuildPredicate_ShouldApplyOrWithinSameFacet()
+        {
+            var predicate = _filterFactory.BuildPredicate(new List<string> { "Canada", "Mexico" });
+
+            var match1 = new TestEntity2 { Category = "Canada", Gender = "Male" };
+            var match2 = new TestEntity2 { Category = "Mexico", Gender = "Male" };
+            var noMatch = new TestEntity2 { Category = "USA", Gender = "Male" };
+
+            Assert.True(predicate.Compile().Invoke(match1));
+            Assert.True(predicate.Compile().Invoke(match2));
+            Assert.False(predicate.Compile().Invoke(noMatch));
+        }
+
+        [Fact]
+        public void BuildPredicate_ShouldApplyAndAcrossDifferentFacets()
+        {
+            var predicate = _filterFactory.BuildPredicate(new List<string> { "Canada", "Male" });
+
+            var match = new TestEntity2 { Category = "Canada", Gender = "Male" };
+            var noMatch1 = new TestEntity2 { Category = "Canada", Gender = "Female" };
+            var noMatch2 = new TestEntity2 { Category = "Mexico", Gender = "Male" };
+
+            Assert.True(predicate.Compile().Invoke(match));
+            Assert.False(predicate.Compile().Invoke(noMatch1));
+            Assert.False(predicate.Compile().Invoke(noMatch2));
+        }
+
+        [Fact]
+        public void BuildPredicate_ShouldIgnoreInvalidKeys()
+        {
+            var predicate = _filterFactory.BuildPredicate(new List<string> { "Canada", "InvalidKey" });
+
+            var match = new TestEntity2 { Category = "Canada", Gender = "Male" };
+            var noMatch = new TestEntity2 { Category = "Mexico", Gender = "Male" };
+
+            Assert.True(predicate.Compile().Invoke(match));
+            Assert.False(predicate.Compile().Invoke(noMatch));
         }
     }
 }
