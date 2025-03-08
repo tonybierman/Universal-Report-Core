@@ -8,16 +8,18 @@ public class CityPopulationFilterProvider : IFilterProvider<CityPopulation>
     {
         { "Canada", p => p.CountryOrArea == "Canada" },
         { "Mexico", p => p.CountryOrArea == "Mexico" },
+        { "Pakistan", p => p.CountryOrArea == "Pakistan" },
+        { "Japan", p => p.CountryOrArea == "Japan" },
         { "Male", p => p.Sex == "Male" },
         { "Female", p => p.Sex == "Female" }
     };
 
-    public IEnumerable<IEnumerable<string>> GetFacetKeys()
+    public Dictionary<string, List<string>> GetFacetKeys()
     {
-        return new List<IEnumerable<string>>
+        return new Dictionary<string, List<string>>
         {
-            new List<string> { "Canada", "Mexico" },
-            new List<string> { "Male", "Female" }
+            { "Country", new List<string> { "Canada", "Mexico", "Pakistan", "Japan" } },
+            { "Gender", new List<string> { "Male", "Female" } }
         };
     }
 

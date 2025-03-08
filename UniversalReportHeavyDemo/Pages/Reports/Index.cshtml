@@ -11,28 +11,41 @@
     {
         <form method="get">
             <label>Select Filters:</label>
-            <div>
-                @foreach (var filter in Model.FilterOptions)
-                {
-                    bool isSelected = Model.Params.FilterKeys?.Contains(filter.Value) == true;
+            @foreach (var filterGroup in Model.FilterOptions)
+            {
+                <fieldset>
+                    <legend>@filterGroup.Heading</legend> <!-- Show heading like "Country" or "Gender" -->
+                    @foreach (var filter in filterGroup.Options)
+                    {
+                        bool isSelected = filter.Selected;
 
-                    <label>
-                        <input type="checkbox"
-                               name="filters"
-                               value="@filter.Value"
-                               checked="@(isSelected ? "checked" : null)"
-                               onchange="this.form.submit()" />
-                        @filter.Text
-                    </label>
-                }
-            </div>
+                        <label>
+                            <input type="checkbox"
+                                   name="filters"
+                                   value="@filter.Value"
+                                   checked="@isSelected"
+                                   onchange="this.form.submit()" />
+                            @filter.Text
+                        </label>
+                    }
+                </fieldset>
+            }
 
             <!-- Preserve Other Query Parameters -->
             <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
             <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
             <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
             <input type="hidden" name="pi" value="@Model.Items.PageIndex" />
+
+            @if (Model.Params.CohortIds.Value != null)
+            {
+                @foreach (var cohortId in Model.Params.CohortIds.Value)
+                {
+                    <input type="hidden" name="cohortIds" value="@cohortId" />
+                }
+            }
         </form>
+
 
 
 

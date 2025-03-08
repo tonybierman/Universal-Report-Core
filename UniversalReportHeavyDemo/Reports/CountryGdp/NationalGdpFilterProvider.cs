@@ -9,16 +9,17 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
         public Dictionary<string, Expression<Func<NationalGdp, bool>>> Filters { get; } = new()
     {
         { "Canada", p => p.CountryName == "Canada" },
-        { "Mexico", p => p.CountryName == "Mexico" }
+        { "Mexico", p => p.CountryName == "Mexico" },
+        { "Pakistan", p => p.CountryName == "Pakistan" },
+        { "Japan", p => p.CountryName == "Japan" }
     };
 
-        public IEnumerable<IEnumerable<string>> GetFacetKeys()
+        public Dictionary<string, List<string>> GetFacetKeys()
         {
-            return new List<IEnumerable<string>>
-        {
-            new List<string> { "Canada", "Mexico" },
-            new List<string> { "Male", "Female" }
-        };
+            return new Dictionary<string, List<string>>
+            {
+                { "Country", new List<string> { "Canada", "Mexico", "Pakistan", "Japan" } }
+            };
         }
 
         public Expression<Func<NationalGdp, bool>> GetFilter(string key)

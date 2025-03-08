@@ -17,7 +17,7 @@ namespace UniversalReportCore.Ui
         Task<ICohort[]?> GetCohortsAsync(int[] cohortIds);
         PagedQueryParametersBase CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
         List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
-        List<SelectListItem> GetFilterSelectList(string[]? keys);
+        List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? keys);
 
     }
 }

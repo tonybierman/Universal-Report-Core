@@ -41,7 +41,7 @@ namespace UniversalReportCore.Ui.Pages
         public ICohort[] Cohorts { get; set; }
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
-        public List<SelectListItem> FilterOptions { get; private set; }
+        public List<(string Heading, List<SelectListItem> Options)> FilterOptions { get; private set; }
         public string? SelectedFilter { get; set; }
 
         public ReportPageModel(
