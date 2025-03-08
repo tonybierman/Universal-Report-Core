@@ -10,5 +10,4 @@ namespace UniversalReportCore
     {
         IFilterProvider<T> GetProvider(string key);
     }
-
 }
