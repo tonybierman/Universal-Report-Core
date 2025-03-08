@@ -18,9 +18,9 @@ namespace UniversalReportCore.Tests.Reports.Acme
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<Widget> queryFactory,
             AcmeDbContext dbContext,
-            IFilterProviderRegistry<Widget> filterRegistry,
+            IFilterProvider<Widget> filterProvider,
             FilterFactory<Widget> filterFactory,
-            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterRegistry, filterFactory, mapper)
+            IMapper mapper) : base(reportService, reportColumnFactory, queryFactory, filterProvider, filterFactory, mapper)
         {
             DefaultSort = "CityAsc";
             _dbContext = dbContext;
