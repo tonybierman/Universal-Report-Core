@@ -10,7 +10,7 @@ namespace UniversalReportCore.HardQuerystringVariables
         /// <summary>
         /// Gets an enumerable collection of all query parameters as <see cref="IHardVariable"/>.
         /// </summary>
-        public IEnumerable<IHardVariable> Array => new List<IHardVariable> { Pi, Ipp, SortOrder, CohortIds, Slug };
+        public IEnumerable<IHardVariable> Array => new List<IHardVariable> { Pi, Ipp, SortOrder, CohortIds, Slug, FilterKeys };
 
         /// <summary>
         /// Gets the hardened paging index parameter.

@@ -9,10 +9,9 @@ namespace UniversalReportCore
     /// Supports faceted filtering with AND/OR combinations.
     /// </summary>
     /// <typeparam name="T">The type of entity being filtered.</typeparam>
-    public interface IFilterProvider<T>
+    public interface IFilterProvider<T> : IFilterProviderBase
     {
         Dictionary<string, Expression<Func<T, bool>>> Filters { get; }
-        Dictionary<string, List<string>> GetFacetKeys();
         Expression<Func<T, bool>> GetFilter(string key);
     }
 }

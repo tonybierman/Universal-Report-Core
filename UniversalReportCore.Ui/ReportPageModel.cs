@@ -111,6 +111,8 @@ namespace UniversalReportCore.Ui.Pages
             // Load data
             var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value);
             parameters.DisplayKey = displayKey;
+            if (!Params.FilterKeys.Validate(pageHelper.FilterProvider))
+                return StatusCode(422); // "Invalid filter provider key"
             parameters.FilterKeys = Params.FilterKeys.Value;
             parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value, Params.FilterKeys.Value);
 

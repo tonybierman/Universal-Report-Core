@@ -166,6 +166,7 @@ namespace UniversalReportCore.Ui
                 )).ToList();
         }
 
+        public IFilterProviderBase FilterProvider { get => _filterProvider; }
 
         #endregion
 

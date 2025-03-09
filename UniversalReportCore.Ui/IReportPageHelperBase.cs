@@ -18,6 +18,7 @@ namespace UniversalReportCore.Ui
         PagedQueryParametersBase CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
         List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
         List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? keys);
+        IFilterProviderBase FilterProvider { get; }
 
     }
 }
