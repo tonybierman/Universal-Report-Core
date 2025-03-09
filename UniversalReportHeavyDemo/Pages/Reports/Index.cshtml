@@ -9,42 +9,52 @@
 <div class="container mt-4">
     @if (Model.Items != null && Model.Items.Any())
     {
-        <form method="get">
-            @foreach (var filterGroup in Model.FilterOptions)
-            {
-                <fieldset class="border p-3">
-                    <legend class="w-100 bg-light text-dark text-center py-1">@filterGroup.Heading</legend>
-                    @foreach (var filter in filterGroup.Options)
+        <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
+            <span class="btn-group btn-group-sm" role="group" aria-label="First group">
+                <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                    Filter
+                </button>
+            </span>
+        </span>
+        <div class="collapse" id="collapseFilter">
+            <div class="card card-body">
+                <form method="get">
+                    @foreach (var filterGroup in Model.FilterOptions)
                     {
-                        bool isSelected = filter.Selected;
+                        <fieldset class="border p-3">
+                            <legend class="w-100 bg-light text-dark text-center py-1">@filterGroup.Heading</legend>
+                            @foreach (var filter in filterGroup.Options)
+                            {
+                                bool isSelected = filter.Selected;
 
-                        <label>
-                            <input type="checkbox"
-                                   name="filters"
-                                   value="@filter.Value"
-                                   checked="@isSelected"
-                                   onchange="this.form.submit()" />
-                            @filter.Text
-                        </label>
+                                <label>
+                                    <input type="checkbox"
+                                           name="filters"
+                                           value="@filter.Value"
+                                           checked="@isSelected"
+                                           onchange="this.form.submit()" />
+                                    @filter.Text
+                                </label>
+                            }
+                        </fieldset>
                     }
-                </fieldset>
-            }
 
-            <!-- Preserve Other Query Parameters -->
-            <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-            <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-            <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-            <input type="hidden" name="pi" value="@Model.Items.PageIndex" />
+                    <!-- Preserve Other Query Parameters -->
+                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                    <input type="hidden" name="pi" value="@Model.Items.PageIndex" />
 
-            @if (Model.Params.CohortIds.Value != null)
-            {
-                @foreach (var cohortId in Model.Params.CohortIds.Value)
-                {
-                    <input type="hidden" name="cohortIds" value="@cohortId" />
-                }
-            }
-        </form>
-
+                    @if (Model.Params.CohortIds.Value != null)
+                    {
+                        @foreach (var cohortId in Model.Params.CohortIds.Value)
+                        {
+                            <input type="hidden" name="cohortIds" value="@cohortId" />
+                        }
+                    }
+                </form>
+            </div>
+        </div>
         <table class="table table-striped mt-3">
             <thead>
                 <tr class="bg-light">
@@ -106,7 +116,7 @@
     <div class="text-center">
         @if (@Model?.Items?.Count > 0)
         {
-            @await Html.PartialAsync("_ReportItemsPerPageSelectorPartial", new ItemsPerPageSelectorViewModel (Model?.Params, Model?.Items))
+            @await Html.PartialAsync("_ReportItemsPerPageSelectorPartial", new ItemsPerPageSelectorViewModel(Model?.Params, Model?.Items))
         }
         @if (Model?.Items?.HasMultiplePages == true)
         {
