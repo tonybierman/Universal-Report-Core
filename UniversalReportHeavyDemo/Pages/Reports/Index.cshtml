@@ -18,7 +18,7 @@
         </span>
         <div class="collapse" id="collapseFilter">
             <div class="card card-body">
-                @await Html.PartialAsync("_FacetedBrowserPartial", new FacetedBrowserViewModel(){ Params = Model.Params, FilterOptions = Model.FilterOptions, PageIndex = Model.Items.PageIndex, SortOrder = Model.CurrentSort });
+                @await Html.PartialAsync("_FacetedBrowserPartial", new FacetedBrowserViewModel(){ Params = Model.Params, FilterOptions = Model.FilterOptions, PageIndex = Model.Items.PageIndex, SortOrder = Model.CurrentSort })
             </div>
         </div>
         <table class="table table-striped mt-3">
