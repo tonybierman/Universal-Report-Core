@@ -18,41 +18,7 @@
         </span>
         <div class="collapse" id="collapseFilter">
             <div class="card card-body">
-                <form method="get">
-                    @foreach (var filterGroup in Model.FilterOptions)
-                    {
-                        <fieldset class="border p-3">
-                            <legend class="w-100 bg-light text-dark text-center py-1">@filterGroup.Heading</legend>
-                            @foreach (var filter in filterGroup.Options)
-                            {
-                                bool isSelected = filter.Selected;
-
-                                <label>
-                                    <input type="checkbox"
-                                           name="filters"
-                                           value="@filter.Value"
-                                           checked="@isSelected"
-                                           onchange="this.form.submit()" />
-                                    @filter.Text
-                                </label>
-                            }
-                        </fieldset>
-                    }
-
-                    <!-- Preserve Other Query Parameters -->
-                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-                    <input type="hidden" name="pi" value="@Model.Items.PageIndex" />
-
-                    @if (Model.Params.CohortIds.Value != null)
-                    {
-                        @foreach (var cohortId in Model.Params.CohortIds.Value)
-                        {
-                            <input type="hidden" name="cohortIds" value="@cohortId" />
-                        }
-                    }
-                </form>
+                @await Html.PartialAsync("_FacetedBrowserPartial", new FacetedBrowserViewModel(){ Params = Model.Params, FilterOptions = Model.FilterOptions, PageIndex = Model.Items.PageIndex, SortOrder = Model.CurrentSort });
             </div>
         </div>
         <table class="table table-striped mt-3">
