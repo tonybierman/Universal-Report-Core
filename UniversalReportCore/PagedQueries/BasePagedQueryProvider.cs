@@ -147,8 +147,6 @@ namespace UniversalReportCore.PagedQueries
             return query;
         }
 
-
-
         /// <summary>
         /// Generates a paged query parameter object with applied filtering, aggregation, and metadata retrieval.
         /// </summary>

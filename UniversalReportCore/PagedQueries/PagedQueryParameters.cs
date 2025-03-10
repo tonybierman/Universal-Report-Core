@@ -19,9 +19,14 @@ namespace UniversalReportCore.PagedQueries
         public IReportColumnDefinition[] ReportColumns { get; set; }
 
         /// <summary>
-        /// Gets or sets an optional additional filter function that applies AND filtering logic to the query.
+        /// Gets or sets an optional additional filter function that applies faceted browsing logic to the query.
         /// </summary>
-        public Func<IQueryable<T>, IQueryable<T>>? UserFilter { get; set; }
+        public Func<IQueryable<T>, IQueryable<T>>? FacetedFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the filter function that applies report-specific filtering to the query.
+        /// </summary>
+        public Func<IQueryable<T>, IQueryable<T>>? ReportFilter { get; set; }
 
         /// <summary>
         /// Gets or sets an optional function for computing aggregate values (sum, count, average, etc.) on the query results.
@@ -49,7 +54,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting order.</param>
         /// <param name="itemsPerPage">The number of items per page.</param>
         /// <param name="cohortIds">An array of cohort identifiers for filtering.</param>
-        /// <param name="additionalFilter">An optional additional filter function.</param>
+        /// <param name="reportFilter">An optional additional filter function.</param>
         /// <param name="aggregateLogic">An optional aggregation function.</param>
         /// <param name="metaLogic">An optional function for computing metadata.</param>
         public PagedQueryParameters(
@@ -58,7 +63,7 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? itemsPerPage,
             int[]? cohortIds,
-            Func<IQueryable<T>, IQueryable<T>>? additionalFilter = null,
+            Func<IQueryable<T>, IQueryable<T>>? reportFilter = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? aggregateLogic = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? metaLogic = null)
         {
@@ -67,7 +72,7 @@ namespace UniversalReportCore.PagedQueries
             Sort = sort;
             ItemsPerPage = itemsPerPage;
             CohortIds = cohortIds;
-            UserFilter = additionalFilter;
+            ReportFilter = reportFilter;
             AggregateLogic = aggregateLogic;
             MetaLogic = metaLogic;
         }

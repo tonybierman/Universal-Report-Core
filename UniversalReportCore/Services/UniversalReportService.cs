@@ -44,10 +44,16 @@ namespace UniversalReport.Services
             // If no query is provided, initialize it with the DbSet for TEntity
             query = query ?? _dbContext.Set<TEntity>();
 
-            // User Filters: Apply custom filters provided in the UserFilter delegate
-            if (parameters.UserFilter != null)
+            // Report Filters: Apply report-specific filters provided in the ReportFilter delegate
+            if (parameters.ReportFilter != null)
             {
-                query = parameters.UserFilter(query);
+                query = parameters.ReportFilter(query);
+            }
+
+            // Faceted Filters: Apply custom filters provided in the FacetedFilter delegate
+            if (parameters.FacetedFilter != null)
+            {
+                query = parameters.FacetedFilter(query);
             }
 
             // Apply Date Range filter

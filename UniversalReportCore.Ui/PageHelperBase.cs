@@ -120,11 +120,11 @@ namespace UniversalReportCore.Ui
             return obj;
         }
 
-        protected virtual void EnsureUserFilter(PagedQueryParameters<TEntity> parameters)
+        protected virtual void EnsureFacetedFilter(PagedQueryParameters<TEntity> parameters)
         {
             var predicate = _filterFactory.BuildPredicate(parameters.FilterKeys);
 
-            parameters.UserFilter = (query) =>
+            parameters.FacetedFilter = (query) =>
             {
                 return query.Where(predicate);
             };
@@ -140,7 +140,7 @@ namespace UniversalReportCore.Ui
                 {
                     typedParameters.AggregateLogic = null;
                 }
-                EnsureUserFilter(typedParameters);
+                EnsureFacetedFilter(typedParameters);
                 var result = await GetPagedDataAsync(typedParameters, totalCount);
 
                 return result;
