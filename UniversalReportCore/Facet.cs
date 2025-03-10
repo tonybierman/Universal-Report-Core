@@ -27,10 +27,26 @@ namespace UniversalReportCore
         /// </summary>
         /// <param name="name">The name of the facet (e.g., "Category", "Status").</param>
         /// <param name="values">A list of filterable values associated with this facet.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> or <paramref name="values"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="values"/> contains duplicate keys.</exception>
         public Facet(string name, List<FacetValue<T>> values)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Values = values ?? throw new ArgumentNullException(nameof(values));
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (values == null) throw new ArgumentNullException(nameof(values));
+
+            var duplicateKeys = values
+                .GroupBy(v => v.Key)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicateKeys.Any())
+            {
+                throw new ArgumentException($"Duplicate FacetValue keys found: {string.Join(", ", duplicateKeys)}", nameof(values));
+            }
+
+            Name = name;
+            Values = values;
         }
     }
 }

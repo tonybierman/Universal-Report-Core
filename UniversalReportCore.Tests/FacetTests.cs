@@ -73,5 +73,46 @@ namespace UniversalReportCore.Tests
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => new Facet<int>(facetName, null));
         }
+
+        /// <summary>
+        /// Ensures that the constructor throws an exception when duplicate FacetValue keys exist.
+        /// </summary>
+        [Fact]
+        public void Constructor_ShouldThrowException_WhenDuplicateKeysExist()
+        {
+            // Arrange
+            string facetName = "Category";
+            var values = new List<FacetValue<int>>
+            {
+                new FacetValue<int>("DuplicateKey", x => x > 10),
+                new FacetValue<int>("DuplicateKey", x => x < 5) // Duplicate key
+            };
+
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() => new Facet<int>(facetName, values));
+            Assert.Contains("Duplicate FacetValue keys found: DuplicateKey", exception.Message);
+        }
+
+        /// <summary>
+        /// Ensures that the constructor works correctly when unique keys are provided.
+        /// </summary>
+        [Fact]
+        public void Constructor_ShouldAllowUniqueKeys()
+        {
+            // Arrange
+            string facetName = "Category";
+            var values = new List<FacetValue<int>>
+            {
+                new FacetValue<int>("GreaterThan10", x => x > 10),
+                new FacetValue<int>("LessThan5", x => x < 5)
+            };
+
+            // Act
+            var facet = new Facet<int>(facetName, values);
+
+            // Assert
+            Assert.Equal(facetName, facet.Name);
+            Assert.Equal(2, facet.Values.Count);
+        }
     }
 }
