@@ -22,7 +22,7 @@ namespace UniversalReportCore.Ui.Pages
     public class ReportPageModel : PageModel
     {
         // Fields
-        private readonly IMapper _mapper;
+        protected readonly IMapper _mapper;
         private readonly IReportColumnFactory _reportColumnFactory;
         private readonly IReportPageHelperFactory _pageHelperFactory;
         protected readonly IPageMetaFactory _pageMetaFactory;
