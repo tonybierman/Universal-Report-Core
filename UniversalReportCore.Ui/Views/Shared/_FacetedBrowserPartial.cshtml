@@ -3,8 +3,8 @@
 <form method="get">
     @foreach (var filterGroup in Model.FilterOptions)
     {
-        <fieldset class="border p-3">
-            <legend class="w-auto px-2 text-secondary fw-bold">@filterGroup.Heading</legend>
+        <fieldset class="border p-3 mb-1">
+            <legend class="w-auto px-2 text-secondary fw-bold h6">@filterGroup.Heading</legend>
             <ul class="list-group list-group-flush">
                 @foreach (var filter in filterGroup.Options)
                 {
