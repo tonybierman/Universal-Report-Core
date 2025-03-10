@@ -89,7 +89,7 @@ namespace UniversalReportCore.Tests
             var queryParameters = new PagedAcmeQueryParameters(_columns, 1, "Population", 10, null, filterLogic, null, null);
 
             // Act
-            var filteredResult = queryParameters.UserFilter!(data).ToList();
+            var filteredResult = queryParameters.ReportFilter!(data).ToList();
 
             // Assert
             Assert.NotNull(filteredResult);
