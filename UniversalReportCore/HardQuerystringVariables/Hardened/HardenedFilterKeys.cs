@@ -41,11 +41,12 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
             }
             else
             {
-                var validValues = filter.GetFacetKeys().Values.SelectMany(v => v).ToHashSet(); // Flatten all valid values
-                IsValid = Value.All(k => k == null || validValues.Contains(k)); // Check if all selected values exist
+                var validValues = filter.GetFacetKeys().Values.SelectMany(v => v).ToHashSet();
+                IsValid = Value.All(k => k == null || validValues.Contains(k));
             }
 
             return IsValid;
         }
+
     }
 }

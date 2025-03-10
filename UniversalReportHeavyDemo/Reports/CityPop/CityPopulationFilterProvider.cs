@@ -1,30 +1,25 @@
 ﻿using System.Linq.Expressions;
 using UniversalReportCore;
 using UniversalReportHeavyDemo.Data;
-
-public class CityPopulationFilterProvider : IFilterProvider<CityPopulation> 
+namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public Dictionary<string, Expression<Func<CityPopulation, bool>>> Filters { get; } = new()
+    public class CityPopulationFilterProvider : BaseFilterProvider<CityPopulation>
     {
-        { "Canada", p => p.CountryOrArea == "Canada" },
-        { "Mexico", p => p.CountryOrArea == "Mexico" },
-        { "Pakistan", p => p.CountryOrArea == "Pakistan" },
-        { "Japan", p => p.CountryOrArea == "Japan" },
-        { "Male", p => p.Sex == "Male" },
-        { "Female", p => p.Sex == "Female" }
-    };
-
-    public Dictionary<string, List<string>> GetFacetKeys()
-    {
-        return new Dictionary<string, List<string>>
+        public CityPopulationFilterProvider() : base(new List<Facet<CityPopulation>>
         {
-            { "Country", new List<string> { "Canada", "Mexico", "Pakistan", "Japan" } },
-            { "Gender", new List<string> { "Male", "Female" } }
-        };
-    }
-
-    public Expression<Func<CityPopulation, bool>> GetFilter(string key)
-    {
-        return Filters[key];
+            new("Country", new()
+            {
+                new("Canada", p => p.CountryOrArea == "Canada"),
+                new("Mexico", p => p.CountryOrArea == "Mexico"),
+                new("Pakistan", p => p.CountryOrArea == "Pakistan"),
+                new("Japan", p => p.CountryOrArea == "Japan"),
+            }),
+            new("Gender", new()
+            {
+                new("Male", p => p.Sex == "Male"),
+                new("Female", p => p.Sex == "Female"),
+            })
+        })
+        { }
     }
 }
