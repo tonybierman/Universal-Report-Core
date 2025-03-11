@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Mvc.Filters;
 using UniversalReportCore.Ui;
+using UniversalReportHeavyDemo.Reports;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__De
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 // *** Universal Reports
 builder.Services.AddScoped<IUniversalReportService>(provider =>
 {
@@ -45,36 +48,41 @@ builder.Services.AddScoped<IUniversalReportService>(provider =>
     return new UniversalReportService(dbContext, mapper);
 });
 
-// Universal Reports
-builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
-builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
-builder.Services.AddScoped<IReportPageHelperFactory, PageHelperFactory>();
+//// Universal Reports
+//builder.Services.AddScoped<IPageMetaFactory, PageMetaFactory>();
+//builder.Services.AddScoped<IReportColumnFactory, ReportColumnFactory>();
+//builder.Services.AddScoped<IReportPageHelperFactory, HeavyDemoPageHelperFactory>();
 
-// ** CityPopulation
-// Entity Type
-builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
-// Report Instances
-builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
-builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
-builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
-builder.Services.AddTransient(typeof(IReportPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
+//// ** CityPopulation
+//// Entity Type
+//builder.Services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
+//// Report Instances
+//builder.Services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
+//builder.Services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
+//builder.Services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
+//builder.Services.AddTransient(typeof(IReportPageHelper<CityPopulation, CityPopulationViewModel>), typeof(CityPopulationDemoPageHelper));
 
-// ** NationalGdp
-// Entity Type
-builder.Services.AddScoped<IQueryFactory<NationalGdp>, NationalGdpQueryFactory>();
-// Report Instances
-builder.Services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
-builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
-builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
-builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
+//// ** NationalGdp
+//// Entity Type
+//builder.Services.AddScoped<IQueryFactory<NationalGdp>, NationalGdpQueryFactory>();
+//// Report Instances
+//builder.Services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
+//builder.Services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
+//builder.Services.AddTransient(typeof(IReportPageHelper<NationalGdp, NationalGdpViewModel>), typeof(CountryGdpDemoPageHelper));
+//builder.Services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
 
-// Register all filter providers for each entity type
-builder.Services.AddSingleton<IFilterProvider<CityPopulation>, CityPopulationFilterProvider>();
-builder.Services.AddSingleton<IFilterProvider<NationalGdp>, NationalGdpFilterProvider>();
+//// Register all filter providers for each entity type
+//builder.Services.AddSingleton<IFilterProvider<CityPopulation>, CityPopulationFilterProvider>();
+//builder.Services.AddSingleton<IFilterProvider<NationalGdp>, NationalGdpFilterProvider>();
 
-// Register FilterFactory<T> for predicate building
-builder.Services.AddTransient<FilterFactory<CityPopulation>>();
-builder.Services.AddTransient<FilterFactory<NationalGdp>>();
+//// Register FilterFactory<T> for predicate building
+//builder.Services.AddTransient<FilterFactory<CityPopulation>>();
+//builder.Services.AddTransient<FilterFactory<NationalGdp>>();
+
+// Add Universal Report Core services
+builder.Services.AddUniversalReport();
+// Add Universal Report frontend-specific services
+builder.Services.AddFrontendReportServices();
 
 builder.Services.AddRazorPages();
 
