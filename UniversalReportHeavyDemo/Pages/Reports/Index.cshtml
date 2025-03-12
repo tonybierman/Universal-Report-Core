@@ -104,4 +104,31 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const accordion = document.getElementById("collapseFilter");
+
+            // Restore state from localStorage
+            const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+            Object.keys(savedState).forEach(id => {
+                const element = document.getElementById(id);
+                if (element && savedState[id]) {
+                    new bootstrap.Collapse(element, { toggle: true });
+                }
+            });
+
+            // Save state when accordion is shown or hidden
+            accordion.addEventListener("shown.bs.collapse", event => {
+                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+                savedState[event.target.id] = true;
+                localStorage.setItem("accordionState", JSON.stringify(savedState));
+            });
+
+            accordion.addEventListener("hidden.bs.collapse", event => {
+                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+                savedState[event.target.id] = false;
+                localStorage.setItem("accordionState", JSON.stringify(savedState));
+            });
+        });
+    </script>
 }
