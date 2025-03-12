@@ -174,8 +174,10 @@ namespace UniversalReportCore.Tests
             // Arrange
             var columns = new IReportColumnDefinition[] { /* mock column definitions */ };
             var query = new List<Widget> { /* mock data */ }.AsQueryable();
-
-            var dbContextMock = new Mock<AcmeDbContext>();
+            var options = new DbContextOptionsBuilder<AcmeDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
+                .Options;
+            var dbContextMock = new Mock<AcmeDbContext>(options);
             var helper = new Mock<PagedAcmeQueryProvider>(dbContextMock.Object) { CallBase = true };
 
             // Expected aggregates result
