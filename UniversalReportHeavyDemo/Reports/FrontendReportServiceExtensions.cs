@@ -14,29 +14,33 @@ namespace UniversalReportHeavyDemo.Reports
 {
     public static class FrontendReportServiceExtensions
     {
-        public static IServiceCollection AddCityPopulationServices(this IServiceCollection services)
-        {
-            services.AddScoped<IQueryFactory<CityPopulation>, CityPopulationQueryFactory>();
-            services.AddScoped<IPageMetaProvider, CityPopulationDemoPageMetaProvider>();
-            services.AddScoped<IReportColumnProvider, CityPopulationDemoReportColumnProvider>();
-            services.AddScoped<IPagedQueryProvider<CityPopulation>, CityPopulationDemoQueryProvider>();
-            services.AddTransient<IReportPageHelper<CityPopulation, CityPopulationViewModel>, CityPopulationDemoPageHelper>();
-            services.AddSingleton<IFilterProvider<CityPopulation>, CityPopulationFilterProvider>();
-            services.AddTransient<FilterFactory<CityPopulation>>();
-            return services;
-        }
+        /// <summary>
+        /// Registers CityPopulation report services.
+        /// </summary>
+        public static IServiceCollection AddCityPopulationServices(this IServiceCollection services) =>
+            services.AddEntityReportServices<
+                CityPopulation,
+                CityPopulationViewModel,
+                CityPopulationQueryFactory,
+                CityPopulationDemoPageMetaProvider,
+                CityPopulationDemoReportColumnProvider,
+                CityPopulationDemoQueryProvider,
+                CityPopulationDemoPageHelper,
+                CityPopulationFilterProvider>();
 
-        public static IServiceCollection AddNationalGdpServices(this IServiceCollection services)
-        {
-            services.AddScoped<IQueryFactory<NationalGdp>, NationalGdpQueryFactory>();
-            services.AddScoped<IPageMetaProvider, CountryGdpDemoPageMetaProvider>();
-            services.AddScoped<IReportColumnProvider, CountryGdpDemoReportColumnProvider>();
-            services.AddScoped<IPagedQueryProvider<NationalGdp>, CountryGdpDemoQueryProvider>();
-            services.AddTransient<IReportPageHelper<NationalGdp, NationalGdpViewModel>, CountryGdpDemoPageHelper>();
-            services.AddSingleton<IFilterProvider<NationalGdp>, NationalGdpFilterProvider>();
-            services.AddTransient<FilterFactory<NationalGdp>>();
-            return services;
-        }
+        /// <summary>
+        /// Registers NationalGdp report services.
+        /// </summary>
+        public static IServiceCollection AddNationalGdpServices(this IServiceCollection services) =>
+            services.AddEntityReportServices<
+                NationalGdp,
+                NationalGdpViewModel,
+                NationalGdpQueryFactory,
+                CountryGdpDemoPageMetaProvider,
+                CountryGdpDemoReportColumnProvider,
+                CountryGdpDemoQueryProvider,
+                CountryGdpDemoPageHelper,
+                NationalGdpFilterProvider>();
 
         public static IServiceCollection AddFrontendReportServices(this IServiceCollection services)
         {
