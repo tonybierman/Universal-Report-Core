@@ -5,6 +5,10 @@
     /// </summary>
     public class DateRangeFilter
     {
+        public DateRangeFilter()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DateRangeFilter"/> class.
         /// </summary>
