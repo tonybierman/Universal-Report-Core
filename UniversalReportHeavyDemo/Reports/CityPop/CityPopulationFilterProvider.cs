@@ -7,14 +7,14 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
     {
         public CityPopulationFilterProvider() : base(new List<Facet<CityPopulation>>
         {
-            new("Country", new()
+            new("CountryOrArea", new()
             {
                 new("Canada", p => p.CountryOrArea == "Canada"),
                 new("Mexico", p => p.CountryOrArea == "Mexico"),
                 new("Pakistan", p => p.CountryOrArea == "Pakistan"),
                 new("Japan", p => p.CountryOrArea == "Japan"),
             }),
-            new("Gender", new()
+            new("Sex", new()
             {
                 new("Male", p => p.Sex == "Male"),
                 new("Female", p => p.Sex == "Female"),
