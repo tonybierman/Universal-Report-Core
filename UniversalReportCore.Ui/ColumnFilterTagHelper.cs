@@ -34,19 +34,20 @@ namespace UniversalReportCore.Ui
 
             var sb = new StringBuilder();
             sb.Append("<th>");
-            sb.Append("<ul class=\"list-group list-group-flush\">");
+            sb.Append("<ul class=\"list-group list-group-flush small\">");
 
             foreach (var filter in FilterOptions)
             {
                 var isChecked = filter.Selected ? "checked" : "";
 
                 sb.Append($@"
-                    <li class='list-group-item'>
-                        <label>
+                    <li class='list-group-item bg-transparent border-0 py-1 px-2'>
+                        <label class='d-flex align-items-center'>
                             <input type='checkbox' 
                                    name='filters' 
                                    value='{filter.Value}' 
                                    {isChecked}
+                                   class='me-2' 
                                    onchange='this.form.submit()' />
                             {filter.Text}
                         </label>
