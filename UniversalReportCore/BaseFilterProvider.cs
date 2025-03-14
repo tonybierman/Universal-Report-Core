@@ -29,9 +29,11 @@ namespace UniversalReportCore
         /// <summary>
         /// Retrieves a dictionary of all available filters, mapping keys to their corresponding expressions.
         /// </summary>
-        public Dictionary<string, Expression<Func<T, bool>>> Filters => _facets
+        public Dictionary<string, Expression<Func<T, bool>>> Filters => Facets
             .SelectMany(f => f.Values)
             .ToDictionary(v => v.Key, v => v.Filter);
+
+        public List<Facet<T>> Facets => _facets;
 
         /// <summary>
         /// Retrieves a dictionary of facet categories and their corresponding filter keys.
@@ -39,7 +41,7 @@ namespace UniversalReportCore
         /// <returns>A dictionary where keys are facet names and values are lists of filter keys.</returns>
         public Dictionary<string, List<string>> GetFacetKeys()
         {
-            return _facets.ToDictionary(f => f.Name, f => f.Values.Select(v => v.Key).ToList());
+            return Facets.ToDictionary(f => f.Name, f => f.Values.Select(v => v.Key).ToList());
         }
 
         /// <summary>

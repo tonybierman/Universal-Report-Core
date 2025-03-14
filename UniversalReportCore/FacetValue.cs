@@ -18,6 +18,8 @@ namespace UniversalReportCore
         /// </summary>
         public string Key { get; }
 
+        public string DisplayName { get; set; } // UI-friendly name (e.g., "Canada", "Male")
+
         /// <summary>
         /// Gets the filter expression associated with this facet value.
         /// </summary>
@@ -28,10 +30,11 @@ namespace UniversalReportCore
         /// </summary>
         /// <param name="key">The unique key representing this facet value.</param>
         /// <param name="filter">The filter expression used to filter data based on this facet value.</param>
-        public FacetValue(string key, Expression<Func<T, bool>> filter)
+        public FacetValue(string key, Expression<Func<T, bool>> filter, string displayName = null)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             Filter = filter ?? throw new ArgumentNullException(nameof(filter));
+            DisplayName = displayName ?? key;
         }
     }
 }

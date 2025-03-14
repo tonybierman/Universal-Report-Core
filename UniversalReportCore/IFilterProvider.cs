@@ -12,6 +12,7 @@ namespace UniversalReportCore
     public interface IFilterProvider<T> : IFilterProviderBase
     {
         Dictionary<string, Expression<Func<T, bool>>> Filters { get; }
+        List<Facet<T>> Facets { get; }
         Expression<Func<T, bool>> GetFilter(string key);
     }
 }

@@ -148,7 +148,7 @@ namespace UniversalReportCore.Ui
             throw new ArgumentException($"Invalid parameters type. Expected {typeof(PagedQueryParameters<TEntity>)}, received {parameters.GetType()}");
         }
 
-        public List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? keys)
+        public List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? selectedKeys)
         {
             return _filterProvider
                 .GetFacetKeys()
@@ -158,13 +158,15 @@ namespace UniversalReportCore.Ui
                         .Where(key => _filterProvider.Filters.ContainsKey(key)) // Ensure the key exists
                         .Select(key => new SelectListItem
                         {
-                            Text = key, // Display filter name (e.g., "Canada", "Male")
-                            Value = key, // Store key for form submission
-                            Selected = keys?.Contains(key) == true
+                            Text = _filterProvider.Facets.SelectMany(f => f.Values)
+                                .FirstOrDefault(v => v.Key == key)?.DisplayName ?? key, // Use DisplayName if available
+                            Value = key,
+                            Selected = selectedKeys?.Contains(key) == true
                         })
                         .ToList()
                 )).ToList();
         }
+
 
         public IFilterProviderBase FilterProvider { get => _filterProvider; }
 

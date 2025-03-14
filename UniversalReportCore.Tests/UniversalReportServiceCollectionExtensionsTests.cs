@@ -168,6 +168,8 @@ namespace UniversalReportCore.Tests
     {
         public Dictionary<string, Expression<Func<TestEntity, bool>>> Filters => throw new NotImplementedException();
 
+        List<Facet<TestEntity>> IFilterProvider<TestEntity>.Facets => throw new NotImplementedException();
+
         public Dictionary<string, List<string>> GetFacetKeys()
         {
             throw new NotImplementedException();

@@ -76,9 +76,15 @@ namespace UniversalReportCore.Ui.Pages
                 else
                 {
                     // Add if not present
-                    filterList.Add(SelectedFilter);
+                    if (SelectedFilter != null)
+                    {
+                        filterList.Add(SelectedFilter);
+                    }
                 }
-                Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
+                if (filterList != null)
+                {
+                    Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
+                }
             }
 
             // Page Helper
