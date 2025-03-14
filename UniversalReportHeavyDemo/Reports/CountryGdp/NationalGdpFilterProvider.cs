@@ -4,27 +4,18 @@ using UniversalReportHeavyDemo.Data;
 
 namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public class NationalGdpFilterProvider : IFilterProvider<NationalGdp>
+    public class NationalGdpFilterProvider : BaseFilterProvider<NationalGdp>
     {
-        public Dictionary<string, Expression<Func<NationalGdp, bool>>> Filters { get; } = new()
-    {
-        { "Canada", p => p.CountryName == "Canada" },
-        { "Mexico", p => p.CountryName == "Mexico" },
-        { "Pakistan", p => p.CountryName == "Pakistan" },
-        { "Japan", p => p.CountryName == "Japan" }
-    };
-
-        public Dictionary<string, List<string>> GetFacetKeys()
+        public NationalGdpFilterProvider() : base(new List<Facet<NationalGdp>>
         {
-            return new Dictionary<string, List<string>>
+            new("CountryOrArea", new()
             {
-                { "Country", new List<string> { "Canada", "Mexico", "Pakistan", "Japan" } }
-            };
-        }
-
-        public Expression<Func<NationalGdp, bool>> GetFilter(string key)
-        {
-            return Filters[key];
-        }
+                new("Canada", p => p.CountryName == "Canada"),
+                new("Mexico", p => p.CountryName == "Mexico"),
+                new("Pakistan", p => p.CountryName == "Pakistan"),
+                new("Japan", p => p.CountryName == "Japan"),
+            })
+        })
+        { }
     }
 }

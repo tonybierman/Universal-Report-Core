@@ -14,16 +14,40 @@
 }
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 <div class="container mt-4">
-    @if (Model.Items != null && Model.Items.Any())
-    {
+    <form method="get">
         <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
             <span class="btn-group btn-group-sm" role="group" aria-label="First group">
-                <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
-                    Filter
-                </button>
+                @if (Model.Items != null && Model.Items.Any())
+                {
+                    <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                        <i class="ms-Icon ms-Icon--FilterSolid me-2" aria-hidden="true"></i> Filters
+                    </button>
+                }
+                @if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
+                {
+                    <!-- Preserve Other Query Parameters -->
+                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                    <input type="hidden" name="pi" value="@Model.Params.Pi" />
+
+                    @if (Model.Params.CohortIds.Value != null)
+                    {
+                        @foreach (var cohortId in Model.Params.CohortIds.Value)
+                        {
+                            <input type="hidden" name="cohortIds" value="@cohortId" />
+                        }
+                    }
+
+                    <button type="submit" class="btn btn-secondary d-flex align-items-center">
+                        <i class="ms-Icon ms-Icon--ClearFilter me-2" aria-hidden="true"></i> Clear Filters
+                    </button>
+                }
             </span>
         </span>
-
+    </form>
+    @if (Model.Items != null && Model.Items.Any())
+    {
         <table class="table table-striped mt-3">
             <thead>
                 <tr class="bg-light">
