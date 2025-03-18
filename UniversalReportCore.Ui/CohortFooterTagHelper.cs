@@ -46,7 +46,7 @@ namespace UniversalReportCoreUi
 
             // Set up the <td> element
             output.TagName = "td";
-            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "hide-in-portrait" : "");
+            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "text-end hide-in-portrait" : "text-end");
 
             if (Column.IsDisplayKey)
             {

@@ -43,7 +43,7 @@ namespace UniversalReportCore.Ui
 
             // Set up the <th> element
             output.TagName = "th";
-            output.Attributes.SetAttribute("class", $"align-middle {(Column.HideInPortrait ? "hide-in-portrait" : "")}");
+            output.Attributes.SetAttribute("class", $"text-center {(Column.HideInPortrait ? "hide-in-portrait" : "")}");
 
             // If the column is sortable, generate the <a> link
             if (Column.IsSortable)

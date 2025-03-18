@@ -28,15 +28,15 @@ else
 {
     switch (Model.Item.GetType().GetProperty(Model.PropertyName)?.PropertyType)
     {
-        case Type t when t == typeof(int?) || t == typeof(int):
-            <text>0</text>
+        case Type t when t == typeof(long) || t == typeof(long?) || t == typeof(int?) || t == typeof(int):
+            @string.Format("{0}", 0)
             break;
-        case Type t when t == typeof(long?) || t == typeof(double?) || t == typeof(decimal?) ||
-            t == typeof(long) || t == typeof(double) || t == typeof(decimal):
-            <text>0.00</text>
+        case Type t when t ==  typeof(double?) || t == typeof(decimal?) ||
+            t ==  typeof(double) || t == typeof(decimal):
+            @string.Format("{0:N2}", 0)
             break;
         default:
-            <text>-</text>
+            @string.Empty
             break;
     }
 }

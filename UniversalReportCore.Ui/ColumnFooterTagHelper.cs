@@ -25,7 +25,7 @@ namespace UniversalReportCoreUi
             output.TagName = "th";
 
             // Apply CSS class based on visibility rules
-            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "hide-in-portrait" : "");
+            output.Attributes.SetAttribute("class", Column.HideInPortrait ? "text-end hide-in-portrait" : "text-end");
 
             // If the column is a display key, render an empty <th>
             if (Column.IsDisplayKey)

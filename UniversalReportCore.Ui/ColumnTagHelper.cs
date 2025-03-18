@@ -28,13 +28,20 @@ namespace UniversalReportCore.Ui
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            var fieldVal = Item.GetType().GetProperty(Column.PropertyName)?.GetValue(Item);
+            string cssAlign = string.Empty;
+            if (fieldVal == null || Constants.NumericTypes.Contains(fieldVal.GetType()))
+            {
+                cssAlign = "text-end"; // Bootstrap class for right alignment
+            }
+
             if (_htmlHelper is HtmlHelper<dynamic> concreteHelper)
             {
                 concreteHelper.Contextualize(ViewContext);  // Now it will work!
             }
 
             output.TagName = "td";
-            var cssClasses = "align-middle " +
+            var cssClasses = $"{cssAlign}" +
                             (Column.HideInPortrait ? " hide-in-portrait" : "");
 
             output.Attributes.Add("class", cssClasses);
