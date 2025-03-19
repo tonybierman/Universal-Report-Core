@@ -10,6 +10,6 @@ namespace UniversalReportCore
     {
         bool CanExecute(string commandName, object commandData);
         Task<CommandResult> ExecuteAsync(string commandName, object commandData);
-        object Deserialize(string command, string data);
+        Task<CommandResult> ExecuteAsync(string commandName, string commandData);
     }
 }
