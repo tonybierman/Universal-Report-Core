@@ -9,6 +9,6 @@ namespace UniversalReportCore
     public interface ICommandHandler
     {
         bool CanExecute(string commandName, object commandData);
-        Task ExecuteAsync(string commandName, object commandData);
+        Task<CommandResult> ExecuteAsync(string commandName, object commandData);
     }
 }
