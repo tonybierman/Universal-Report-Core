@@ -2,6 +2,7 @@
 using LinqKit;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Win32;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -41,6 +42,32 @@ namespace UniversalReportCore.Ui
             _filterProvider = filterProvider;
             _filterFactory = filterFactory;
             DefaultSort = "Product.SkuDesc";
+        }
+
+        public virtual bool HasFilters()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether any column property names intersect with the filter provider's facet keys.
+        /// </summary>
+        /// <param name="columns">The list of column definitions to check for filter intersection.</param>
+        /// <returns><c>true</c> if there is any overlap between column PropertyNames and facet keys; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="columns"/> or <see cref="_filterProvider"/> is null.</exception>
+        public bool HasFilters(List<IReportColumnDefinition> columns)
+        {
+            if (columns == null)
+                throw new ArgumentNullException(nameof(columns));
+            if (_filterProvider == null)
+                throw new ArgumentNullException(nameof(_filterProvider));
+
+            var facetKeys = _filterProvider.GetFacetKeys();
+            if (facetKeys == null || !facetKeys.Keys.Any())
+                return false;
+
+            // Check intersection of facet keys and column PropertyNames
+            return facetKeys.Keys.Intersect(columns.Select(a => a.PropertyName)).Any();
         }
 
         PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)

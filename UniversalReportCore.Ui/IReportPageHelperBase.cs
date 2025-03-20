@@ -19,6 +19,6 @@ namespace UniversalReportCore.Ui
         List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
         List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? keys);
         IFilterProviderBase FilterProvider { get; }
-
+        bool HasFilters(List<IReportColumnDefinition> columns);
     }
 }

@@ -43,7 +43,7 @@ namespace UniversalReportCore.Ui.Pages
         [BindProperty] public long[]? SelectedIds { get; set; }
         public List<(string Heading, List<SelectListItem> Options)> FilterOptions { get; private set; }
         public string? SelectedFilter { get; set; }
-
+        public bool HasFiltersAvailable { get; set; }
         public ReportPageModel(
             ILogger logger,
             IMapper mapper,
@@ -92,6 +92,9 @@ namespace UniversalReportCore.Ui.Pages
 
             // Define report columns dynamically based on the query type
             ReportColumns = pageHelper.GetReportColumns(Params.Slug.Value);
+
+            // Are there any filters available
+            HasFiltersAvailable = pageHelper.HasFilters(ReportColumns);
 
             // Set the sort order
             Params.SortOrder = new HardenedColumnSort(Params.SortOrder.Value ?? pageHelper.DefaultSort);
