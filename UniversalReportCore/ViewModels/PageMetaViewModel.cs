@@ -14,5 +14,6 @@
         /// Gets or sets the subtitle of the report page.
         /// </summary>
         public string? Subtitle { get; set; }
+        public string ActionWellPartial { get; set; }
     }
 }
