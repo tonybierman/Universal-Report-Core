@@ -17,7 +17,7 @@
     <form method="get">
         <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
             <span class="btn-group btn-group-sm" role="group" aria-label="First group">
-                @if (Model.Items != null && Model.Items.Any())
+                @if (Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable)
                 {
                     <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
                         <i class="ms-Icon ms-Icon--FilterSolid me-2" aria-hidden="true"></i> Filters
