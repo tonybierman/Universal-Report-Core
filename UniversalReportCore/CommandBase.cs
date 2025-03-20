@@ -15,7 +15,7 @@ namespace UniversalReportCore
         /// <summary>
         /// The deserialized data value used by the command during execution.
         /// </summary>
-        public T _dataValue;
+        protected T _dataValue;
 
         /// <summary>
         /// Deserializes a JSON string into the command’s data value.
@@ -39,8 +39,25 @@ namespace UniversalReportCore
             if (string.IsNullOrEmpty(data))
                 throw new JsonException("Command data cannot be null or empty.");
 
-            _dataValue = JsonHelper.Deserialize<T>(data); // Assuming JsonUtility; adjust to JsonHelper if needed
+            _dataValue = JsonHelper.Deserialize<T>(data); // Adjust to JsonHelper if needed
             return _dataValue;
+        }
+
+        /// <summary>
+        /// Sets the command’s data value directly, bypassing JSON deserialization.
+        /// </summary>
+        /// <param name="data">The data value to set.</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="data"/> is not of type <typeparamref name="T"/>.</exception>
+        public void SetData(object data)
+        {
+            if (data is T typedData)
+            {
+                _dataValue = typedData;
+            }
+            else
+            {
+                throw new ArgumentException($"Data must be of type {typeof(T).Name}.", nameof(data));
+            }
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace UniversalReportCore
 {
     /// <summary>
     /// Base class for handling commands by delegating to registered <see cref="ICommand"/> implementations.
-    /// Provides two execution paths: one for pre-deserialized data and one for raw JSON strings.
+    /// Provides multiple execution paths: pre-deserialized object, raw JSON strings, and integer data.
     /// </summary>
     public class CommandHandlerBase : ICommandHandler
     {
@@ -100,6 +100,42 @@ namespace UniversalReportCore
             }
 
             return await command.ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Executes a command asynchronously using an integer as the command data.
+        /// Resets the command’s state and sets the data directly, bypassing JSON deserialization.
+        /// </summary>
+        /// <param name="commandName">The name of the command to execute.</param>
+        /// <param name="data">The integer data for the command.</param>
+        /// <returns>A <see cref="CommandResult"/> indicating the outcome of the command execution.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="commandName"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the command does not support integer data (i.e., is not a <see cref="CommandBase{T}"/> with T as <see cref="int"/>).</exception>
+        public virtual async Task<CommandResult> ExecuteAsync(string commandName, int data)
+        {
+            if (string.IsNullOrEmpty(commandName))
+                throw new ArgumentNullException(nameof(commandName));
+
+            if (!_commands.TryGetValue(commandName, out var command))
+            {
+                return CommandResult.Fail($"Command '{commandName}' not found.");
+            }
+
+            // Ensure the command is a CommandBase<int> to set _dataValue via SetData
+            if (command is CommandBase<int> intCommand)
+            {
+                intCommand.Reset(); // Clear previous state
+                intCommand.SetData(data); // Set _dataValue via protected method
+
+                if (!intCommand.CanExecute())
+                {
+                    return CommandResult.Fail($"Command '{commandName}' cannot be executed with data '{data}'.");
+                }
+
+                return await intCommand.ExecuteAsync();
+            }
+
+            return CommandResult.Fail($"Command '{commandName}' does not support integer data.");
         }
     }
 }
