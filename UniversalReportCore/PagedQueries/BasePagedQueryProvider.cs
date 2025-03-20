@@ -37,6 +37,10 @@ namespace UniversalReportCore.PagedQueries
             foreach (var column in columns)
             {
                 var propertyName = column.PropertyName;
+
+                if (column.PropertyName == null)
+                    continue;
+
                 var property = typeof(T).GetProperty(propertyName);
 
                 if (property == null)

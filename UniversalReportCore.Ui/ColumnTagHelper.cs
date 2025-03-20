@@ -40,11 +40,11 @@ namespace UniversalReportCore.Ui
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
 
-            // Try to get explicit CSS class from Item, but only if CssClass is non-null
+            // Try to get explicit CSS class from item, but only if CssClass is non-null/empty
             object cssAlign = null;
             if (!string.IsNullOrEmpty(column.CssClass))
             {
-                cssAlign = column.CssClass;
+                cssAlign = item.GetType().GetProperty(column.CssClass)?.GetValue(item);
             }
 
             // If CssClass is null, empty, or not a string, determine alignment based on data type
@@ -52,9 +52,16 @@ namespace UniversalReportCore.Ui
             {
                 cssAlign = "text-start"; // Default to left alignment
 
-                // Get field value from PropertyName or fall back to ViewModelName
-                var fieldVal = item.GetType().GetProperty(column.PropertyName)?.GetValue(item)
-                    ?? item.GetType().GetProperty(column.ViewModelName)?.GetValue(item);
+                // Get field value from PropertyName or fall back to ViewModelName, with null checks
+                object fieldVal = null;
+                if (!string.IsNullOrEmpty(column.PropertyName))
+                {
+                    fieldVal = item.GetType().GetProperty(column.PropertyName)?.GetValue(item);
+                }
+                if (fieldVal == null && !string.IsNullOrEmpty(column.ViewModelName))
+                {
+                    fieldVal = item.GetType().GetProperty(column.ViewModelName)?.GetValue(item);
+                }
 
                 // Right-align null or numeric values
                 if (fieldVal == null || Constants.NumericTypes.Contains(fieldVal.GetType()))

@@ -14,8 +14,11 @@
         {
             foreach (var column in columns)
             {
-                var isCurrentColumn = currentSort.StartsWith(column.PropertyName, StringComparison.OrdinalIgnoreCase);
-                column.IsSortDescending = isCurrentColumn && currentSort.EndsWith("Desc", StringComparison.OrdinalIgnoreCase);
+                if (column.IsSortable && column.PropertyName != null)
+                {
+                    var isCurrentColumn = currentSort.StartsWith(column.PropertyName, StringComparison.OrdinalIgnoreCase);
+                    column.IsSortDescending = isCurrentColumn && currentSort.EndsWith("Desc", StringComparison.OrdinalIgnoreCase);
+                }
             }
         }
 

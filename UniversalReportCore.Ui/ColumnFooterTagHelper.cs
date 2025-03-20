@@ -34,19 +34,22 @@ namespace UniversalReportCoreUi
                 return;
             }
 
-            // Retrieve the aggregate value
-            var value = Items?.Aggregates?.ContainsKey(Column.PropertyName) == true
-                ? Items.Aggregates[Column.PropertyName]
-                : null;
-
-            // Render the formatted value if it exists
-            if (value != null)
+            if (Column.PropertyName != null)
             {
-                string formattedValue = value is double or float or decimal
-                    ? $"{value:F2}" // Format with 2 decimal places
-                    : $"{value}";   // Default formatting for other types
+                // Retrieve the aggregate value
+                var value = Items?.Aggregates?.ContainsKey(Column.PropertyName) == true
+                    ? Items.Aggregates[Column.PropertyName]
+                    : null;
 
-                output.Content.SetContent(formattedValue);
+                // Render the formatted value if it exists
+                if (value != null)
+                {
+                    string formattedValue = value is double or float or decimal
+                        ? $"{value:F2}" // Format with 2 decimal places
+                        : $"{value}";   // Default formatting for other types
+
+                    output.Content.SetContent(formattedValue);
+                }
             }
         }
     }
