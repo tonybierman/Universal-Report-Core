@@ -1,0 +1,19 @@
+site_name: Universal Report Core
+site_url: https://tonybierman.github.io/Universal-Report-Core/
+repo_url: https://github.com/tonybierman/Universal-Report-Core
+site_description: A .NET 8 library for generating reports.
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Prerequisites: prerequisites.md
+    - Installing: installing.md
+  - Features: features.md
+  - Usage: usage.md
+  - Running Tests: running-tests.md
+  - Deployment: deployment.md
+  - Contributing: contributing.md
+  - Versioning: versioning.md
+  - Authors: authors.md
+  - License: license.md
+  - Acknowledgments: acknowledgments.md
