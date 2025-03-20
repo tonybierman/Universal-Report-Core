@@ -26,14 +26,49 @@ namespace UniversalReportCore.Ui
             _htmlHelper = htmlHelper;
         }
 
+        /// <summary>
+        /// Determines the CSS alignment class for a column based on the item's properties.
+        /// </summary>
+        /// <param name="item">The object containing column data.</param>
+        /// <param name="column">The column metadata with CssClass, PropertyName, and ViewModelName.</param>
+        /// <returns>A Bootstrap CSS class (e.g., "text-start", "text-end").</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="item"/> or <paramref name="column"/> is null.</exception>
+        private string GetCssAlignment(object item, IReportColumnDefinition column)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+            if (column == null)
+                throw new ArgumentNullException(nameof(column));
+
+            // Try to get explicit CSS class from Item, but only if CssClass is non-null
+            object cssAlign = null;
+            if (!string.IsNullOrEmpty(column.CssClass))
+            {
+                cssAlign = column.CssClass;
+            }
+
+            // If CssClass is null, empty, or not a string, determine alignment based on data type
+            if (cssAlign as string is not { } align || string.IsNullOrWhiteSpace(align))
+            {
+                cssAlign = "text-start"; // Default to left alignment
+
+                // Get field value from PropertyName or fall back to ViewModelName
+                var fieldVal = item.GetType().GetProperty(column.PropertyName)?.GetValue(item)
+                    ?? item.GetType().GetProperty(column.ViewModelName)?.GetValue(item);
+
+                // Right-align null or numeric values
+                if (fieldVal == null || Constants.NumericTypes.Contains(fieldVal.GetType()))
+                {
+                    cssAlign = "text-end";
+                }
+            }
+
+            return cssAlign as string ?? cssAlign.ToString(); // Fallback to ToString if not string
+        }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var fieldVal = Item.GetType().GetProperty(Column.PropertyName)?.GetValue(Item);
-            string cssAlign = string.Empty;
-            if (fieldVal == null || Constants.NumericTypes.Contains(fieldVal.GetType()))
-            {
-                cssAlign = "text-end"; // Bootstrap class for right alignment
-            }
+            string cssAlign = GetCssAlignment(Item, Column);
 
             if (_htmlHelper is HtmlHelper<dynamic> concreteHelper)
             {

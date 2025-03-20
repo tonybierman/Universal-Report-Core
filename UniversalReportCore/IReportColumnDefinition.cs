@@ -6,6 +6,7 @@
         bool IsSortable { get; set; }
         bool IsDisplayKey { get; set; }
         string? DefaultSort { get; set; }
+        string? CssClass { get; set; }
         bool IsSortDescending { get; set; }
         string PropertyName { get; set; }
         string ViewModelName { get; set; }
