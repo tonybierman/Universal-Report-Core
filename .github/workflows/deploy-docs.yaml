@@ -12,6 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: List files in working directory
+        run: ls -la
+
+      - name: Check for mkdocs.yml
+        run: |
+          if [ -f "mkdocs.yml" ]; then
+            echo "mkdocs.yml found!"
+          else
+            echo "mkdocs.yml not found!"
+            exit 1
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
