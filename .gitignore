@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+_site
+.sass-cache
+.jekyll-metadata
+Gemfile.lock
+
 # Ignore test coverage results
 coverage/
 CoverageReport/
