@@ -15,6 +15,9 @@ jobs:
       - name: List files in working directory
         run: ls -la
 
+      - name: List files in docs/ folder
+        run: ls -la docs/
+
       - name: Check for mkdocs.yml
         run: |
           if [ -f "mkdocs.yml" ]; then
@@ -29,11 +32,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install MkDocs
-        run: pip install mkdocs
+      - name: Install MkDocs and Material theme
+        run: pip install mkdocs mkdocs-material  # Added mkdocs-material
 
       - name: Build the site
-        run: mkdocs build
+        run: mkdocs build --verbose
+
+      - name: List files in site/ folder
+        run: ls -la site/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
