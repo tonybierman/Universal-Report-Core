@@ -78,28 +78,22 @@ author:
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "https://tonybierman.github.io"
+      url: "https://tonybierman.com"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/" # Update with your Twitter URL if applicable
+      url: "https://twitter.com/tonybierman" # Update with your Twitter URL if applicable
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/tonybierman"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/" # Update with your Instagram URL if applicable
 
 footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/" # Update with your Twitter URL if applicable
+      url: "https://twitter.com/tonybierman" # Update with your Twitter URL if applicable
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/tonybierman"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/" # Update with your Instagram URL if applicable
 
 defaults:
   # _posts
