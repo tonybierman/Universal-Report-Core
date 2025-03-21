@@ -27,5 +27,7 @@ namespace UniversalReportCore.PageMetadata
         /// <returns>A <see cref="ChartMetaViewModel"/> containing chart metadata for the page, or null if not available.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
         ChartMetaViewModel? GetChartMeta(string slug);
+
+        string? GetActionWellPartial(string slug);
     }
 }

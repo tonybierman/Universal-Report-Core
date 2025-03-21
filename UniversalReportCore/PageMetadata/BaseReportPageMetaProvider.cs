@@ -18,5 +18,7 @@ namespace UniversalReportCore.PageMetadata
         /// A <see cref="ChartMetaViewModel"/> containing the chart metadata, or <c>null</c> if no chart metadata is available.
         /// </returns>
         public virtual ChartMetaViewModel? GetChartMeta() => null;
+
+        public virtual string? GetActionWellPartial() => null;
     }
 }

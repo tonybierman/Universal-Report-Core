@@ -37,6 +37,17 @@ namespace UniversalReportCore.PageMetadata
             return provider.GetPageMeta();
         }
 
+        public string? GetActionWellPartial(string slug)
+        {
+            var provider = _providers.FirstOrDefault(p => p.Slug == slug);
+            if (provider == null)
+            {
+                throw new InvalidOperationException($"Unsupported meta for page: {slug}");
+            }
+
+            return provider.GetActionWellPartial();
+        }
+
         /// <summary>
         /// Retrieves chart metadata for a given page based on its slug.
         /// </summary>

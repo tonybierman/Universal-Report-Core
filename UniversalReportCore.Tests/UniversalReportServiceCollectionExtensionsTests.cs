@@ -84,6 +84,11 @@ namespace UniversalReportCore.Tests
         {
             throw new NotImplementedException();
         }
+
+        string? IPageMetaProvider.GetActionWellPartial()
+        {
+            throw new NotImplementedException();
+        }
     }
     public class TestReportColumnProvider : IReportColumnProvider
     {

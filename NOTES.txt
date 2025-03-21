@@ -9,3 +9,6 @@ https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-us
 dotnet test /p:CollectCoverage=true --collect:"XPlat Code Coverage"
 // If needed: dotnet tool install -g dotnet-reportgenerator-globaltool
 reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:CoverageReport" -reporttypes:Html
+
+## Documentation
+mkdocs serve
