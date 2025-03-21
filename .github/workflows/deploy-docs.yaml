@@ -33,7 +33,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install MkDocs and Material theme
-        run: pip install mkdocs mkdocs-material  # Added mkdocs-material
+        run: pip install mkdocs mkdocs-material
 
       - name: Build the site
         run: mkdocs build --verbose
@@ -41,8 +41,12 @@ jobs:
       - name: List files in site/ folder
         run: ls -la site/
 
+      - name: Add .nojekyll file
+        run: touch site/.nojekyll  # Added to disable Jekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
+          force_orphan: true
