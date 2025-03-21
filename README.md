@@ -1,10 +1,8 @@
-# Universal Report Core
-
 A fast and versatile framework for presenting tabular data reports in ASP.NET Core.
 
 ## Documentation
 
-[Documentation]https://tonybierman.github.io/Universal-Report-Core/
+[Documentation Site](https://tonybierman.github.io/Universal-Report-Core/)
 
 ## Features
 
