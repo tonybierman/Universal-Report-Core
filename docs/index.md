@@ -10,15 +10,15 @@ Universal Report Core is a library built with .NET 8, designed to help developer
 
 Learn how to set up Universal Report Core for development and testing:
 
-- [Prerequisites](prerequisites.md)
-- [Installing](installing.md)
+- [Prerequisites](docs/prerequisites.md)
+- [Installing](docs/installing.md)
 
 ## Additional Information
 
-- [Running Tests](running-tests.md)
-- [Deployment](deployment.md)
-- [Contributing](contributing.md)
-- [Versioning](versioning.md)
-- [Authors](authors.md)
-- [License](license.md)
-- [Acknowledgments](acknowledgments.md)
+- [Running Tests](docs/running-tests.md)
+- [Deployment](docs/deployment.md)
+- [Contributing](docs/contributing.md)
+- [Versioning](docs/versioning.md)
+- [Authors](docs/authors.md)
+- [License](docs/license.md)
+- [Acknowledgments](docs/acknowledgments.md)
