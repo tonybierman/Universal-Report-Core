@@ -22,13 +22,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4504F9E0-AFE9-4E42-9ECE-3234A7206AD2}"
 	ProjectSection(SolutionItems) = preProject
-		docs\acknowledgements.md = docs\acknowledgements.md
 		docs\authors.md = docs\authors.md
+		docs\acknowledgments.md = docs\acknowledgments.md
 		docs\contributing.md = docs\contributing.md
 		docs\deployment.md = docs\deployment.md
 		docs\features.md = docs\features.md
 		docs\index.md = docs\index.md
+		docs\installing.md = docs\installing.md
 		docs\license.md = docs\license.md
+		docs\prerequisites.md = docs\prerequisites.md
 		docs\running-tests.md = docs\running-tests.md
 		docs\usage.md = docs\usage.md
 		docs\versioning.md = docs\versioning.md
