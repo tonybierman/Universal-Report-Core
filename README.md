@@ -2,6 +2,10 @@
 
 A fast and versatile framework for presenting tabular data reports in ASP.NET Core.
 
+## Documentation
+
+https://tonybierman.github.io/Universal-Report-Core/
+
 ## Features
 
 - **Faceted Browsing**: Define facets to filter data.

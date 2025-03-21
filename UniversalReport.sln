@@ -20,6 +20,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalReportCore.Ui", "U
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4504F9E0-AFE9-4E42-9ECE-3234A7206AD2}"
+	ProjectSection(SolutionItems) = preProject
+		acknowledgements.md = acknowledgements.md
+		authors.md = authors.md
+		contributing.md = contributing.md
+		deployment.md = deployment.md
+		features.md = features.md
+		docs\index.md = docs\index.md
+		license.md = license.md
+		running-tests.md = running-tests.md
+		usage.md = usage.md
+		versioning.md = versioning.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
