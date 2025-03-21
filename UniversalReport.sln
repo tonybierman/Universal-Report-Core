@@ -22,16 +22,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4504F9E0-AFE9-4E42-9ECE-3234A7206AD2}"
 	ProjectSection(SolutionItems) = preProject
-		acknowledgements.md = acknowledgements.md
-		authors.md = authors.md
-		contributing.md = contributing.md
-		deployment.md = deployment.md
-		features.md = features.md
+		docs\acknowledgements.md = docs\acknowledgements.md
+		docs\authors.md = docs\authors.md
+		docs\contributing.md = docs\contributing.md
+		docs\deployment.md = docs\deployment.md
+		docs\features.md = docs\features.md
 		docs\index.md = docs\index.md
-		license.md = license.md
-		running-tests.md = running-tests.md
-		usage.md = usage.md
-		versioning.md = versioning.md
+		docs\license.md = docs\license.md
+		docs\README.md = docs\README.md
+		docs\running-tests.md = docs\running-tests.md
+		docs\usage.md = docs\usage.md
+		docs\versioning.md = docs\versioning.md
 	EndProjectSection
 EndProject
 Global
