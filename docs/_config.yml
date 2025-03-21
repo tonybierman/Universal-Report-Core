@@ -2,7 +2,7 @@ title: Universal Report Core
 description: A .NET 8 library for generating reports.
 baseurl: "/Universal-Report-Core"
 url: "https://tonybierman.github.io"
-theme: jekyll-theme-leap-day
+theme: minimal-mistakes-jekyll
 plugins:
   - jekyll-github-metadata
   - jekyll-seo-tag
