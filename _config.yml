@@ -1,0 +1,34 @@
+title: Universal Report Core
+description: A .NET 8 library for generating reports.
+baseurl: "/Universal-Report-Core"
+url: "https://tonybierman.github.io"
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-coffeescript
+  - jekyll-commonmark-ghpages
+  - jekyll-gist
+  - jekyll-paginate
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-default-layout
+  - jekyll-titles-from-headings
+
+source: docs
+destination: _site
+
+header_pages:
+  - index.md
+  - prerequisites.md
+  - installing.md
+  - features.md
+  - usage.md
+  - running-tests.md
+  - deployment.md
+  - contributing.md
+  - versioning.md
+  - authors.md
+  - license.md
+  - acknowledgments.md

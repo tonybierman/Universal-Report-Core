@@ -1,3 +1,7 @@
+---
+title: Acknowledgments
+layout: default
+---
 # Acknowledgments
 
 - Hat tip to anyone whose code was used.

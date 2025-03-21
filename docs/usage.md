@@ -1,3 +1,7 @@
+---
+title: Usage
+layout: default
+---
 # Usage
 
 This guide shows how to use Universal Report Core in a .NET 8 application.

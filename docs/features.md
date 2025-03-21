@@ -1,3 +1,7 @@
+---
+title: Features
+layout: default
+---
 # Features
 
 Universal Report Core provides the following features for report generation:

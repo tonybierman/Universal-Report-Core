@@ -1,3 +1,7 @@
+---
+title: Authors
+layout: default
+---
 # Authors
 
 - **Tony Bierman** - *Initial work* - [tonybierman](https://github.com/tonybierman)
