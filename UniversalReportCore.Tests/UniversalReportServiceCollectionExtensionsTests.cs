@@ -163,6 +163,11 @@ namespace UniversalReportCore.Tests
         {
             return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds);
         }
+
+        bool IReportPageHelperBase.HasFilters(List<IReportColumnDefinition> columns)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class TestFilterProvider : IFilterProvider<TestEntity>
     {
