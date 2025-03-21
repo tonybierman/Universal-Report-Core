@@ -13,14 +13,14 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: MM
-email:
+title: Universal Report Core
+email: # Not provided; leave blank or add your email if desired
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-twitter_username: username
-github_username: username
+  A .NET 8 library for generating reports with features like tabular data, pagination, sorting, and aggregation.
+baseurl: "/Universal-Report-Core" # the subpath of your site
+url: "https://tonybierman.github.io" # the base hostname & protocol for your site
+twitter_username: # Not provided; leave blank or add your Twitter username
+github_username: tonybierman
 minimal_mistakes_skin: default
 search: true
 
@@ -32,6 +32,10 @@ permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+# Source and destination (since we’re building from docs/)
+source: .
+destination: ./_site
 
 include:
   - _pages
@@ -56,36 +60,46 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
+  # Additional plugins supported by GitHub Pages
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-coffeescript
+  - jekyll-commonmark-ghpages
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-default-layout
+  - jekyll-titles-from-headings
 
 author:
-  name   : "First Lastname"
-  avatar : "/assets/images/bio-photo.jpg"
-  bio    : "My awesome biography constrained to a sentence or two goes here."
+  name: "Tony Bierman"
+  avatar: "/assets/images/bio-photo.jpg" # Add an image to docs/assets/images/ if desired
+  bio: "Creator of Universal Report Core, a .NET 8 library for generating reports."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "https://"
+      url: "https://tonybierman.github.io"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/"
+      url: "https://twitter.com/" # Update with your Twitter URL if applicable
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/"
+      url: "https://github.com/tonybierman"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/"
+      url: "https://instagram.com/" # Update with your Instagram URL if applicable
 
 footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/"
+      url: "https://twitter.com/" # Update with your Twitter URL if applicable
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/"
+      url: "https://github.com/tonybierman"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/"
+      url: "https://instagram.com/" # Update with your Instagram URL if applicable
 
 defaults:
   # _posts
