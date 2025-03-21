@@ -42,7 +42,14 @@ jobs:
         run: ls -la site/
 
       - name: Add .nojekyll file
-        run: touch site/.nojekyll  # Added to disable Jekyll
+        run: |
+          touch site/.nojekyll
+          echo "This file disables Jekyll on GitHub Pages" > site/.nojekyll  # Add content to the file
+
+      - name: Confirm .nojekyll file exists and has content
+        run: |
+          ls -la site/
+          cat site/.nojekyll  # Debug: Show the file's contents
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -50,3 +57,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
           force_orphan: true
+
+      - name: Debug deployed files
+        run: |
+          git checkout gh-pages
+          ls -la
+          cat .nojekyll  # Debug: Show the file's contents in gh-pages
