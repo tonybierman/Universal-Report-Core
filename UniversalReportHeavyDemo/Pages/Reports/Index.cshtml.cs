@@ -10,6 +10,7 @@ using UniversalReportCore.Ui.Pages;
 using UniversalReportCore.HardQuerystringVariables;
 using Microsoft.CSharp.RuntimeBinder;
 using UniversalReportCore.Ui;
+using UniversalReportCore.Ui.ViewModels;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {
@@ -23,7 +24,6 @@ namespace UniversalReportHeavyDemo.Pages.Reports
             base(logger, mapper, pageMetaFactory,
                 reportColumnFactory, pageHelperFactory)
         {
-
         }
 
         public async Task<IActionResult> OnGetAsync()
