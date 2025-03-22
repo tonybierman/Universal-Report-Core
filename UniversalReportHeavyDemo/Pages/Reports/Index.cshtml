@@ -1,22 +1,9 @@
 ﻿@page "{slug}"
-@using UniversalReportHeavyDemo.ViewModels
-@using UniversalReportCore.ViewModels
 @model UniversalReportHeavyDemo.Pages.Reports.IndexModel
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
 }
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 <div class="container mt-4">
-    @if (!string.IsNullOrEmpty(Model.ActionWellPartial))
-    {
-        @await Html.PartialAsync(Model.ActionWellPartial)
-    }
-    @await Html.PartialAsync("_ReportTablePartial",
-            new ReportTableViewModel(Model.Items,
-                Model.Params,
-                Model.ReportColumns,
-                Model.CurrentSort,
-                Model.HasFiltersAvailable,
-                Model.FilterOptions,
-                Model.Cohorts))
+    @await Html.PartialAsync("_ReportTablePartial")
 </div>

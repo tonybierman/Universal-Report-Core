@@ -42,11 +42,12 @@ namespace UniversalReportHeavyDemo.Reports
                 CountryGdpDemoPageHelper,
                 NationalGdpFilterProvider>();
 
-        public static IServiceCollection AddFrontendReportServices(this IServiceCollection services)
+        public static IServiceCollection AddUniversalReportServices(this IServiceCollection services)
         {
-            services.AddScoped<IReportPageHelperFactory, HeavyDemoPageHelperFactory>();
+            // Add Universal Report Core services
+            services.AddUniversalReport();
 
-            // Register IUniversalReportService on the frontend with ApplicationDbContext
+            // Register the IUniversalReportService here
             services.AddScoped<IUniversalReportService>(provider =>
             {
                 var dbContext = provider.GetRequiredService<ApplicationDbContext>();
@@ -54,6 +55,7 @@ namespace UniversalReportHeavyDemo.Reports
                 return new UniversalReportService(dbContext, mapper);
             });
 
+            services.AddScoped<IReportPageHelperFactory, HeavyDemoPageHelperFactory>();
             services.AddCityPopulationServices();
             services.AddNationalGdpServices();
 

@@ -6,57 +6,53 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using UniversalReportHeavyDemo.Import;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace UniversalReportHeavyDemo.Data
 {
     public class DataSeed
     {
-        static bool EnsureDatabaseConnection(ApplicationDbContext context, ILogger logger)
+        /// <summary>
+        /// Ensures the database is ready (migrations applied, tables created) and seeds it.
+        /// </summary>
+        public static async Task EnsureDatabaseAndSeedAsync(ApplicationDbContext context, IWebHostEnvironment env, ILogger logger)
+        {
+            logger.LogInformation("Ensuring database is ready and seeded...");
+
+            // Step 1: Apply migrations
+            await EnsureDatabaseMigratedAsync(context, logger);
+
+            // Step 2: Seed the database
+            await SeedCityPopulationDatabase(context, env, logger);
+        }
+
+        private static async Task EnsureDatabaseMigratedAsync(ApplicationDbContext context, ILogger logger)
         {
             try
             {
-                using var connection = context.Database.GetDbConnection();
-                connection.Open();
-                logger.LogInformation("Database connection established successfully.");
-                return true;
+                logger.LogInformation("Applying database migrations...");
+                await context.Database.MigrateAsync(); // Applies migrations to create the database schema
+                await context.SaveChangesAsync();
+                logger.LogInformation("Database migrations applied successfully.");
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to establish a database connection.");
-                return false;
+                logger.LogError(ex, "Failed to apply database migrations.");
+                throw; // Re-throw to let the caller handle the failure
             }
         }
 
         /// <summary>
-        /// Seeds the database with data from a CSV file.
+        /// Seeds the database with city population data and cohorts.
         /// </summary>
         public static async Task SeedCityPopulationDatabase(ApplicationDbContext context, IWebHostEnvironment env, ILogger logger)
         {
-            logger.LogInformation("Determining if CityPopulations table exists.");
+            // Since migrations are already applied, we assume tables exist or will be handled by EF
+            logger.LogInformation("Checking CityPopulations table...");
 
-            bool tableExists = context.Database.ExecuteSqlRaw(@"
-                SELECT COUNT(*) FROM information_schema.tables 
-                WHERE table_schema = DATABASE() 
-                AND table_name = 'CityPopulations';") > 0;
-
-            if (!tableExists)
-            {
-                logger.LogInformation("CityPopulations table not found. Creating...");
-
-                RelationalDatabaseCreator databaseCreator =
-                    (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
-                await databaseCreator.CreateTablesAsync();
-                await context.SaveChangesAsync();
-
-                EnsureIndexesCreated(context, logger);
-            }
-
-            // Seed if empty
+            // Seed CityPopulations if empty
             if (!context.CityPopulations.Any())
             {
                 logger.LogInformation("Seeding CityPopulations table from CSV file.");
-
                 string csvFilePath = Path.Combine(env.WebRootPath, "data", "city_populations.csv");
 
                 if (!System.IO.File.Exists(csvFilePath))
@@ -80,33 +76,26 @@ namespace UniversalReportHeavyDemo.Data
 
                 await context.CityPopulations.AddRangeAsync(rawRecords);
                 await context.SaveChangesAsync();
-                logger.LogInformation("Database seeded successfully.");
+                logger.LogInformation("CityPopulations table seeded successfully.");
             }
             else
             {
                 logger.LogInformation("CityPopulation table already contains data. Skipping seed.");
             }
 
+            // Seed CityPopulationCohorts if empty
             if (!context.CityPopulationCohorts.Any())
             {
                 logger.LogInformation("Creating CityPopulationCohorts.");
 
-                CityPopulationCohort male = new CityPopulationCohort()
-                {
-                    Id = 1,
-                    Name = "Male"
-                };
+                CityPopulationCohort male = new CityPopulationCohort { Id = 1, Name = "Male" };
+                CityPopulationCohort female = new CityPopulationCohort { Id = 2, Name = "Female" };
 
-                CityPopulationCohort female = new CityPopulationCohort()
-                {
-                    Id = 2,
-                    Name = "Female"
-                };
                 await context.CityPopulationCohorts.AddAsync(male);
                 await context.CityPopulationCohorts.AddAsync(female);
                 await context.SaveChangesAsync();
 
-                logger.LogInformation("Seeding CityPopulationCohorts.");
+                logger.LogInformation("Seeding CityPopulationCohorts with mappings.");
 
                 var maleCohort = await context.CityPopulationCohorts
                     .Include(c => c.CityPopulations)
@@ -115,8 +104,6 @@ namespace UniversalReportHeavyDemo.Data
                 await context.CityPopulations
                     .Where(a => a.Sex == "Male")
                     .ForEachAsync(male => maleCohort.CityPopulations.Add(male));
-
-                await context.SaveChangesAsync();
 
                 var femaleCohort = await context.CityPopulationCohorts
                     .Include(c => c.CityPopulations)
@@ -127,14 +114,16 @@ namespace UniversalReportHeavyDemo.Data
                     .ForEachAsync(female => femaleCohort.CityPopulations.Add(female));
 
                 await context.SaveChangesAsync();
-
-                logger.LogInformation("CityPopulation seeding completed.");
+                logger.LogInformation("CityPopulationCohorts seeding completed.");
             }
+
+            // Ensure indexes are created
+            EnsureIndexesCreated(context, logger);
         }
 
-        static void EnsureIndexesCreated(ApplicationDbContext context, ILogger logger)
+        private static void EnsureIndexesCreated(ApplicationDbContext context, ILogger logger)
         {
-            logger.LogInformation("Creating CityPopulations prefix index.");
+            logger.LogInformation("Ensuring indexes are created...");
 
             string indexSql = @"CREATE INDEX IF NOT EXISTS idx_city_sex_year_id ON CityPopulations (City(100), Sex(10), Year DESC, Id);";
             context.Database.ExecuteSqlRaw(indexSql);
@@ -144,6 +133,8 @@ namespace UniversalReportHeavyDemo.Data
 
             indexSql = @"CREATE INDEX IF NOT EXISTS idx_city_population_cohort_mapping ON CityPopulationCohortMapping(CityPopulationId, CohortId);";
             context.Database.ExecuteSqlRaw(indexSql);
+
+            logger.LogInformation("Indexes ensured successfully.");
         }
     }
 }

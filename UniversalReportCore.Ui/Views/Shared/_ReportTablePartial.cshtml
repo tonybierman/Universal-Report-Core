@@ -1,6 +1,7 @@
-﻿@using UniversalReportCore.Ui.ViewModels
+﻿@using UniversalReportCore.Ui.Pages
+@using UniversalReportCore.Ui.ViewModels
 @using UniversalReportCore.ViewModels
-@model ReportTableViewModel
+@model ReportPageModel
 @addTagHelper *, UniversalReportCore.Ui
 @{
 
@@ -12,6 +13,10 @@
         border-spacing: 0; /* Prevents inner spacing issues */
     }
 </style>
+@if (!string.IsNullOrEmpty(Model.ActionWellPartial))
+{
+    @await Html.PartialAsync(Model.ActionWellPartial)
+}
 <form method="get">
     <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
         <span class="btn-group btn-group-sm" role="group" aria-label="First group">
