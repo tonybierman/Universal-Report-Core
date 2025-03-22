@@ -2,7 +2,7 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 
 ## Documentation
 
-[Documentation Site](https://tonybierman.github.io/Universal-Report-Core/)
+[Documentation Site](https://tonybierman.github.io/universal-report-core/)
 
 ## Features
 

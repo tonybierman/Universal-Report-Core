@@ -1,4 +1,0 @@
----
-title: Installing
-layout: default
----
