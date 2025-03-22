@@ -14,7 +14,6 @@
 }
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 <div class="container mt-4">
-     @* TODO: Trying to emulate the way Wordpress injects user code into templated pages *@
     @if (!string.IsNullOrEmpty(Model.ActionWellPartial))
     {
         @await Html.PartialAsync(Model.ActionWellPartial)
