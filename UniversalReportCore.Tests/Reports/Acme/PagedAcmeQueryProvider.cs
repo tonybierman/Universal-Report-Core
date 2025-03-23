@@ -21,7 +21,7 @@ namespace UniversalReportCore.Tests.Reports.Acme
 
         public override string Slug => "acme-query-provider";
 
-        public override PagedQueryParameters<Widget> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public override PagedQueryParameters<Widget> BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<Widget>? reportQuery = null)
         {
             return new PagedQueryParameters<Widget>(
                 columns,
@@ -29,7 +29,7 @@ namespace UniversalReportCore.Tests.Reports.Acme
                 sort,
                 ipp,
                 cohortIds,
-                query => ApplyFilters(query),
+                query => EnsureUserFiltersPredicate(EnsureReportQuery() ?? query),
                 async (IQueryable<Widget> src) => await ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
                 async (IQueryable<Widget> src) => await ComputeMetaAsync(src)
             );
@@ -46,14 +46,14 @@ namespace UniversalReportCore.Tests.Reports.Acme
         public async Task<Dictionary<string, dynamic>> ComputeAggregatesWithCohortsAsync(IQueryable<Widget> src, IReportColumnDefinition[] columns, int[]? cohortIds)
         {
             var aggregates = new Dictionary<string, dynamic>();
-            var filteredQuery = ApplyFilters(src);
+            var filteredQuery = EnsureUserFiltersPredicate(src);
 
             if (cohortIds == null || cohortIds.Length == 0)
             {
                 return await ComputeAggregates(filteredQuery, columns);
             }
 
-            var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
+            var totalAggregates = await ComputeAggregates(EnsureAggregatePredicate(filteredQuery, cohortIds), columns);
 
             foreach (var key in totalAggregates.Keys)
             {
@@ -62,7 +62,7 @@ namespace UniversalReportCore.Tests.Reports.Acme
 
             foreach (var cohortId in cohortIds)
             {
-                var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
+                var cohortQuery = EnsureCohortPredicate(filteredQuery, cohortId);
                 var cohortResults = await ComputeAggregates(cohortQuery, columns);
                 foreach (var key in cohortResults.Keys)
                 {
@@ -84,7 +84,7 @@ namespace UniversalReportCore.Tests.Reports.Acme
         private async Task<Dictionary<string, dynamic>> ComputeMetaAsync(IQueryable<Widget> src)
         {
             var meta = new Dictionary<string, dynamic>();
-            var filteredQuery = ApplyFilters(src);
+            var filteredQuery = EnsureUserFiltersPredicate(src);
 
             var metaDictionary = await EnsureMeta(filteredQuery);
             foreach (var key in metaDictionary.Keys)

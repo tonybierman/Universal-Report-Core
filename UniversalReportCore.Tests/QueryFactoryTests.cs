@@ -19,24 +19,30 @@ namespace UniversalReportCore.Tests
         {
             public string Slug => "CityPopulationDemo";
 
-            public IQueryable<Widget> EnsureAggregateQuery(IQueryable<Widget> query, int[]? cohortIds)
+            public IQueryable<Widget> EnsureAggregatePredicate(IQueryable<Widget> query, int[]? cohortIds)
             {
                 throw new NotImplementedException();
             }
 
-            public IQueryable<Widget> EnsureCohortQuery(IQueryable<Widget> query, int cohortId)
+            public IQueryable<Widget> EnsureCohortPredicate(IQueryable<Widget> query, int cohortId)
             {
                 throw new NotImplementedException();
             }
 
-            public PagedQueryParameters<Widget> GetQuery(
+            public PagedQueryParameters<Widget> BuildPagedQuery(
                 IReportColumnDefinition[] columns,
                 int? pageIndex,
                 string? sort,
                 int? ipp,
-                int[]? cohortIds)
+                int[]? cohortIds, 
+                IQueryable<Widget>? reportQuery)
             {
                 return new PagedQueryParameters<Widget>(columns, pageIndex, sort, ipp, cohortIds);
+            }
+
+            IQueryable<Widget>? IPagedQueryProvider<Widget>.EnsureReportQuery()
+            {
+                return null;
             }
         }
 

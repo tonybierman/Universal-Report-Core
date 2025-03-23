@@ -217,7 +217,7 @@ namespace UniversalReportCore.Tests
             int[]? cohortIds = null;
 
             // Act
-            var result = _queryProvider.GetQuery(columns, pageIndex, sort, ipp, cohortIds);
+            var result = _queryProvider.BuildPagedQuery(columns, pageIndex, sort, ipp, cohortIds);
 
             // Assert
             Assert.NotNull(result);
@@ -237,7 +237,7 @@ namespace UniversalReportCore.Tests
             int[]? cohortIds = null;
 
             // Act
-            var resultQuery = _queryProvider.EnsureAggregateQuery(query, cohortIds);
+            var resultQuery = _queryProvider.EnsureAggregatePredicate(query, cohortIds);
 
             // Assert
             Assert.Equal(query.Count(), resultQuery.Count());
@@ -254,7 +254,7 @@ namespace UniversalReportCore.Tests
             int cohortId = 1;
 
             // Act
-            var resultQuery = _queryProvider.EnsureCohortQuery(query, cohortId);
+            var resultQuery = _queryProvider.EnsureCohortPredicate(query, cohortId);
 
             // Assert
             Assert.NotNull(resultQuery);

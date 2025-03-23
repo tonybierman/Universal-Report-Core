@@ -103,17 +103,22 @@ namespace UniversalReportCore.Tests
     {
         public string Slug => throw new NotImplementedException();
 
-        public IQueryable<TestEntity> EnsureAggregateQuery(IQueryable<TestEntity> query, int[]? cohortIds)
+        PagedQueryParameters<TestEntity> IPagedQueryProvider<TestEntity>.BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<TestEntity>? reportQuery)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<TestEntity> EnsureCohortQuery(IQueryable<TestEntity> query, int cohortId)
+        IQueryable<TestEntity> IPagedQueryProvider<TestEntity>.EnsureAggregatePredicate(IQueryable<TestEntity> query, int[]? cohortIds)
         {
             throw new NotImplementedException();
         }
 
-        public PagedQueryParameters<TestEntity> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        IQueryable<TestEntity> IPagedQueryProvider<TestEntity>.EnsureCohortPredicate(IQueryable<TestEntity> query, int cohortId)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<TestEntity>? IPagedQueryProvider<TestEntity>.EnsureReportQuery()
         {
             throw new NotImplementedException();
         }
