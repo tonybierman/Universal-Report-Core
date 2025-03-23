@@ -48,7 +48,7 @@ namespace UniversalReportCore.PagedQueries
                 throw new InvalidOperationException($"Unsupported query type: {slug}");
             }
 
-            return provider.GetQuery(columns, pageIndex, sort, ipp, cohortIds);
+            return provider.GetQuery(columns, pageIndex, sort, ipp, cohortIds, provider.EnsureReportQuery());
         }
     }
 }

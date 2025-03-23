@@ -12,12 +12,12 @@ using UniversalReportHeavyDemo.Reports.Domain;
 
 namespace UniversalReportHeavyDemo.Reports
 {
-    public static class FrontendReportServiceExtensions
+    public static class ReportServiceExtensions
     {
         /// <summary>
-        /// Registers CityPopulation report services.
+        /// Registers CityPopDemo report.
         /// </summary>
-        public static IServiceCollection AddCityPopulationServices(this IServiceCollection services) =>
+        public static IServiceCollection AddCityPopDemoReport(this IServiceCollection services) =>
             services.AddEntityReportServices<
                 CityPopulation,
                 CityPopulationViewModel,
@@ -42,7 +42,7 @@ namespace UniversalReportHeavyDemo.Reports
             });
 
             services.AddScoped<IReportPageHelperFactory, PageHelperFactory>();
-            services.AddCityPopulationServices();
+            services.AddCityPopDemoReport();
 
             return services;
         }

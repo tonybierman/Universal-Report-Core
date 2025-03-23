@@ -15,6 +15,12 @@ namespace UniversalReportCore.PagedQueries
         string Slug { get; }
 
         /// <summary>
+        /// Gets the base query for the report
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<T>? EnsureReportQuery();
+
+        /// <summary>
         /// Creates a paged query with sorting, filtering, and cohort selection applied.
         /// </summary>
         /// <param name="columns">The columns to be included in the query.</param>
@@ -22,8 +28,9 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting criteria.</param>
         /// <param name="ipp">The number of items per page.</param>
         /// <param name="cohortIds">An array of cohort IDs to filter the query.</param>
+        /// <param name="reportQuery">Base query or null for full DBSet<typeparamref name="T"/></param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing the constructed query parameters.</returns>
-        PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds);
+        PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<T>? reportQuery = null);
 
         /// <summary>
         /// Modifies the given query to include aggregate computations based on cohort identifiers.

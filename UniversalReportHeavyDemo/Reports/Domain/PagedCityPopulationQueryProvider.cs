@@ -5,7 +5,7 @@ namespace UniversalReportHeavyDemo.Reports.Domain
 {
     public class PagedCityPopulationQueryProvider : BasePagedQueryProvider<CityPopulation>
     {
-        private readonly ApplicationDbContext _dbContext;
+        protected readonly ApplicationDbContext _dbContext;
 
         public PagedCityPopulationQueryProvider(ApplicationDbContext dbContext)
         {

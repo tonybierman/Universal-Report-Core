@@ -111,6 +111,16 @@ namespace UniversalReportCore.PagedQueries
         }
 
         /// <summary>
+        /// Applies filters to the query. Default implementation returns the original query.
+        /// </summary>
+        /// <param name="query">The source query.</param>
+        /// <returns>The filtered query.</returns>
+        public virtual IQueryable<T>? EnsureReportQuery()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Retrieves metadata associated with the query.
         /// </summary>
         /// <param name="query">The source query.</param>
@@ -159,8 +169,9 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">Sorting parameter.</param>
         /// <param name="ipp">Items per page.</param>
         /// <param name="cohortIds">Array of cohort IDs.</param>
+        /// <param name="reportQuery">Base query of the report</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing query settings.</returns>
-        public virtual PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public virtual PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<T>? reportQuery = null)
         {
             return new PagedQueryParameters<T>(
                 columns,
@@ -168,10 +179,10 @@ namespace UniversalReportCore.PagedQueries
                 sort,
                 ipp,
                 cohortIds,
-                query => ApplyFilters((IQueryable<T>)query),
+                query => ApplyFilters(reportQuery ?? query),
                 src => ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
                 src => ComputeMetaAsync(src)
-            );
+            ); 
         }
 
         private async Task<Dictionary<string, dynamic>> ComputeAggregatesWithCohortsAsync(IQueryable<T> src, IReportColumnDefinition[] columns, int[]? cohortIds)

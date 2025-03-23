@@ -29,31 +29,12 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             DefaultSort = "CityAsc";
         }
 
-        private IQueryable<CityPopulation> GetLatestCityPopulation(IQueryable<CityPopulation> query)
-        {
-            var latestYears = query
-                .Where(cp => cp.Year.HasValue && cp.City != null && cp.Sex != null)
-                .GroupBy(cp => new { cp.City, cp.Sex })
-                .Select(g => new { g.Key.City, g.Key.Sex, MaxYear = g.Max(cp => cp.Year) })
-                .AsNoTracking();
-
-            var optimizedQuery = query
-                .Join(latestYears,
-                    cp => new { cp.City, cp.Sex, cp.Year },
-                    ly => new { ly.City, ly.Sex, Year = ly.MaxYear },
-                    (cp, ly) => cp)
-                .AsNoTracking();
-
-            return optimizedQuery;
-        }
-
         public override async Task<PaginatedList<CityPopulationViewModel>> GetPagedDataAsync(
             PagedQueryParameters<CityPopulation> parameters,
             int totalCount)
         {
-            IQueryable<CityPopulation> query = GetLatestCityPopulation(_dbContext.CityPopulations);
             return await _reportService.GetPagedAsync<CityPopulation, CityPopulationViewModel>(
-                parameters, totalCount, query);
+                parameters, totalCount);
         }
 
         public override async Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
