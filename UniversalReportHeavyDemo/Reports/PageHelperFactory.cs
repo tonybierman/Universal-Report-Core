@@ -12,8 +12,7 @@ namespace UniversalReportHeavyDemo.Reports
         {
             _helperMap = new Dictionary<string, (Type, Type)>
             {
-                { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) },
-                { "NationalGdpReports", (typeof(NationalGdp), typeof(NationalGdpViewModel)) }
+                { "CityPopulationReports", (typeof(CityPopulation), typeof(CityPopulationViewModel)) }
             };
         }
     }

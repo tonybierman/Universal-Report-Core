@@ -12,7 +12,6 @@ builder.Services.AddHttpContextAccessor();
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new CityPopulationMappingProfile());
-    mc.AddProfile(new NationalGdpMappingProfile());
 });
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

@@ -21,8 +21,6 @@
         public DbSet<CityPopulation> CityPopulations { get; set; }
         public virtual DbSet<CityPopulationCohort> CityPopulationCohorts { get; set; }
 
-        public DbSet<NationalGdp> NationalGdps { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

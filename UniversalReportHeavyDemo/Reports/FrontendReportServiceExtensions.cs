@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using UniversalReportHeavyDemo.Data;
 using UniversalReportHeavyDemo.Reports.CityPop;
-using UniversalReportHeavyDemo.Reports.CountryGdp;
 using UniversalReportHeavyDemo.ViewModels;
 using UniversalReport.Services;
 using AutoMapper;
@@ -28,20 +27,6 @@ namespace UniversalReportHeavyDemo.Reports
                 CityPopulationDemoPageHelper,
                 CityPopulationFilterProvider>();
 
-        /// <summary>
-        /// Registers NationalGdp report services.
-        /// </summary>
-        public static IServiceCollection AddNationalGdpServices(this IServiceCollection services) =>
-            services.AddEntityReportServices<
-                NationalGdp,
-                NationalGdpViewModel,
-                NationalGdpQueryFactory,
-                CountryGdpDemoPageMetaProvider,
-                CountryGdpDemoReportColumnProvider,
-                CountryGdpDemoQueryProvider,
-                CountryGdpDemoPageHelper,
-                NationalGdpFilterProvider>();
-
         public static IServiceCollection AddUniversalReportServices(this IServiceCollection services)
         {
             // Add Universal Report Core services
@@ -57,7 +42,6 @@ namespace UniversalReportHeavyDemo.Reports
 
             services.AddScoped<IReportPageHelperFactory, HeavyDemoPageHelperFactory>();
             services.AddCityPopulationServices();
-            services.AddNationalGdpServices();
 
             return services;
         }

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
 }
-@await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
+<partial name="_PageHeadingPartial" model="@Model.PageMeta" />
 <div class="container mt-4">
-    @await Html.PartialAsync("_ReportTablePartial")
+    <partial name="_ReportTablePartial"/>
 </div>
