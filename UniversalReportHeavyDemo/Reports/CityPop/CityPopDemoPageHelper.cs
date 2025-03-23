@@ -12,11 +12,11 @@ using UniversalReportHeavyDemo.ViewModels;
 
 namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public class CityPopulationDemoPageHelper : PageHelperBase<CityPopulation, CityPopulationViewModel>
+    public class CityPopDemoPageHelper : PageHelperBase<CityPopulation, CityPopulationViewModel>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public CityPopulationDemoPageHelper(
+        public CityPopDemoPageHelper(
             IUniversalReportService reportService,
             IReportColumnFactory reportColumnFactory,
             IQueryFactory<CityPopulation> queryFactory,

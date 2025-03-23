@@ -3,9 +3,9 @@ using UniversalReportHeavyDemo.Data;
 
 namespace UniversalReportHeavyDemo.Import
 {
-    public class CityPopulationsRecordMap : ClassMap<CityPopulation>
+    public class CityPopulationRecordMap : ClassMap<CityPopulation>
     {
-        public CityPopulationsRecordMap()
+        public CityPopulationRecordMap()
         {
             Map(m => m.CountryOrArea).Name("Country");
             Map(m => m.Year).Name("Year");

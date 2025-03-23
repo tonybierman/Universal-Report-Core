@@ -69,7 +69,7 @@ namespace UniversalReportHeavyDemo.Data
                     MissingFieldFound = null,
                 });
 
-                csv.Context.RegisterClassMap<CityPopulationsRecordMap>();
+                csv.Context.RegisterClassMap<CityPopulationRecordMap>();
 
                 var rawRecords = csv.GetRecords<CityPopulation>().ToList();
                 logger.LogInformation($"Loaded {rawRecords.Count} records from CSV.");

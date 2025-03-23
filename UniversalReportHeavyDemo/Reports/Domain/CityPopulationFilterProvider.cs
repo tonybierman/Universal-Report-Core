@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using UniversalReportCore;
 using UniversalReportHeavyDemo.Data;
-namespace UniversalReportHeavyDemo.Reports.CityPop
+namespace UniversalReportHeavyDemo.Reports.Domain
 {
     public class CityPopulationFilterProvider : BaseFilterProvider<CityPopulation>
     {

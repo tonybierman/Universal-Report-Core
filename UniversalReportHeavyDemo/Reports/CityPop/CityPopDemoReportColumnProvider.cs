@@ -2,9 +2,9 @@
 
 namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public class CityPopulationDemoReportColumnProvider : IReportColumnProvider
+    public class CityPopDemoReportColumnProvider : IReportColumnProvider
     {
-        public string Slug => "CityPopulationDemo";
+        public string Slug => "CityPopDemo";
 
         public List<IReportColumnDefinition> GetColumns()
         {

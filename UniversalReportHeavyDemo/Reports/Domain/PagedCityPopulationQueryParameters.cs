@@ -2,7 +2,7 @@
 using UniversalReportCore.PagedQueries;
 using UniversalReportHeavyDemo.Data;
 
-namespace UniversalReportHeavyDemo.Reports.CityPop
+namespace UniversalReportHeavyDemo.Reports.Domain
 {
     public class PagedCityPopulationQueryParameters : PagedQueryParameters<CityPopulation>
     {

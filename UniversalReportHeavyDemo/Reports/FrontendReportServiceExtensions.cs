@@ -8,6 +8,7 @@ using UniversalReportCore.PagedQueries;
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.Ui;
 using UniversalReportCore;
+using UniversalReportHeavyDemo.Reports.Domain;
 
 namespace UniversalReportHeavyDemo.Reports
 {
@@ -21,10 +22,10 @@ namespace UniversalReportHeavyDemo.Reports
                 CityPopulation,
                 CityPopulationViewModel,
                 CityPopulationQueryFactory,
-                CityPopulationDemoPageMetaProvider,
-                CityPopulationDemoReportColumnProvider,
-                CityPopulationDemoQueryProvider,
-                CityPopulationDemoPageHelper,
+                CityPopDemoPageMetaProvider,
+                CityPopDemoReportColumnProvider,
+                CityPopDemoQueryProvider,
+                CityPopDemoPageHelper,
                 CityPopulationFilterProvider>();
 
         public static IServiceCollection AddUniversalReportServices(this IServiceCollection services)
@@ -40,7 +41,7 @@ namespace UniversalReportHeavyDemo.Reports
                 return new UniversalReportService(dbContext, mapper);
             });
 
-            services.AddScoped<IReportPageHelperFactory, HeavyDemoPageHelperFactory>();
+            services.AddScoped<IReportPageHelperFactory, PageHelperFactory>();
             services.AddCityPopulationServices();
 
             return services;
