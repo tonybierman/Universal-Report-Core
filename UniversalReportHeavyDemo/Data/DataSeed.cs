@@ -29,6 +29,19 @@ namespace UniversalReportHeavyDemo.Data
         {
             try
             {
+                bool tableExists = context.Database.ExecuteSqlRaw(@"
+                    SELECT COUNT(*) FROM information_schema.tables 
+                    WHERE table_schema = DATABASE() 
+                    AND table_name = 'CityPopulations';") > 0;
+
+                if (!tableExists)
+                {
+                    RelationalDatabaseCreator databaseCreator =
+                        (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
+                    await databaseCreator.CreateTablesAsync();
+                    await context.SaveChangesAsync();
+                }
+
                 logger.LogInformation("Applying database migrations...");
                 await context.Database.MigrateAsync(); // Applies migrations to create the database schema
                 await context.SaveChangesAsync();
@@ -118,7 +131,7 @@ namespace UniversalReportHeavyDemo.Data
             }
 
             // Ensure indexes are created
-            EnsureIndexesCreated(context, logger);
+            // EnsureIndexesCreated(context, logger);
         }
 
         private static void EnsureIndexesCreated(ApplicationDbContext context, ILogger logger)
