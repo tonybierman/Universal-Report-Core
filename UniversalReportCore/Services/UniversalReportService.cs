@@ -44,7 +44,7 @@ namespace UniversalReport.Services
             // If no query is provided, initialize it with the DbSet for TEntity
             query = query ?? _dbContext.Set<TEntity>();
 
-            // Report Filters: Apply report-specific filters provided in the ReportFilter delegate
+            // Report Filters: Apply report-specific filters
             if (parameters.ReportFilter != null)
             {
                 query = parameters.ReportFilter(query);

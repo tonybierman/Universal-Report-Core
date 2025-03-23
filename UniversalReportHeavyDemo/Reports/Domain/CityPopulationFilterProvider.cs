@@ -9,10 +9,14 @@ namespace UniversalReportHeavyDemo.Reports.Domain
         {
             new("CountryOrArea", new()
             {
-                new("Canada", p => p.CountryOrArea == "Canada"),
-                new("Mexico", p => p.CountryOrArea == "Mexico"),
-                new("Pakistan", p => p.CountryOrArea == "Pakistan"),
-                new("Japan", p => p.CountryOrArea == "Japan"),
+                new("Central America", p => 
+                    p.CountryOrArea == "Belize" || 
+                    p.CountryOrArea == "Costa Rica" || 
+                    p.CountryOrArea == "El Salvador" || 
+                    p.CountryOrArea == "Guatemala" || 
+                    p.CountryOrArea == "Honduras" || 
+                    p.CountryOrArea == "Nicaragua" ||
+                    p.CountryOrArea == "Panama")
             }),
             new("Sex", new()
             {

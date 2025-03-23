@@ -132,7 +132,7 @@ namespace UniversalReportCore.PagedQueries
         /// </summary>
         /// <param name="query">The source query.</param>
         /// <returns>The filtered query.</returns>
-        protected virtual IQueryable<T> ApplyFilters(IQueryable<T> query)
+        protected virtual IQueryable<T> EnsureUserFiltersPredicate(IQueryable<T> query)
         {
             return query;
         }
@@ -144,7 +144,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="query">The source query.</param>
         /// <param name="cohortIds">Array of cohort IDs.</param>
         /// <returns>The modified query.</returns>
-        public virtual IQueryable<T> EnsureAggregateQuery(IQueryable<T> query, int[]? cohortIds)
+        public virtual IQueryable<T> EnsureAggregatePredicate(IQueryable<T> query, int[]? cohortIds)
         {
             return query;
         }
@@ -156,7 +156,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="query">The source query.</param>
         /// <param name="cohortId">Cohort ID to filter by.</param>
         /// <returns>The filtered query.</returns>
-        public virtual IQueryable<T> EnsureCohortQuery(IQueryable<T> query, int cohortId)
+        public virtual IQueryable<T> EnsureCohortPredicate(IQueryable<T> query, int cohortId)
         {
             return query;
         }
@@ -171,7 +171,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="cohortIds">Array of cohort IDs.</param>
         /// <param name="reportQuery">Base query of the report</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing query settings.</returns>
-        public virtual PagedQueryParameters<T> GetQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<T>? reportQuery = null)
+        public virtual PagedQueryParameters<T> BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<T>? reportQuery = null)
         {
             return new PagedQueryParameters<T>(
                 columns,
@@ -179,7 +179,7 @@ namespace UniversalReportCore.PagedQueries
                 sort,
                 ipp,
                 cohortIds,
-                query => ApplyFilters(reportQuery ?? query),
+                query => EnsureUserFiltersPredicate(reportQuery ?? query),
                 src => ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
                 src => ComputeMetaAsync(src)
             ); 
@@ -188,14 +188,14 @@ namespace UniversalReportCore.PagedQueries
         private async Task<Dictionary<string, dynamic>> ComputeAggregatesWithCohortsAsync(IQueryable<T> src, IReportColumnDefinition[] columns, int[]? cohortIds)
         {
             var aggregates = new Dictionary<string, dynamic>();
-            var filteredQuery = ApplyFilters(src);
+            var filteredQuery = EnsureUserFiltersPredicate(src);
 
             if (cohortIds == null || cohortIds.Length == 0)
             {
                 return await ComputeAggregates(filteredQuery, columns);
             }
 
-            var totalAggregates = await ComputeAggregates(EnsureAggregateQuery(filteredQuery, cohortIds), columns);
+            var totalAggregates = await ComputeAggregates(EnsureAggregatePredicate(filteredQuery, cohortIds), columns);
 
             foreach (var key in totalAggregates.Keys)
             {
@@ -204,7 +204,7 @@ namespace UniversalReportCore.PagedQueries
 
             foreach (var cohortId in cohortIds)
             {
-                var cohortQuery = EnsureCohortQuery(filteredQuery, cohortId);
+                var cohortQuery = EnsureCohortPredicate(filteredQuery, cohortId);
                 var cohortResults = await ComputeAggregates(cohortQuery, columns);
                 foreach (var key in cohortResults.Keys)
                 {
@@ -218,7 +218,7 @@ namespace UniversalReportCore.PagedQueries
         private async Task<Dictionary<string, dynamic>> ComputeMetaAsync(IQueryable<T> src)
         {
             var meta = new Dictionary<string, dynamic>();
-            var filteredQuery = ApplyFilters(src);
+            var filteredQuery = EnsureUserFiltersPredicate(src);
 
             var metaDictionary = await EnsureMeta(filteredQuery);
             foreach (var key in metaDictionary.Keys)

@@ -19,7 +19,7 @@ namespace UniversalReportHeavyDemo.Reports.Domain
             return new Dictionary<string, dynamic>();
         }
 
-        public override IQueryable<CityPopulation> EnsureAggregateQuery(IQueryable<CityPopulation> query, int[]? cohortIds)
+        public override IQueryable<CityPopulation> EnsureAggregatePredicate(IQueryable<CityPopulation> query, int[]? cohortIds)
         {
             if (cohortIds == null || cohortIds.Length == 0)
             {
@@ -36,7 +36,7 @@ namespace UniversalReportHeavyDemo.Reports.Domain
             return query.Where(entity => ids.Contains(entity.Id));
         }
 
-        public override IQueryable<CityPopulation> EnsureCohortQuery(IQueryable<CityPopulation> query, int cohortId)
+        public override IQueryable<CityPopulation> EnsureCohortPredicate(IQueryable<CityPopulation> query, int cohortId)
         {
             return from entity in query
                    join cityPop in _dbContext.CityPopulations on entity.Id equals cityPop.Id
