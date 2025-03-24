@@ -10,6 +10,8 @@ namespace UniversalReportCore.PageMetadata
     {
         public virtual string CategorySlug => "Reports";
 
+        public virtual string? Description => null;
+
         /// <summary>
         /// Retrieves metadata for the report's chart representation.
         /// This method can be overridden by derived classes to provide custom chart metadata.

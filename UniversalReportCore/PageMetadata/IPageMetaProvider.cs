@@ -20,6 +20,11 @@ namespace UniversalReportCore.PageMetadata
         string CategorySlug { get; }
 
         /// <summary>
+        /// Gets the page description.
+        /// </summary>
+        string? Description { get; }
+
+        /// <summary>
         /// Retrieves the metadata for the report page, including title and subtitle.
         /// </summary>
         /// <returns>A <see cref="PageMetaViewModel"/> containing the metadata for the report page.</returns>

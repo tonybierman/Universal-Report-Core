@@ -1,0 +1,13 @@
+﻿@model UniversalReportCore.Ui.ViewModels.ReportHubViewModel
+@{
+}
+@foreach (var group in Model.Links.GroupBy(r => r.Category))
+{
+    <h2>@group.Key</h2>
+    <ul class="list-group list-group-flush">
+        @foreach (var report in group)
+        {
+            <li class="list-group-item"><a href="/@report.Slug">@report.Subtitle</a><br />@report.Description</li>
+        }
+    </ul>
+}
