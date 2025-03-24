@@ -7,7 +7,7 @@
     <ul class="list-group list-group-flush">
         @foreach (var report in group)
         {
-            <li class="list-group-item"><a href="/@report.Slug">@report.Subtitle</a><br />@report.Description</li>
+            <li class="list-group-item"><a asp-route-slug="@report.Slug" asp-page="@report.ReportPath">@report.Subtitle</a><br />@report.Description</li>
         }
     </ul>
 }

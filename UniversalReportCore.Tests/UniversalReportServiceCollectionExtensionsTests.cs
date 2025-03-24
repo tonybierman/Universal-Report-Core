@@ -75,6 +75,8 @@ namespace UniversalReportCore.Tests
 
         public string CategorySlug => throw new NotImplementedException();
 
+        string? IPageMetaProvider.Description => throw new NotImplementedException();
+
         public ChartMetaViewModel? GetChartMeta()
         {
             throw new NotImplementedException();

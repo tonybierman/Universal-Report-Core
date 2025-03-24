@@ -2,17 +2,24 @@ A fast and versatile framework for presenting tabular data reports in ASP.NET Co
 
 ## Documentation
 
-[Documentation Site](https://tonybierman.github.io/universal-report-core/)
+[Documentation](https://tonybierman.github.io/universal-report-core/)
 
 ## Features
 
-- **Faceted Browsing**: Define facets to filter data.
+- **Report Hub**: A centralized hub for all reports.
+- **Faceted Browsing**: Define facets for each report to filter data.
 - **Paging**: Efficiently handle large datasets with built-in pagination.
 - **Column Sorting**: Sort data by columns dynamically.
-- **Column Aggregation**: Supports sum, average, count, min, and max operations.
+- **Column Aggregation**: Supports sum, average, count, min, and max operations on any numeric column.
 - **Cohort Aggregation**: Aggregate data within user-defined subsets.
 
-## Screen shot
+## Screen shots
+
+### An Example Report Hub
+
+![Screenshot](screenshot-reporthub.png)
+
+### An Example Report
 
 ![Screenshot](screenshot.png)
 
@@ -23,23 +30,6 @@ To install via NuGet:
 ```sh
 dotnet add package BiermanTech.UniversalReportCore.Ui
 ```
-
-Or add it to your `csproj` file:
-
-```xml
-<PackageReference Include="BiermanTech.UniversalReportCore.Ui" />
-```
-
-## Usage
-
-### 1. Register report services in `Program.cs`
-
-### 2. Create an entity that represents a row your report:
-
-### 3. Define the report's columns
-
-### 4. Define the base query for the report
-
 
 ## Contributing
 
