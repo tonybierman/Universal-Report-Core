@@ -8,5 +8,7 @@ namespace UniversalReportCore.PageMetadata
     /// </summary>
     public class BasePageMetaProvider
     {
+        public virtual string? CategorySlug => null;
+        public virtual string? Description => null;
     }
 }

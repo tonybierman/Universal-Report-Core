@@ -14,5 +14,19 @@
         /// Gets or sets the subtitle of the report page.
         /// </summary>
         public string? Subtitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the desciption of the report page.
+        /// </summary>
+        public string? Description { get; set; }
+
+        public PageMetaViewModel(string title, string subtitle, string? description = null)
+        {
+            Title = title;
+            Subtitle = subtitle;
+            Description = description;
+        }
+
+        public PageMetaViewModel() { }
     }
 }
