@@ -25,12 +25,13 @@ namespace UniversalReportCore.Ui
         public async Task<IActionResult> ReportHubPageGetAsync()
         {
             Reports = _pageMetaFactory.Providers
+                .Where(a => a.IsPublished)
                 .Select(provider =>
                 {
                     var meta = provider.GetPageMeta();
-                    return new ReportLinkViewModel("/Reports/Index", provider.Slug, meta.Title, meta.Subtitle, provider.Description, StringHelper.SplitPascalCase(provider.CategorySlug));
+                    return new ReportLinkViewModel(provider.RouteLiteral, provider.Slug, meta.Title, meta.Subtitle, provider.Description, StringHelper.SplitPascalCase(provider.TaxonomySlug));
                 })
-                .OrderBy(item => item.Category)
+                .OrderBy(item => item.Taxonomy)
                 .ThenBy(item => item.Subtitle)
                 .ThenBy(item => item.Title)
                 .ToList();

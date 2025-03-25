@@ -8,6 +8,9 @@ namespace UniversalReportCore.PageMetadata
     /// </summary>
     public class BasePageMetaProvider
     {
+        public virtual bool IsPublished => true;
+        public virtual string? RouteLiteral => null;
+        public virtual string? TaxonomySlug => null;
         public virtual string? CategorySlug => null;
         public virtual string? Description => null;
     }

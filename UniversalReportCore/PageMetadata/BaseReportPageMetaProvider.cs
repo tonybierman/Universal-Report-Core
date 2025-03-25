@@ -8,9 +8,10 @@ namespace UniversalReportCore.PageMetadata
     /// </summary>
     public class BaseReportPageMetaProvider : BasePageMetaProvider
     {
-        public virtual string CategorySlug => "Reports";
-
-        public virtual string? Description => null;
+        public override string? RouteLiteral => "/Reports/Index";
+        public override string CategorySlug => "Reports";
+        public override string? TaxonomySlug => CategorySlug;
+        public override string? Description => null;
 
         /// <summary>
         /// Retrieves metadata for the report's chart representation.
