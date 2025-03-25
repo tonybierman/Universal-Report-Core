@@ -1,28 +1,19 @@
-using CsvHelper;
-using CsvHelper.Configuration;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using UniversalReportCore.PageMetadata;
+using UniversalReportCore.Ui;
 using UniversalReportHeavyDemo.Data;
-using UniversalReportHeavyDemo.Import;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace UniversalReportHeavyDemo.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : ReportHubPageModel
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public IndexModel()
-        {
-        }
+        public IndexModel(IPageMetaFactory pageMetaFactory) : base(pageMetaFactory) { }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            return await ReportHubPageGetAsync();
         }
     }
 }
