@@ -4,7 +4,7 @@ using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Tests.Reports.Acme
 {
-    public class AcmeDemoPageMetaProvider : BaseReportPageMetaProvider, IPageMetaProvider
+    public class AcmeTestPageMetaProvider : BaseReportPageMetaProvider, IPageMetaProvider
     {
         public string Slug => "CityPopulationDemo";
 

@@ -14,7 +14,7 @@ namespace UniversalReportCore.Tests
         public PageMetaFactoryTests()
         {
             // Use CityPopulationDemoPageMetaProvider as the concrete provider
-            var cityPopProvider = new AcmeDemoPageMetaProvider();
+            var cityPopProvider = new AcmeTestPageMetaProvider();
 
             _providers = new List<IPageMetaProvider> { cityPopProvider };
             _factory = new PageMetaFactory(_providers);
