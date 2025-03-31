@@ -44,7 +44,7 @@
 		<PackageId>BiermanTech.UniversalReportCore</PackageId>
 		<Authors>Tony Bierman</Authors>
 		<Description>A fast and versatile framework for presenting tabular reports in ASP.NET Core</Description>
-		<PackageProjectUrl>https://github.com/tonybierman/Universal-Report-Core</PackageProjectUrl>
+		<PackageProjectUrl>https://tonybierman.github.io/universal-report-core/</PackageProjectUrl>
 		<PackageTags>
 			reporting, reports, paginated, pagination, ASP.NET, ASP.NET Core, Entity Framework,
 			EF Core, data, datatable, query, filtering, sorting, dynamic queries, AutoMapper,

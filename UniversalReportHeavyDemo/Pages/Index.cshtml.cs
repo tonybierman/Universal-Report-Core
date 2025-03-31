@@ -7,8 +7,6 @@ namespace UniversalReportHeavyDemo.Pages
 {
     public class IndexModel : ReportHubPageModel
     {
-        private readonly ApplicationDbContext _dbContext;
-
         public IndexModel(IPageMetaFactory pageMetaFactory) : base(pageMetaFactory) { }
 
         public async Task<IActionResult> OnGetAsync()
