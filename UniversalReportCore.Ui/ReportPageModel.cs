@@ -28,6 +28,7 @@ namespace UniversalReportCore.Ui.Pages
         private readonly IReportPageHelperFactory _pageHelperFactory;
         protected readonly IPageMetaFactory _pageMetaFactory;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IAuthorizationPolicyProvider _policyProvider;
         protected readonly ILogger _logger;
 
         // Querystring Properties
@@ -53,7 +54,8 @@ namespace UniversalReportCore.Ui.Pages
             IPageMetaFactory pageMetaFactory,
             IReportColumnFactory reportColumnFactory,
             IReportPageHelperFactory pageHelperFactory,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            IAuthorizationPolicyProvider policyProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _pageMetaFactory = pageMetaFactory;
@@ -62,6 +64,7 @@ namespace UniversalReportCore.Ui.Pages
             _mapper = mapper;
             PageMeta = new PageMetaViewModel { Title = "Demo", Subtitle = "Lorem Ipsum" };
             _authorizationService = authorizationService;
+            _policyProvider = policyProvider;
         }
 
         public async Task<IActionResult> ReportPageGetAsync()
@@ -94,6 +97,22 @@ namespace UniversalReportCore.Ui.Pages
                 // Check authorization if a policy is specified
                 if (!string.IsNullOrEmpty(policy))
                 {
+                    // Validate policy existence
+                    try
+                    {
+                        var policyObject = await _policyProvider.GetPolicyAsync(policy);
+                        if (policyObject == null)
+                        {
+                            // Unknown policy
+                            return StatusCode(500, "Invalid authorization policy configured.");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Handle any unexpected errors in policy retrieval
+                        return StatusCode(500, "Error validating authorization policy.");
+                    }
+
                     var authorizationResult = await _authorizationService.AuthorizeAsync(User, null, policy);
                     if (!authorizationResult.Succeeded)
                     {

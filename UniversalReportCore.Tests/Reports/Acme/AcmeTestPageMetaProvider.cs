@@ -4,6 +4,7 @@ using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Tests.Reports.Acme
 {
+    [PageMetaPolicy("RequireAuthenticated")]
     public class AcmeTestPageMetaProvider : BaseReportPageMetaProvider, IPageMetaProvider
     {
         public string Slug => "CityPopulationDemo";
