@@ -16,6 +16,7 @@ using UniversalReportCore.ViewModels;
 using Microsoft.CSharp.RuntimeBinder;
 using UniversalReportCore.Ui.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UniversalReportCore.Ui.Pages
 {
@@ -26,6 +27,7 @@ namespace UniversalReportCore.Ui.Pages
         private readonly IReportColumnFactory _reportColumnFactory;
         private readonly IReportPageHelperFactory _pageHelperFactory;
         protected readonly IPageMetaFactory _pageMetaFactory;
+        private readonly IAuthorizationService _authorizationService;
         protected readonly ILogger _logger;
 
         // Querystring Properties
@@ -50,7 +52,8 @@ namespace UniversalReportCore.Ui.Pages
             IMapper mapper,
             IPageMetaFactory pageMetaFactory,
             IReportColumnFactory reportColumnFactory,
-            IReportPageHelperFactory pageHelperFactory)
+            IReportPageHelperFactory pageHelperFactory,
+            IAuthorizationService authorizationService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _pageMetaFactory = pageMetaFactory;
@@ -58,6 +61,7 @@ namespace UniversalReportCore.Ui.Pages
             _reportColumnFactory = reportColumnFactory;
             _mapper = mapper;
             PageMeta = new PageMetaViewModel { Title = "Demo", Subtitle = "Lorem Ipsum" };
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> ReportPageGetAsync()
@@ -85,12 +89,24 @@ namespace UniversalReportCore.Ui.Pages
 
             try
             {
-                PageMeta = _pageMetaFactory.GetPageMeta(this.Params.Slug.Value);
+                PageMeta = _pageMetaFactory.GetPageMeta(this.Params.Slug.Value, out var policy);
+
+                // Check authorization if a policy is specified
+                if (!string.IsNullOrEmpty(policy))
+                {
+                    var authorizationResult = await _authorizationService.AuthorizeAsync(User, null, policy);
+                    if (!authorizationResult.Succeeded)
+                    {
+                        return policy == "RequireAuthenticated" ? Challenge() : Forbid();
+                    }
+                }
             }
             catch (InvalidOperationException)
             {
                 return NotFound();
             }
+
+            
 
             // Sanity check for paging index, items per page, or cohort IDs.
             if (!Params.Pi.IsSane || !Params.Ipp.IsSane || !Params.CohortIds.IsSane)

@@ -35,7 +35,7 @@ namespace UniversalReportCore.Tests
         public void GetPageMeta_ShouldReturnCorrectMeta_ForValidSlug()
         {
             // Act
-            var result = _factory.GetPageMeta("CityPopulationDemo");
+            var result = _factory.GetPageMeta("CityPopulationDemo", out var policy);
 
             // Assert
             Assert.NotNull(result);
@@ -47,7 +47,7 @@ namespace UniversalReportCore.Tests
         public void GetPageMeta_ShouldThrowInvalidOperationException_ForUnknownSlug()
         {
             // Act
-            var result = Record.Exception(() => _factory.GetPageMeta("NonExistentReport"));
+            var result = Record.Exception(() => _factory.GetPageMeta("NonExistentReport", out var policy));
 
             // Assert
             Assert.IsType<InvalidOperationException>(result);

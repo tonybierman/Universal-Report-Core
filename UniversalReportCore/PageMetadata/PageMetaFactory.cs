@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.ViewModels;
 
@@ -26,13 +27,16 @@ namespace UniversalReportCore.PageMetadata
         /// <param name="slug">The slug identifying the page.</param>
         /// <returns>A <see cref="PageMetaViewModel"/> containing metadata for the page.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
-        public PageMetaViewModel GetPageMeta(string slug)
+        public PageMetaViewModel GetPageMeta(string slug, out string policy)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
             {
                 throw new InvalidOperationException($"Unsupported meta for page: {slug}");
             }
+
+            var attribute = provider.GetType().GetCustomAttribute<PageMetaPolicyAttribute>();
+            policy = attribute?.Policy; // Null if no policy (anonymous)
 
             return provider.GetPageMeta();
         }

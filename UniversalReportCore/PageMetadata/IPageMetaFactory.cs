@@ -18,7 +18,7 @@ namespace UniversalReportCore.PageMetadata
         /// <param name="slug">The slug identifying the page.</param>
         /// <returns>A <see cref="PageMetaViewModel"/> containing metadata for the page.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
-        PageMetaViewModel GetPageMeta(string slug);
+        PageMetaViewModel GetPageMeta(string slug, out string policy);
 
         /// <summary>
         /// Retrieves the chart metadata for a given page based on its slug.
