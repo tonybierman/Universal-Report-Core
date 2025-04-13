@@ -104,19 +104,21 @@ namespace UniversalReportCore.Ui.Pages
                         if (policyObject == null)
                         {
                             // Unknown policy
-                            return StatusCode(500, "Invalid authorization policy configured.");
+                            _logger.LogDebug("Invalid authorization policy configured.");
+                            return StatusCode(500);
                         }
                     }
                     catch (Exception)
                     {
                         // Handle any unexpected errors in policy retrieval
-                        return StatusCode(500, "Error validating authorization policy.");
+                        _logger.LogDebug("Error validating authorization policy.");
+                        return StatusCode(500);
                     }
 
                     var authorizationResult = await _authorizationService.AuthorizeAsync(User, null, policy);
                     if (!authorizationResult.Succeeded)
                     {
-                        return policy == "RequireAuthenticated" ? Challenge() : Forbid();
+                        return Challenge();
                     }
                 }
             }
