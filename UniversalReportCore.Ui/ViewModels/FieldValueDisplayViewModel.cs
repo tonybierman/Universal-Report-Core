@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,15 +23,18 @@ namespace UniversalReportCore.Ui.ViewModels
         /// </summary>
         public string PropertyName { get; set; }
 
+        public IReportColumnDefinition ColumnDefinition { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldValueDisplayViewModel"/> class.
         /// </summary>
         /// <param name="item">The IEntityViewModel<int> object.</param>
         /// <param name="propertyName">The property name to be accessed.</param>
-        public FieldValueDisplayViewModel(IEntityViewModel<int> item, string propertyName)
+        public FieldValueDisplayViewModel(IEntityViewModel<int> item, IReportColumnDefinition column)
         {
             Item = item;
-            PropertyName = propertyName;
+            ColumnDefinition = column;
+            PropertyName = column.ViewModelName ?? column.PropertyName;
         }
 
         /// <summary>

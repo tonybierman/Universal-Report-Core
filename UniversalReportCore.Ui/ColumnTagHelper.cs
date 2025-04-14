@@ -113,7 +113,7 @@ namespace UniversalReportCore.Ui
                         viewModelInstance),
 
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial",
-                        new FieldValueDisplayViewModel(Item, Column.ViewModelName ?? Column.PropertyName)) // TODO: Pass the column instead of the propertyname
+                        new FieldValueDisplayViewModel(Item, Column)) // TODO: Pass the column instead of the propertyname
             };
 
             output.Content.SetHtmlContent(content);

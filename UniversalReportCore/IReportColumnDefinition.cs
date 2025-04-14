@@ -14,5 +14,6 @@
         bool HideInPortrait { get; set; }
         AggregationType Aggregation { get; set; }
         Type? ViewModelType { get; }
+        IFieldFormatProvider? FieldFormatProvider { get; set; }
     }
 }

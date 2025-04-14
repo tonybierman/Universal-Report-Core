@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversalReportCore.Helpers
+namespace UniversalReportCore
 {
-    public interface IGetDisplayName
+    public interface IFieldFormatProvider
     {
-        string GetDisplayName(int value);
+        string GetFormattedValue(int value);
     }
 }

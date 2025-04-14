@@ -1,6 +1,4 @@
-﻿
-
-namespace UniversalReportCore
+﻿namespace UniversalReportCore
 {
     public class ReportColumnDefinition : IReportColumnDefinition
     {
@@ -21,5 +19,6 @@ namespace UniversalReportCore
         public bool HideInPortrait { get; set; }
         public AggregationType Aggregation { get; set; }
         public Type? ViewModelType { get; set; }
+        public IFieldFormatProvider? FieldFormatProvider { get; set; }
     }
 }
