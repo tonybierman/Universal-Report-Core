@@ -19,6 +19,5 @@
         public bool HideInPortrait { get; set; }
         public AggregationType Aggregation { get; set; }
         public Type? ViewModelType { get; set; }
-        public IFieldFormatProvider? FieldFormatProvider { get; set; }
     }
 }

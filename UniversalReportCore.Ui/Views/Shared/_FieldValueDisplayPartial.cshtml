@@ -4,46 +4,38 @@
     var fieldVal = Model.Item.GetType().GetProperty(Model.PropertyName)?.GetValue(Model.Item);
 }
 
-@if (Model.ColumnDefinition.FieldFormatProvider != null)
+@if (fieldVal != null)
 {
-    Model.ColumnDefinition.FieldFormatProvider.GetFormattedValue(fieldVal);
+    switch (fieldVal)
+    {
+        case int:
+        case long:
+            @fieldVal
+            break;
+        case double:
+        case float:
+        case decimal:
+            @string.Format("{0:N2}", fieldVal)
+            // Commas + 2 decimal places
+            break;
+        default:
+            @fieldVal
+            break;
+    }
 }
 else
 {
-    @if (fieldVal != null)
+    switch (Model.Item.GetType().GetProperty(Model.PropertyName)?.PropertyType)
     {
-        switch (fieldVal)
-        {
-            case int:
-            case long:
-                @fieldVal
-                break;
-            case double:
-            case float:
-            case decimal:
-                @string.Format("{0:N2}", fieldVal)
-                // Commas + 2 decimal places
-                break;
-            default:
-                @fieldVal
-                break;
-        }
-    }
-
-    else
-    {
-        switch (Model.Item.GetType().GetProperty(Model.PropertyName)?.PropertyType)
-        {
-            case Type t when t == typeof(long) || t == typeof(long?) || t == typeof(int?) || t == typeof(int):
-                @string.Format("{0}", 0)
-                break;
-            case Type t when t ==  typeof(double?) || t == typeof(decimal?) ||
-                t ==  typeof(double) || t == typeof(decimal):
-                @string.Format("{0:N2}", 0)
-                break;
-            default:
-                @string.Empty
-                break;
-        }
+        case Type t when t == typeof(long) || t == typeof(long?) || t == typeof(int?) || t == typeof(int):
+            @string.Format("{0}", 0)
+            break;
+        case Type t when t == typeof(double?) || t == typeof(decimal?) ||
+            t == typeof(double) || t == typeof(decimal):
+            @string.Format("{0:N2}", 0)
+            break;
+        default:
+            @string.Empty
+            break;
     }
 }
