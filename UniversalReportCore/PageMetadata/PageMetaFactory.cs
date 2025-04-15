@@ -27,6 +27,24 @@ namespace UniversalReportCore.PageMetadata
         /// <param name="slug">The slug identifying the page.</param>
         /// <returns>A <see cref="PageMetaViewModel"/> containing metadata for the page.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
+        public PageMetaViewModel GetPageMeta(string slug)
+        {
+            var provider = _providers.FirstOrDefault(p => p.Slug == slug);
+            if (provider == null)
+            {
+                throw new InvalidOperationException($"Unsupported meta for page: {slug}");
+            }
+
+            return provider.GetPageMeta();
+
+        }
+        /// <summary>
+        /// Retrieves the metadata for a given page based on its slug.
+        /// </summary>
+        /// <param name="slug">The slug identifying the page.</param>
+        /// <param name="policy">The out string of the PageMeta Policy applied.</param>
+        /// <returns>A <see cref="PageMetaViewModel"/> containing metadata for the page.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
         public PageMetaViewModel GetPageMeta(string slug, out string policy)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
