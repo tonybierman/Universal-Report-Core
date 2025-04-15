@@ -11,6 +11,7 @@ using UniversalReportCore.HardQuerystringVariables;
 using Microsoft.CSharp.RuntimeBinder;
 using UniversalReportCore.Ui;
 using UniversalReportCore.Ui.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UniversalReportHeavyDemo.Pages.Reports
 {
@@ -20,9 +21,12 @@ namespace UniversalReportHeavyDemo.Pages.Reports
             IMapper mapper,
             IReportColumnFactory reportColumnFactory,
             IPageMetaFactory pageMetaFactory,
-            IReportPageHelperFactory pageHelperFactory) :
+            IReportPageHelperFactory pageHelperFactory,
+            IAuthorizationService authorizationService,
+            IAuthorizationPolicyProvider policyProvider) :
             base(logger, mapper, pageMetaFactory,
-                reportColumnFactory, pageHelperFactory)
+                reportColumnFactory, pageHelperFactory,
+                authorizationService, policyProvider)
         {
         }
 

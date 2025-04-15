@@ -59,7 +59,7 @@ namespace UniversalReportCore.Ui
             services.AddScoped<IReportColumnProvider, TReportColumnProvider>(); // Defines report columns
             services.AddScoped<IPagedQueryProvider<T>, TQueryProvider>(); // Provides paged query execution
             services.AddTransient<IReportPageHelper<T, TViewModel>, TPageHelper>(); // Handles report page operations
-            services.AddSingleton<IFilterProvider<T>, TFilterProvider>(); // Provides filtering capabilities
+            services.AddScoped<IFilterProvider<T>, TFilterProvider>(); // Provides filtering capabilities
             services.AddTransient<FilterFactory<T>>(); // Builds filter expressions for querying
 
             return services;
