@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalReportCore.Ui.ViewModels.FieldFormatting;
 using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui.ViewModels
@@ -46,55 +47,6 @@ namespace UniversalReportCore.Ui.ViewModels
             var type = Item?.GetType();
             var property = type?.GetProperty(PropertyName);
             return property?.GetValue(Item);
-        }
-
-        private interface IFieldFormatter
-        {
-            string Format(object value, Type propertyType);
-            bool CanHandle(object value, Type propertyType);
-        }
-
-        private class IntegerFormatter : IFieldFormatter
-        {
-            public bool CanHandle(object value, Type propertyType)
-            {
-                if (value != null)
-                    return value is int || value is long;
-                return propertyType == typeof(int) || propertyType == typeof(int?) ||
-                       propertyType == typeof(long) || propertyType == typeof(long?);
-            }
-
-            public string Format(object value, Type propertyType)
-            {
-                return value != null ? value.ToString() : "0";
-            }
-        }
-
-        private class DecimalFormatter : IFieldFormatter
-        {
-            public bool CanHandle(object value, Type propertyType)
-            {
-                if (value != null)
-                    return value is double || value is float || value is decimal;
-                return propertyType == typeof(double) || propertyType == typeof(double?) ||
-                       propertyType == typeof(decimal) || propertyType == typeof(decimal?) ||
-                       propertyType == typeof(float) || propertyType == typeof(float?);
-            }
-
-            public string Format(object value, Type propertyType)
-            {
-                return value != null ? string.Format("{0:N2}", value) : string.Format("{0:N2}", 0);
-            }
-        }
-
-        private class DefaultFormatter : IFieldFormatter
-        {
-            public bool CanHandle(object value, Type propertyType) => true;
-
-            public string Format(object value, Type propertyType)
-            {
-                return value?.ToString() ?? string.Empty;
-            }
         }
 
         private static readonly IFieldFormatter[] Formatters = new IFieldFormatter[]

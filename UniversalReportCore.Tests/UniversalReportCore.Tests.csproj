@@ -10,7 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DecimalFormatterTests.cs" />
+    <Compile Remove="DefaultFormatterTests.cs" />
     <Compile Remove="TestStartupFixture.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="DecimalFormatterTests.cs" />
+    <None Include="DefaultFormatterTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
