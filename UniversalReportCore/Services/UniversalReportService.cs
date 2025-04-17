@@ -89,56 +89,5 @@ namespace UniversalReport.Services
 
             return result;
         }
-
-        /// <summary>
-        /// Applies sorting to the given query based on the specified sort order and list of column definitions.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entities in the query.</typeparam>
-        /// <param name="query">The query to apply sorting to.</param>
-        /// <param name="sortOrder">The sort order string (e.g., "SkuDesc" or "SkuAsc").</param>
-        /// <param name="columns">A list of column definitions to validate sortable columns.</param>
-        /// <returns>The query with the sorting applied.</returns>
-        private IQueryable<TEntity> ApplySorting<TEntity>(
-            IQueryable<TEntity> query,
-            string sortOrder,
-            IReportColumnDefinition[] columns)
-        {
-            // TODO: Fix bracket removal hack
-            sortOrder = sortOrder.Replace("{", "").Replace("}", "");
-
-            // Determine if the sort order is descending by checking if the sortOrder ends with "Desc".
-            var isDescending = SortHelper.IsDescending(sortOrder);
-
-            // Extract the base sort key by removing "Desc" or "Asc" from the sort order string.
-            var baseSortKey = SortHelper.BaseSortKey(sortOrder);
-
-            // Find the corresponding column definition that matches the extracted sort key.
-            var column = columns.FirstOrDefault(c => c.PropertyName == baseSortKey);
-
-            // If a matching column is found and it is marked as sortable:
-            if (column != null && column.IsSortable)
-            {
-                // Use System.Linq.Dynamic.Core to apply sorting dynamically based on the column property name.
-                query = query.OrderBy($"{column.PropertyName} {(isDescending ? "descending" : "ascending")}");
-            }
-
-            // Return the sorted query.
-            return query;
-        }
-
-        private IQueryable<TEntity> ApplyDateRangeFilter<TEntity>(
-            IQueryable<TEntity> query,
-            DateRangeFilter filter
-            ) where TEntity : class
-        {
-            if (typeof(TEntity).GetProperty(filter.PropertyName) != null)
-            {
-                query = query.Where(e => EF.Property<DateTime>(e, filter.PropertyName) >= filter.StartDate);
-                query = query.Where(e => EF.Property<DateTime>(e, filter.PropertyName) <= filter.EndDate);
-            }
-
-            return query;
-        }
-
     }
 }
