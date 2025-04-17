@@ -1,0 +1,26 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UniversalReportCore.PagedQueries;
+
+namespace UniversalReportCore.Services.QueryPipeline
+{
+    public class DateRangeFilterStep<TEntity> : IQueryPipelineStep<TEntity> where TEntity : class
+    {
+        public IQueryable<TEntity> Execute(IQueryable<TEntity> query, PagedQueryParameters<TEntity> parameters)
+        {
+            if (parameters.DateFilter != null && parameters.DateFilter.HasValue)
+            {
+                if (typeof(TEntity).GetProperty(parameters.DateFilter.PropertyName) != null)
+                {
+                    query = query.Where(e => EF.Property<DateTime>(e, parameters.DateFilter.PropertyName) >= parameters.DateFilter.StartDate)
+                                 .Where(e => EF.Property<DateTime>(e, parameters.DateFilter.PropertyName) <= parameters.DateFilter.EndDate);
+                }
+            }
+            return query;
+        }
+    }
+}

@@ -5,6 +5,7 @@ using System.Linq.Dynamic.Core;
 using UniversalReportCore;
 using UniversalReportCore.Helpers;
 using UniversalReportCore.PagedQueries;
+using UniversalReportCore.Services.QueryPipeline;
 
 namespace UniversalReport.Services
 {
@@ -21,6 +22,7 @@ namespace UniversalReport.Services
         {
             _dbContext = dbContext;
             _mapper = mapper;
+
         }
 
         /// <summary>
@@ -34,82 +36,59 @@ namespace UniversalReport.Services
         /// <param name="query">An optional initial query. If null, it defaults to querying all records of <typeparamref name="TEntity"/>.</param>
         /// <returns>A paginated list of <typeparamref name="TViewModel"/> with aggregates and metadata.</returns>
         public async Task<PaginatedList<TViewModel>> GetPagedAsync<TEntity, TViewModel>(
-            PagedQueryParameters<TEntity> parameters,
-            int totalCount,
-            IQueryable<TEntity>? query = null
-        ) where TEntity : class where TViewModel : class
+                PagedQueryParameters<TEntity> parameters,
+                int totalCount,
+                IQueryable<TEntity>? query = null) where TEntity : class where TViewModel : class
         {
+            var pipelineSteps = new List<IQueryPipelineStep<TEntity>>
+            {
+                new ReportFilterStep<TEntity>(),
+                new FacetedFilterStep<TEntity>(),
+                new DateRangeFilterStep<TEntity>(),
+                new CohortFilterStep<TEntity>(),
+                new SortingStep<TEntity>()
+
+            };
             var stopwatch = Stopwatch.StartNew();
 
-            // If no query is provided, initialize it with the DbSet for TEntity
-            query = query ?? _dbContext.Set<TEntity>();
+            // Initialize query if not provided
+            query = query ?? _dbContext.Set<TEntity>().AsNoTracking();
 
-            // Report Filters: Apply report-specific filters
-            if (parameters.ReportFilter != null)
+            // Execute pipeline steps
+            foreach (var step in pipelineSteps)
             {
-                query = parameters.ReportFilter(query);
+                query = step.Execute(query, parameters);
             }
 
-            // Faceted Filters: Apply custom filters provided in the FacetedFilter delegate
-            if (parameters.FacetedFilter != null)
-            {
-                query = parameters.FacetedFilter(query);
-            }
-
-            // Apply Date Range filter
-            if (parameters.DateFilter != null && parameters.DateFilter.HasValue)
-            {
-                query = ApplyDateRangeFilter(query, parameters.DateFilter);
-            }
-
-            // Cohort Filter: Apply cohort-based logic if CohortIds and CohortLogic are provided
-            if (parameters.CohortIds != null && parameters.CohortIds.Any() && parameters.CohortLogic != null)
-            {
-                query = parameters.CohortLogic(query, parameters.CohortIds);
-            }
-
-            // Sorting: Apply sorting if a sort order is specified in the parameters
-            if (!string.IsNullOrEmpty(parameters.Sort))
-            {
-                query = ApplySorting(query, parameters.Sort, parameters.ReportColumns.ToArray());
-            }
-
-            // Ensure that AggregateLogic is not null. If it is, initialize it to return an empty dictionary.
+            // Ensure AggregateLogic is not null
             parameters.AggregateLogic ??= async src => new Dictionary<string, dynamic>();
 
-            // Return a paginated list with the following:
-            // - The query executed with AsNoTracking for better performance
-            // - Pagination using PageIndex and ItemsPerPage
-            // - Entities mapped to TViewModel using AutoMapper
-            // - Aggregate logic for summaries (e.g., sums, counts)
-            // - Optional meta logic for additional metadata
-            var retval =  await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
-                query.AsNoTracking(),
+            // Create paginated list with mapping and aggregates
+            var result = await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
+                query,
                 parameters.PageIndex ?? 1,
-                parameters.ItemsPerPage ?? 25, // TODO: get rid of Magic number
-                entity => _mapper.Map<TViewModel>(entity),  // Map each entity to a view model using AutoMapper
+                parameters.ItemsPerPage ?? 25, // TODO: Replace with configurable value
+                entity => _mapper.Map<TViewModel>(entity),
                 parameters.AggregateLogic,
                 parameters.MetaLogic
             );
 
-            // Get the totalCount if it is not known
+            // Set total count if not provided
             if (totalCount == 0)
             {
                 totalCount = await query.CountAsync();
             }
+            result.EnsureTotalItemsCount(totalCount);
 
-            retval.EnsureTotalItemsCount(totalCount);
-
+            // Add query duration to metadata
             stopwatch.Stop();
-
-            if (retval.Meta != null)
+            if (result.Meta != null)
             {
-                retval.Meta["QueryDuration"] = $"{stopwatch.Elapsed.TotalMilliseconds:N2} ms";
+                result.Meta["QueryDuration"] = $"{stopwatch.Elapsed.TotalMilliseconds:N2} ms";
             }
 
-            return retval;
+            return result;
         }
-
 
         /// <summary>
         /// Applies sorting to the given query based on the specified sort order and list of column definitions.
