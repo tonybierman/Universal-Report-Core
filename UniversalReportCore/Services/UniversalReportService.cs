@@ -66,7 +66,9 @@ namespace UniversalReport.Services
             // Create paginated list with mapping and aggregates
             var result = await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
                 query,
-                parameters.PageIndex ?? 1,
+                parameters.ItemsPerPage is not null && parameters.ItemsPerPage > 0
+                    ? (parameters.PageIndex ?? 1)
+                    : parameters.PageIndex ?? 1,
                 parameters.ItemsPerPage ?? 25, // TODO: Replace with configurable value
                 entity => _mapper.Map<TViewModel>(entity),
                 parameters.AggregateLogic,
