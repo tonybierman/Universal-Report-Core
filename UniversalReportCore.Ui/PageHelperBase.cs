@@ -183,6 +183,7 @@ namespace UniversalReportCore.Ui
                     Heading: facet.Key, // The UI-friendly heading (e.g., "Country", "Gender")
                     Options: facet.Value
                         .Where(key => _filterProvider.Filters.ContainsKey(key)) // Ensure the key exists
+                        .OrderBy(key => key)
                         .Select(key => new SelectListItem
                         {
                             Text = _filterProvider.Facets.SelectMany(f => f.Values)

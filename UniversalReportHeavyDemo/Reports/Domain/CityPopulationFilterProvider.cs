@@ -44,6 +44,18 @@ namespace UniversalReportHeavyDemo.Reports.Domain
                         p.CountryOrArea == "Nicaragua" ||
                         p.CountryOrArea == "Panama",
                     displayName: "Central America"
+                ),
+                new FacetValue<CityPopulation>(
+                    key: "South America",
+                    filter: p =>
+                        p.CountryOrArea == "Brazil",
+                    displayName: "South America"
+                ),
+                new FacetValue<CityPopulation>(
+                    key: "North America",
+                    filter: p =>
+                        p.CountryOrArea == "Canada",
+                    displayName: "North America"
                 )
             }));
         }
