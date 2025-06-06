@@ -35,7 +35,6 @@ namespace UniversalReportCore
         /// Initializes a new instance of the <see cref="PaginatedList{T}"/> class.
         /// </summary>
         /// <param name="items">The items for the current page.</param>
-        /// <param name="count">The total number of items across all pages.</param>
         /// <param name="pageIndex">The current page index.</param>
         /// <param name="pageSize">The number of items per page.</param>
         /// <param name="aggregates">Optional aggregate values (e.g., SUM, AVG).</param>

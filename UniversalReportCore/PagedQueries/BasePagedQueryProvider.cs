@@ -16,6 +16,7 @@ namespace UniversalReportCore.PagedQueries
 
         public BasePagedQueryProvider() { }
 
+        // TODO: Column aggregates don't account for faceted filters
         public virtual async Task<Dictionary<string, dynamic>> ComputeAggregates(IQueryable<T> query, IReportColumnDefinition[] columns)
         {
             var aggregateResults = new Dictionary<string, dynamic>();
@@ -32,38 +33,40 @@ namespace UniversalReportCore.PagedQueries
 
                 Type propertyType = property.PropertyType;
 
+                var query1 = EnsureUserFiltersPredicate(query);
+
                 switch (column.Aggregation)
                 {
                     case AggregationType.Sum:
                         if (propertyType == typeof(int) || propertyType == typeof(int?))
-                            aggregateResults[propertyName] = await query.SumAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.SumAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
                         else if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
-                            aggregateResults[propertyName] = await query.SumAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.SumAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
                         break;
 
                     case AggregationType.Average:
                         if (propertyType == typeof(int) || propertyType == typeof(int?))
-                            aggregateResults[propertyName] = await query.AverageAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.AverageAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
                         else if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
-                            aggregateResults[propertyName] = await query.AverageAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.AverageAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
                         break;
 
                     case AggregationType.Min:
                         if (propertyType == typeof(int) || propertyType == typeof(int?))
-                            aggregateResults[propertyName] = await query.MinAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.MinAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
                         else if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
-                            aggregateResults[propertyName] = await query.MinAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.MinAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
                         break;
 
                     case AggregationType.Max:
                         if (propertyType == typeof(int) || propertyType == typeof(int?))
-                            aggregateResults[propertyName] = await query.MaxAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.MaxAsync(x => EF.Property<int?>(x, propertyName)) ?? 0;
                         else if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
-                            aggregateResults[propertyName] = await query.MaxAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
+                            aggregateResults[propertyName] = await query1.MaxAsync(x => EF.Property<decimal?>(x, propertyName)) ?? 0;
                         break;
 
                     case AggregationType.Count:
-                        aggregateResults[propertyName] = await query.CountAsync(x => EF.Property<object>(x, propertyName) != null);
+                        aggregateResults[propertyName] = await query1.CountAsync(x => EF.Property<object>(x, propertyName) != null);
                         break;
 
                     case AggregationType.None:
@@ -98,6 +101,7 @@ namespace UniversalReportCore.PagedQueries
             return query;
         }
 
+        // TODO: Facet filters need to be passed in here
         public virtual PagedQueryParameters<T> BuildPagedQuery(
             IReportColumnDefinition[] columns,
             int? pageIndex,
@@ -106,6 +110,7 @@ namespace UniversalReportCore.PagedQueries
             int[]? cohortIds,
             IQueryable<T>? reportQuery = null)
         {
+
             var pipeline = new QueryPipeline<T>()
                 .AddStage(new UserFilterStage<T>(EnsureUserFiltersPredicate))
                 .AddStage(new CohortAggregateStage<T>(columns, cohortIds, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
