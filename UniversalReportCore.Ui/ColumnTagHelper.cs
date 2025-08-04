@@ -100,7 +100,7 @@ namespace UniversalReportCore.Ui
             catch (MissingMethodException ex)
             {
                 throw new InvalidOperationException(
-                    $"Constructor not found for type '{viewModelType.FullName}' with parameter type '{Item?.GetType().FullName ?? "null"}'. " +
+                    $"Constructor not found for type '{viewModelType.FullName}' with parameter types '{Item?.GetType().FullName ?? "null"}', '{Column?.GetType().FullName ?? "null"}'. " +
                     $"Ensure the constructor exists and matches the expected parameter.",
                     ex
                 );
