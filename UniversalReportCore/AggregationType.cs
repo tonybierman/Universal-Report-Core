@@ -13,6 +13,7 @@ namespace UniversalReportCore
         Average, // Compute average
         Min,    // Find minimum value
         Max,    // Find maximum value
-        Count   // Count the number of records
+        Count,   // Count the number of records
+        StandardDeviation
     }
 }

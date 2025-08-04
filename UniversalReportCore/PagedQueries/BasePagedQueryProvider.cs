@@ -69,6 +69,19 @@ namespace UniversalReportCore.PagedQueries
                         aggregateResults[propertyName] = await query1.CountAsync(x => EF.Property<object>(x, propertyName) != null);
                         break;
 
+                    case AggregationType.StandardDeviation:
+                        if (propertyType == typeof(int) || propertyType == typeof(int?))
+                        {
+                            var values = await query1.Select(x => EF.Property<int?>(x, propertyName)).Where(x => x != null).Cast<double>().ToListAsync();
+                            aggregateResults[propertyName] = values.Any() ? Math.Sqrt(values.Average(v => Math.Pow(v - values.Average(), 2))) : 0;
+                        }
+                        else if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
+                        {
+                            var values = await query1.Select(x => EF.Property<decimal?>(x, propertyName)).Where(x => x != null).Cast<double>().ToListAsync();
+                            aggregateResults[propertyName] = values.Any() ? (decimal)Math.Sqrt(values.Average(v => Math.Pow(v - values.Average(), 2))) : 0;
+                        }
+                        break;
+
                     case AggregationType.None:
                     default:
                         aggregateResults[propertyName] = null;
@@ -81,7 +94,7 @@ namespace UniversalReportCore.PagedQueries
 
         public virtual IQueryable<T>? EnsureReportQuery()
         {
-            return null;
+            throw new NotImplementedException("This report's query provider does not implement an EnsureReportQuery() method.");
         }
 
         protected abstract Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<T> query);
