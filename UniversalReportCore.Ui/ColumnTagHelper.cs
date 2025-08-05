@@ -13,7 +13,7 @@ namespace UniversalReportCore.Ui
     public class ColumnTagHelper : TagHelper
     {
         public IReportColumnDefinition Column { get; set; }
-        public IEntityViewModel<int> Item { get; set; }
+        public IBaseEntityViewModel Item { get; set; }
         public string Slug { get; set; }
 
         private readonly IHtmlHelper<dynamic> _htmlHelper;

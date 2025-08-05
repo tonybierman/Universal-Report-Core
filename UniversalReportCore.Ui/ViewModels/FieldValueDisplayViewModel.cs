@@ -17,7 +17,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// <summary>
         /// Gets or sets the dynamic object containing the property.
         /// </summary>
-        public dynamic Item { get; set; }
+        public IBaseEntityViewModel Item { get; set; }
 
         /// <summary>
         /// Gets or sets the property name to be accessed.
@@ -31,7 +31,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// </summary>
         /// <param name="item">The IEntityViewModel<int> object.</param>
         /// <param name="column">The column definition.</param>
-        public FieldValueDisplayViewModel(IEntityViewModel<int> item, IReportColumnDefinition column)
+        public FieldValueDisplayViewModel(IBaseEntityViewModel item, IReportColumnDefinition column)
         {
             Item = item;
             ColumnDefinition = column;
