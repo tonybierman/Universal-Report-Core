@@ -7,9 +7,8 @@ namespace UniversalReportCore.Tests
 {
     public class FieldValueDisplayViewModelTests
     {
-        public class TestViewModel : IEntityViewModel<int>
+        public class TestViewModel : BaseEntityViewModel, IEntityViewModel<int>
         {
-            public int Id { get; set; }
             public string Name { get; set; } = "Test Name";
             public decimal Price { get; set; } = 99.99m;
         }

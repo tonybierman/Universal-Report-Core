@@ -10,13 +10,13 @@ namespace UniversalReportCore.Ui.ViewModels.Tests
 {
     public class FieldValueDisplayViewModelTests
     {
-        private readonly Mock<IEntityViewModel<int>> _mockItem;
+        private readonly Mock<BaseEntityViewModel> _mockItem;
         private readonly Mock<IReportColumnDefinition> _mockColumnDefinition;
         private readonly FieldValueDisplayViewModel _viewModel;
 
         public FieldValueDisplayViewModelTests()
         {
-            _mockItem = new Mock<IEntityViewModel<int>>();
+            _mockItem = new Mock<BaseEntityViewModel>();
             _mockColumnDefinition = new Mock<IReportColumnDefinition>();
             _mockColumnDefinition.Setup(c => c.PropertyName).Returns("TestProperty");
             _mockColumnDefinition.Setup(c => c.ViewModelName).Returns((string)null);
@@ -146,7 +146,7 @@ namespace UniversalReportCore.Ui.ViewModels.Tests
         }
 
         // Helper class for testing property access
-        private class TestClass
+        private class TestClass : BaseEntityViewModel
         {
             public int TestProperty { get; set; }
         }

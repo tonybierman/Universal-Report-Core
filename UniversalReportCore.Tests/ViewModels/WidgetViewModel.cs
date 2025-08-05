@@ -5,9 +5,8 @@ using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCoreTests.ViewModels
 {
-    public class WidgetViewModel : IEntityViewModel<int>
+    public class WidgetViewModel : BaseEntityViewModel, IEntityViewModel<int>
     {
-        public int Id { get; set; }  // Primary Key
         public string? CountryOrArea { get; set; }
         public int? Year { get; set; }
         public string? Area { get; set; }
