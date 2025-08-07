@@ -32,6 +32,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting criteria for the query.</param>
         /// <param name="ipp">Items per page.</param>
         /// <param name="cohortIds">An array of cohort IDs to filter the data.</param>
+        /// <param name="filterKeys">A string array of keys to filter the data.</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> instance containing the query parameters.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the specified slug does not match any available query provider.</exception>
         public PagedQueryParameters<T> CreateQueryParameters(
@@ -40,7 +41,8 @@ namespace UniversalReportCore.PagedQueries
             int? pageIndex,
             string? sort,
             int? ipp,
-            int[]? cohortIds)
+            int[]? cohortIds,
+            string[]? filterKeys)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
@@ -48,7 +50,7 @@ namespace UniversalReportCore.PagedQueries
                 throw new InvalidOperationException($"Unsupported query type: {slug}");
             }
 
-            return provider.BuildPagedQuery(columns, pageIndex, sort, ipp, cohortIds, provider.EnsureReportQuery());
+            return provider.BuildPagedQuery(columns, pageIndex, sort, ipp, cohortIds, filterKeys, provider.EnsureReportQuery());
         }
     }
 }

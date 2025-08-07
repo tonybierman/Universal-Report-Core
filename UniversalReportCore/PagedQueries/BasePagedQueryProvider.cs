@@ -121,6 +121,7 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? ipp,
             int[]? cohortIds,
+            string[]? filterKeys,
             IQueryable<T>? reportQuery = null)
         {
 
@@ -131,7 +132,7 @@ namespace UniversalReportCore.PagedQueries
 
             var query = reportQuery ?? EnsureReportQuery() ?? throw new InvalidOperationException("No query provided");
 
-            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds).Result;
+            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, filterKeys).Result;
         }
     }
 }

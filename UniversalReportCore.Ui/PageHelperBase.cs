@@ -70,12 +70,12 @@ namespace UniversalReportCore.Ui
             return facetKeys.Keys.Intersect(columns.Select(a => a.PropertyName)).Any();
         }
 
-        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
         {
-            return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds);
+            return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds, filterKeys);
         }
 
-        public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
         {
             throw new NotImplementedException();
         }

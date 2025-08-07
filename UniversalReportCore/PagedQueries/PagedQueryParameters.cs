@@ -54,6 +54,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting order.</param>
         /// <param name="itemsPerPage">The number of items per page.</param>
         /// <param name="cohortIds">An array of cohort identifiers for filtering.</param>
+        /// <param name="filterKeys">A string array of keys for filtering.</param>
         /// <param name="reportFilter">An optional additional filter function.</param>
         /// <param name="aggregateLogic">An optional aggregation function.</param>
         /// <param name="metaLogic">An optional function for computing metadata.</param>
@@ -63,6 +64,7 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? itemsPerPage,
             int[]? cohortIds,
+            string[]? filterKeys,
             Func<IQueryable<T>, IQueryable<T>>? reportFilter = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? aggregateLogic = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? metaLogic = null)
@@ -72,6 +74,7 @@ namespace UniversalReportCore.PagedQueries
             Sort = sort;
             ItemsPerPage = itemsPerPage;
             CohortIds = cohortIds;
+            FilterKeys = filterKeys;
             ReportFilter = reportFilter;
             AggregateLogic = aggregateLogic;
             MetaLogic = metaLogic;

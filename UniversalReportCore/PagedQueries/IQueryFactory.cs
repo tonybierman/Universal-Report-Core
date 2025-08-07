@@ -19,6 +19,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting criteria for the query.</param>
         /// <param name="ipp">The number of items per page.</param>
         /// <param name="cohortIds">An array of cohort IDs to filter the data.</param>
+        /// <param name="filterKeys">A string array of keys to filter the data.</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> instance containing the query parameters.</returns>
         PagedQueryParameters<T> CreateQueryParameters(
             string queryType,
@@ -26,6 +27,7 @@ namespace UniversalReportCore.PagedQueries
             int? pageIndex,
             string? sort,
             int? ipp,
-            int[]? cohortIds);
+            int[]? cohortIds,
+            string[]? filterKeys);
     }
 }
