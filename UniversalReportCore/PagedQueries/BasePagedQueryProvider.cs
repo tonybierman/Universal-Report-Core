@@ -35,6 +35,13 @@ namespace UniversalReportCore.PagedQueries
 
                 var query1 = EnsureUserFiltersPredicate(query);
 
+                // Apply facet filters
+                //if (_filterKeys.Any() && _filterFactory != null && _filterProvider != null)
+                //{
+                //    var predicate = _filterFactory.BuildPredicate(_filterKeys);
+                //    query1 = query1.Where(predicate);
+                //}
+
                 switch (column.Aggregation)
                 {
                     case AggregationType.Sum:
@@ -121,18 +128,17 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? ipp,
             int[]? cohortIds,
-            string[]? filterKeys,
+            FilterConfig<T>? filterConfig = null,
             IQueryable<T>? reportQuery = null)
         {
-
             var pipeline = new QueryPipeline<T>()
                 .AddStage(new UserFilterStage<T>(EnsureUserFiltersPredicate))
-                .AddStage(new CohortAggregateStage<T>(columns, cohortIds, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
+                .AddStage(new CohortAggregateStage<T>(columns, cohortIds, filterConfig, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
                 .AddStage(new MetadataStage<T>(EnsureMeta));
 
             var query = reportQuery ?? EnsureReportQuery() ?? throw new InvalidOperationException("No query provided");
 
-            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, filterKeys).Result;
+            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, filterConfig).Result;
         }
     }
 }

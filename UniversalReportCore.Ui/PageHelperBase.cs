@@ -22,8 +22,8 @@ namespace UniversalReportCore.Ui
         protected readonly IReportColumnFactory _reportColumnFactory;
         protected readonly IQueryFactory<TEntity> _queryFactory;
 
-        private readonly IFilterProvider<TEntity> _filterProvider;
-        private readonly FilterFactory<TEntity> _filterFactory;
+        protected readonly IFilterProvider<TEntity> _filterProvider;
+        protected readonly FilterFactory<TEntity> _filterFactory;
 
         public string DefaultSort { get; set; }
 
@@ -68,6 +68,17 @@ namespace UniversalReportCore.Ui
 
             // Check intersection of facet keys and column PropertyNames
             return facetKeys.Keys.Intersect(columns.Select(a => a.PropertyName)).Any();
+        }
+
+        protected virtual FilterConfig<TEntity>? EnsureFilterConfig(string[]? filterKeys)
+        {
+            if(filterKeys == null || filterKeys.Length == 0)
+            {
+                // If no filter keys are provided, return null
+                return null;
+            }
+
+            return new FilterConfig<TEntity>(_filterProvider, _filterFactory, filterKeys);
         }
 
         PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)

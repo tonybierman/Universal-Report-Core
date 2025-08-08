@@ -24,7 +24,7 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? ipp,
             int[]? cohortIds,
-            string[]? filterKeys)
+            FilterConfig<T>? filterConfig)
         {
             var result = new PipelineResult<T>(query);
             foreach (var stage in _stages)
@@ -38,7 +38,7 @@ namespace UniversalReportCore.PagedQueries
                 sort,
                 ipp,
                 cohortIds,
-                filterKeys,
+                filterConfig,
                 _ => result.Query,
                 _ => Task.FromResult(result.Aggregates),
                 _ => Task.FromResult(result.Metadata)

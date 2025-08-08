@@ -47,6 +47,11 @@ namespace UniversalReportCore.PagedQueries
         public Func<IQueryable<T>, int[], IQueryable<T>>? CohortLogic { get; set; }
 
         /// <summary>
+        /// Gets or sets keys for use in user filtering.
+        /// </summary>
+        public FilterConfig<T>? FilterConfig { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PagedQueryParameters{T}"/> class.
         /// </summary>
         /// <param name="columns">The columns included in the report.</param>
@@ -64,7 +69,7 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? itemsPerPage,
             int[]? cohortIds,
-            string[]? filterKeys,
+            FilterConfig<T>? filterConfig,
             Func<IQueryable<T>, IQueryable<T>>? reportFilter = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? aggregateLogic = null,
             Func<IQueryable<T>, Task<Dictionary<string, dynamic>>>? metaLogic = null)
@@ -74,7 +79,7 @@ namespace UniversalReportCore.PagedQueries
             Sort = sort;
             ItemsPerPage = itemsPerPage;
             CohortIds = cohortIds;
-            FilterKeys = filterKeys;
+            FilterConfig = filterConfig;
             ReportFilter = reportFilter;
             AggregateLogic = aggregateLogic;
             MetaLogic = metaLogic;
