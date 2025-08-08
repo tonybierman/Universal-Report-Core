@@ -21,19 +21,20 @@ namespace UniversalReportCore.Tests.Reports.Acme
 
         public override string Slug => "acme-query-provider";
 
-        public override PagedQueryParameters<Widget> BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, IQueryable<Widget>? reportQuery = null)
-        {
-            return new PagedQueryParameters<Widget>(
-                columns,
-                pageIndex,
-                sort,
-                ipp,
-                cohortIds,
-                query => EnsureUserFiltersPredicate(EnsureReportQuery() ?? query),
-                async (IQueryable<Widget> src) => await ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
-                async (IQueryable<Widget> src) => await ComputeMetaAsync(src)
-            );
-        }
+        //public override PagedQueryParameters<Widget> BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys, IQueryable<Widget>? reportQuery = null)
+        //{
+        //    return new PagedQueryParameters<Widget>(
+        //        columns,
+        //        pageIndex,
+        //        sort,
+        //        ipp,
+        //        cohortIds,
+        //        filterKeys,
+        //        query => EnsureUserFiltersPredicate(EnsureReportQuery() ?? query),
+        //        async (IQueryable<Widget> src) => await ComputeAggregatesWithCohortsAsync(src, columns, cohortIds),
+        //        async (IQueryable<Widget> src) => await ComputeMetaAsync(src)
+        //    );
+        //}
 
         protected override async Task<Dictionary<string, dynamic>> EnsureMeta(IQueryable<Widget> query)
         {

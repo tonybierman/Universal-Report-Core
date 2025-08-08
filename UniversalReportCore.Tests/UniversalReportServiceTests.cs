@@ -75,7 +75,7 @@ namespace UniversalReportCore.Tests
             };
 
             var parameters = new PagedQueryParameters<Widget>(
-                columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 2, cohortIds: null);
+                columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 2, cohortIds: null, filterConfig: null);
 
             // Act
             var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 2);
@@ -98,7 +98,7 @@ namespace UniversalReportCore.Tests
             };
 
             var parameters = new PagedQueryParameters<Widget>(
-                columns, pageIndex: 1, sort: "CityDesc", itemsPerPage: 5, cohortIds: null);
+                columns, pageIndex: 1, sort: "CityDesc", itemsPerPage: 5, cohortIds: null, filterConfig: null);
 
             // Act
             var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 0);
@@ -125,7 +125,7 @@ namespace UniversalReportCore.Tests
             };
 
             var parameters = new PagedQueryParameters<Widget>(
-                columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 10, cohortIds: null);
+                columns, pageIndex: 1, sort: "CityAsc", itemsPerPage: 10, cohortIds: null, filterConfig: null);
 
             // Act
             var result = await _reportService.GetPagedAsync<Widget, WidgetViewModel>(parameters, 0);
