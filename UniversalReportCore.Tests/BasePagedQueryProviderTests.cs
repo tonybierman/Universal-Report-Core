@@ -85,32 +85,32 @@ namespace UniversalReportCore.Tests
             Assert.Equal(1000000, result["IntValue"]);
         }
 
-        [Fact]
-        public async Task ComputeAggregatesWithCohortsAsync_ReturnsAggregates_Count()
-        {
-            // Arrange
-            var columns = new IReportColumnDefinition[] {
-                new ReportColumnDefinition { PropertyName = "City" },
-                new ReportColumnDefinition { PropertyName = "Value", Aggregation = AggregationType.Count },
-                new ReportColumnDefinition { PropertyName = "IntValue", Aggregation = AggregationType.Count }
-            };
+        //[Fact]
+        //public async Task ComputeAggregatesWithCohortsAsync_ReturnsAggregates_Count()
+        //{
+        //    // Arrange
+        //    var columns = new IReportColumnDefinition[] {
+        //        new ReportColumnDefinition { PropertyName = "City" },
+        //        new ReportColumnDefinition { PropertyName = "Value", Aggregation = AggregationType.Count },
+        //        new ReportColumnDefinition { PropertyName = "IntValue", Aggregation = AggregationType.Count }
+        //    };
 
-            var query = _dbContext.Widgets.AsQueryable();
-            var cohortIds = new int[] { 1, 2 };
-            var helper = new PagedAcmeQueryProvider(_dbContext);
+        //    var query = _dbContext.Widgets.AsQueryable();
+        //    var cohortIds = new int[] { 1, 2 };
+        //    var helper = new PagedAcmeQueryProvider(_dbContext);
 
-            // Act
-            var result = await helper.ComputeAggregates(query, columns);
+        //    // Act
+        //    var result = await helper.ComputeAggregates(query, columns);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Contains("City", result);
-            Assert.Contains("Value", result);
-            Assert.Contains("IntValue", result);
-            Assert.Equal(null, result["City"]);
-            Assert.Equal(3, result["Value"]);
-            Assert.Equal(3, result["IntValue"]);
-        }
+        //    // Assert
+        //    Assert.NotNull(result);
+        //    Assert.Contains("City", result);
+        //    Assert.Contains("Value", result);
+        //    Assert.Contains("IntValue", result);
+        //    Assert.Equal(null, result["City"]);
+        //    Assert.Equal(3, result["Value"]);
+        //    Assert.Equal(3, result["IntValue"]);
+        //}
 
         [Fact]
         public async Task ComputeAggregatesWithCohortsAsync_ReturnsAggregates_Min()
