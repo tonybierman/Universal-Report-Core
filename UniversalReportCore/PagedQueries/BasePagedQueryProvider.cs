@@ -35,13 +35,6 @@ namespace UniversalReportCore.PagedQueries
 
                 var query1 = EnsureUserFiltersPredicate(query);
 
-                // Apply facet filters
-                //if (_filterKeys.Any() && _filterFactory != null && _filterProvider != null)
-                //{
-                //    var predicate = _filterFactory.BuildPredicate(_filterKeys);
-                //    query1 = query1.Where(predicate);
-                //}
-
                 switch (column.Aggregation)
                 {
                     case AggregationType.Sum:
@@ -73,7 +66,17 @@ namespace UniversalReportCore.PagedQueries
                         break;
 
                     case AggregationType.Count:
-                        aggregateResults[propertyName] = await query1.CountAsync(x => EF.Property<object>(x, propertyName) != null);
+                        var propertyInfo = typeof(T).GetProperty(propertyName);
+                        if (propertyInfo == null)
+                        {
+                            throw new ArgumentException($"Property {propertyName} does not exist on type {typeof(T).Name}");
+                        }
+
+                        // Step 2: Materialize query to list
+                        var list = await query1.ToListAsync();
+
+                        // Step 3: Sum non-null property values using reflection
+                        aggregateResults[propertyName] = list.Sum(x => (propertyInfo.GetValue(x) as IEnumerable<object>)?.Count() ?? 0);
                         break;
 
                     case AggregationType.StandardDeviation:
