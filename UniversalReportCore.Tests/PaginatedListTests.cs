@@ -15,21 +15,15 @@ namespace UniversalReportCore.Tests
 
         public PaginatedListTests()
         {
-            // ** Set up In-Memory Database **
             var options = new DbContextOptionsBuilder<AcmeDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             _dbContext = new AcmeDbContext(options);
             _dbContext.Database.EnsureCreated();
-
-            // ** Seed test data **
             SeedWidgetDatabase();
         }
 
-        /// <summary>
-        /// Seeds the in-memory database with test data.
-        /// </summary>
         private void SeedWidgetDatabase()
         {
             _dbContext.Widgets.AddRange(new List<Widget>
@@ -40,123 +34,158 @@ namespace UniversalReportCore.Tests
                 new Widget { Id = 4, City = "Houston", Value = 2328000, Year = 2020 },
                 new Widget { Id = 5, City = "Phoenix", Value = 1690000, Year = 2020 }
             });
-
             _dbContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Tests whether `PaginatedList<T>` correctly paginates data.
-        /// </summary>
         [Fact]
         public async Task CreateAsync_ShouldReturnPaginatedList()
         {
-            // Arrange
             var query = _dbContext.Widgets.AsQueryable();
-
-            // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
-            result.EnsureTotalItemsCount(query.ToList().Count);
+            result.EnsureTotalItemsCount(query.Count());
 
-            // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count); // Page size is 2
-            Assert.Equal(3, result.TotalPages); // Total items = 5, so 3 pages of 2 items each
+            Assert.Equal(2, result.Count);
+            Assert.Equal(3, result.TotalPages);
         }
 
-        /// <summary>
-        /// Tests whether `PaginatedList<T>` correctly calculates page count.
-        /// </summary>
         [Fact]
         public async Task CreateAsync_ShouldCalculateTotalPagesCorrectly()
         {
-            // Arrange
-            var query = _dbContext.Widgets.AsQueryable();  
-
-            // Act
+            var query = _dbContext.Widgets.AsQueryable();
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
-            result.EnsureTotalItemsCount(query.ToList().Count);
+            result.EnsureTotalItemsCount(query.Count());
 
-            // Assert
-            Assert.Equal(3, result.TotalPages); // 5 items with page size of 2 should give 3 total pages
+            Assert.Equal(3, result.TotalPages);
         }
 
-        /// <summary>
-        /// Tests whether `PaginatedList<T>` correctly handles an empty dataset.
-        /// </summary>
         [Fact]
         public async Task CreateAsync_ShouldReturnEmptyList_WhenNoRecords()
         {
-            // Arrange
             _dbContext.Widgets.RemoveRange(_dbContext.Widgets);
             await _dbContext.SaveChangesAsync();
-
             var query = _dbContext.Widgets.AsQueryable();
-
-            // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
 
-            // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
             Assert.Equal(0, result.TotalPages);
+            Assert.False(result.Any());
         }
 
-        /// <summary>
-        /// Tests whether `PaginatedList<T>` correctly identifies if there is a next page.
-        /// </summary>
         [Fact]
         public async Task CreateAsync_ShouldIndicateNextPageExists()
         {
-            // Arrange
             var query = _dbContext.Widgets.AsQueryable();
-
-            // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 2);
-            result.EnsureTotalItemsCount(query.ToList().Count);
+            result.EnsureTotalItemsCount(query.Count());
 
-            // Assert
             Assert.True(result.HasNextPage);
+            Assert.False(result.HasPreviousPage);
         }
 
-        /// <summary>
-        /// Tests whether `PaginatedList<T>` correctly identifies if there is a previous page.
-        /// </summary>
         [Fact]
         public async Task CreateAsync_ShouldIndicatePreviousPageExists()
         {
-            // Arrange
             var query = _dbContext.Widgets.AsQueryable();
-
-            // Act
             var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 2, pageSize: 2);
+            result.EnsureTotalItemsCount(query.Count());
 
-            // Assert
             Assert.True(result.HasPreviousPage);
+            Assert.True(result.HasNextPage);
         }
 
-        /// <summary>
-        /// Tests `CreateMappedAsync` for converting entities into a different type.
-        /// </summary>
+        [Fact]
+        public async Task CreateAsync_ShouldHandlePageSizeZero()
+        {
+            var query = _dbContext.Widgets.AsQueryable();
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 1, pageSize: 0);
+            result.EnsureTotalItemsCount(query.Count());
+
+            Assert.Equal(5, result.Count);
+            Assert.Equal(1, result.TotalPages);
+            Assert.False(result.HasNextPage);
+            Assert.False(result.HasPreviousPage);
+        }
+
         [Fact]
         public async Task CreateMappedAsync_ShouldMapEntitiesCorrectly()
         {
-            // Arrange
             var query = _dbContext.Widgets.AsQueryable();
-
-            // Act
             var result = await PaginatedList<Widget>.CreateMappedAsync(
                 query, pageIndex: 1, pageSize: 2,
                 mapFunction: entity => new { entity.City, entity.Value });
+            result.EnsureTotalItemsCount(query.Count());
 
-            // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count); // Page size is 2
+            Assert.Equal(2, result.Count);
             Assert.Contains(result, x => x.City == "New York");
+            Assert.Equal(3, result.TotalPages);
         }
 
-        /// <summary>
-        /// Cleans up the in-memory database after each test.
-        /// </summary>
+        [Fact]
+        public async Task CreateWithAggregatesAsync_ShouldIncludeAggregatesAndMeta()
+        {
+            var query = _dbContext.Widgets.AsQueryable();
+            var aggregateFunc = new Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>>(
+                q => Task.FromResult(new Dictionary<string, dynamic> { { "TotalValue", q.Sum(w => w.Value) } }));
+            var metaFunc = new Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>>(
+                q => Task.FromResult(new Dictionary<string, dynamic> { { "MaxYear", q.Max(w => w.Year) } }));
+
+            var result = await PaginatedList<Widget>.CreateWithAggregatesAsync(
+                query, pageIndex: 1, pageSize: 2, aggregateFunc, metaFunc);
+            result.EnsureTotalItemsCount(query.Count());
+
+            Assert.NotNull(result.Aggregates);
+            Assert.NotNull(result.Meta);
+            Assert.Equal(5, result.TotalItems);
+            Assert.Equal(19134000, result.Aggregates["TotalValue"]);
+            Assert.Equal(2020, result.Meta["MaxYear"]);
+        }
+
+        [Fact]
+        public async Task CreateMappedWithAggregatesAsync_ShouldMapAndIncludeAggregates()
+        {
+            var query = _dbContext.Widgets.AsQueryable();
+            var aggregateFunc = new Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>>(
+                q => Task.FromResult(new Dictionary<string, dynamic> { { "TotalValue", q.Sum(w => w.Value) } }));
+            var metaFunc = new Func<IQueryable<Widget>, Task<Dictionary<string, dynamic>>>(
+                q => Task.FromResult(new Dictionary<string, dynamic> { { "MaxYear", q.Max(w => w.Year) } }));
+
+            var result = await PaginatedList<Widget>.CreateMappedWithAggregatesAsync(
+                query, pageIndex: 1, pageSize: 2,
+                mapFunction: entity => new { entity.City, entity.Value },
+                aggregateFunc, metaFunc);
+            result.EnsureTotalItemsCount(query.Count());
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+            Assert.Contains(result, x => x.City == "New York");
+            Assert.NotNull(result.Aggregates);
+            Assert.Equal(19134000, result.Aggregates["TotalValue"]);
+            Assert.NotNull(result.Meta);
+            Assert.Equal(2020, result.Meta["MaxYear"]);
+            Assert.Equal(3, result.TotalPages);
+        }
+
+        [Fact]
+        public async Task PaginatedList_ShouldSetPropertiesCorrectly()
+        {
+            var query = _dbContext.Widgets.AsQueryable();
+            var result = await PaginatedList<Widget>.CreateAsync(query, pageIndex: 2, pageSize: 2);
+            result.EnsureTotalItemsCount(query.Count());
+
+            Assert.Equal(2, result.PageIndex);
+            Assert.Equal(2, result.PageSize);
+            Assert.Equal(5, result.TotalItems);
+            Assert.Equal(3, result.TotalPages);
+            Assert.Equal(3, result.StartItem);
+            Assert.Equal(4, result.EndItem);
+            Assert.Equal("Showing items 3 through 4 of 5", result.DisplayMessage);
+            Assert.True(result.HasMultiplePages);
+            Assert.True(result.Any());
+        }
+
         public void Dispose()
         {
             _dbContext.Database.EnsureDeleted();
