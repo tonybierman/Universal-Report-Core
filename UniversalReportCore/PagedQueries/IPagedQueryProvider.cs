@@ -23,15 +23,11 @@ namespace UniversalReportCore.PagedQueries
         /// <summary>
         /// Creates a paged query with sorting, filtering, and cohort selection applied.
         /// </summary>
-        /// <param name="columns">The columns to be included in the query.</param>
-        /// <param name="pageIndex">The current page index.</param>
-        /// <param name="sort">The sorting criteria.</param>
-        /// <param name="ipp">The number of items per page.</param>
-        /// <param name="cohortIds">An array of cohort IDs to filter the query.</param>
+        /// <param name="preQueryArgs">Pre-query arguments set.</param>
         /// <param name="filterConfig">A configuration to filter the data, if applicable.</param>
         /// <param name="reportQuery">Base query or null for full DBSet<typeparamref name="T"/></param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> object containing the constructed query parameters.</returns>
-        PagedQueryParameters<T> BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, FilterConfig<T>? filterConfig = null, IQueryable<T>? reportQuery = null);
+        PagedQueryParameters<T> BuildPagedQuery(PreQueryArguments preQueryArgs, FilterConfig<T>? filterConfig = null, IQueryable<T>? reportQuery = null);
 
         /// <summary>
         /// Modifies the given query to include aggregate computations based on cohort identifiers.

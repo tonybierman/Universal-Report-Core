@@ -64,7 +64,7 @@ namespace UniversalReportCore.Tests
     public class TestViewModel { }
     public class TestQueryFactory : IQueryFactory<TestEntity>
     {
-        public PagedQueryParameters<TestEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, FilterConfig<TestEntity> filterConfig)
+        public PagedQueryParameters<TestEntity> CreateQueryParameters(PreQueryArguments preQueryArgs, FilterConfig<TestEntity> filterConfig)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +111,7 @@ namespace UniversalReportCore.Tests
     {
         public string Slug => throw new NotImplementedException();
 
-        PagedQueryParameters<TestEntity> IPagedQueryProvider<TestEntity>.BuildPagedQuery(IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, FilterConfig<TestEntity>? filterConfig, IQueryable<TestEntity>? reportQuery)
+        PagedQueryParameters<TestEntity> IPagedQueryProvider<TestEntity>.BuildPagedQuery(PreQueryArguments preQueryArgs, FilterConfig<TestEntity>? filterConfig, IQueryable<TestEntity>? reportQuery)
         {
             throw new NotImplementedException();
         }
@@ -137,7 +137,7 @@ namespace UniversalReportCore.Tests
 
         public IFilterProviderBase FilterProvider => throw new NotImplementedException();
 
-        public PagedQueryParameters<TestEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
+        public PagedQueryParameters<TestEntity> CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
             throw new NotImplementedException();
         }
@@ -177,9 +177,9 @@ namespace UniversalReportCore.Tests
             throw new NotImplementedException();
         }
 
-        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
+        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
-            return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds, filterKeys);
+            return CreateQueryParameters(preQueryArgs);
         }
 
         bool IReportPageHelperBase.HasFilters(List<IReportColumnDefinition> columns)

@@ -75,9 +75,9 @@ namespace UniversalReportCore.Tests.Reports.Acme
             return columns;
         }
 
-        public override PagedQueryParameters<Widget> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
+        public override PagedQueryParameters<Widget> CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
-            return _queryFactory.CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds, EnsureFilterConfig(filterKeys));
+            return _queryFactory.CreateQueryParameters(preQueryArgs, EnsureFilterConfig(preQueryArgs.FilterKeys));
         }
     }
 }

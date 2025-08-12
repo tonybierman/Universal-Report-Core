@@ -197,8 +197,18 @@ namespace UniversalReportCore.Ui.Pages
                     return StatusCode(400);// "Chort validation error."
             }
 
+            var preQueryArgs = new PreQueryArguments(
+                slug,
+                ReportColumns.ToArray(),
+                Params.Pi.Value,
+                CurrentSort,
+                Params.Ipp.Value,
+                Params.CohortIds.Value,
+                Params.FilterKeys.Value
+            );
+
             // Load data
-            var parameters = pageHelper.CreateQueryParameters(slug, ReportColumns.ToArray(), Params.Pi.Value, CurrentSort, Params.Ipp.Value, Params.CohortIds.Value, Params.FilterKeys.Value);
+            var parameters = pageHelper.CreateQueryParameters(preQueryArgs);
             parameters.DisplayKey = displayKey;
             if (!Params.FilterKeys.Validate(pageHelper.FilterProvider))
                 return StatusCode(422); // "Invalid filter provider key"

@@ -27,31 +27,21 @@ namespace UniversalReportCore.PagedQueries
         /// <summary>
         /// Creates paged query parameters based on the specified query type (slug).
         /// </summary>
-        /// <param name="slug">The unique identifier of the query type.</param>
-        /// <param name="columns">An array of column definitions to be used in the query.</param>
-        /// <param name="pageIndex">The page index for pagination.</param>
-        /// <param name="sort">The sorting criteria for the query.</param>
-        /// <param name="ipp">Items per page.</param>
-        /// <param name="cohortIds">An array of cohort IDs to filter the data.</param>
+        /// <param name="preQueryArgs">Pre-query argument set.</param>
         /// <param name="filterConfig">A configuration to filter the data, if applicable.</param>
         /// <returns>A <see cref="PagedQueryParameters{T}"/> instance containing the query parameters.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the specified slug does not match any available query provider.</exception>
         public PagedQueryParameters<T> CreateQueryParameters(
-            string slug,
-            IReportColumnDefinition[] columns,
-            int? pageIndex,
-            string? sort,
-            int? ipp,
-            int[]? cohortIds,
+            PreQueryArguments preQueryArgs,
             FilterConfig<T>? filterConfig = null)
         {
-            var provider = _providers.FirstOrDefault(p => p.Slug == slug);
+            var provider = _providers.FirstOrDefault(p => p.Slug == preQueryArgs.QueryType);
             if (provider == null)
             {
-                throw new InvalidOperationException($"Unsupported query type: {slug}");
+                throw new InvalidOperationException($"Unsupported query type: {preQueryArgs.QueryType}");
             }
 
-            var retval = provider.BuildPagedQuery(columns, pageIndex, sort, ipp, cohortIds, filterConfig, provider.EnsureReportQuery());
+            var retval = provider.BuildPagedQuery(preQueryArgs, filterConfig, provider.EnsureReportQuery());
             retval.FilterKeys = filterConfig?.FilterKeys ?? Array.Empty<string>();
 
             return retval;

@@ -124,24 +124,25 @@ namespace UniversalReportCore.PagedQueries
             return query;
         }
 
-        // TODO: Facet filters need to be passed in here
         public virtual PagedQueryParameters<T> BuildPagedQuery(
-            IReportColumnDefinition[] columns,
-            int? pageIndex,
-            string? sort,
-            int? ipp,
-            int[]? cohortIds,
+            PreQueryArguments preQueryArgs,
             FilterConfig<T>? filterConfig = null,
             IQueryable<T>? reportQuery = null)
         {
             var pipeline = new QueryPipeline<T>()
                 .AddStage(new UserFilterStage<T>(EnsureUserFiltersPredicate))
-                .AddStage(new CohortAggregateStage<T>(columns, cohortIds, filterConfig, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
+                .AddStage(new CohortAggregateStage<T>(preQueryArgs.Columns, preQueryArgs.CohortIds, filterConfig, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
                 .AddStage(new MetadataStage<T>(EnsureMeta));
 
             var query = reportQuery ?? EnsureReportQuery() ?? throw new InvalidOperationException("No query provided");
 
-            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, filterConfig).Result;
+            return pipeline.ExecuteAsync(query, 
+                preQueryArgs.Columns, 
+                preQueryArgs.PageIndex, 
+                preQueryArgs.Sort, 
+                preQueryArgs.Ipp, 
+                preQueryArgs.CohortIds, 
+                filterConfig).Result;
         }
     }
 }

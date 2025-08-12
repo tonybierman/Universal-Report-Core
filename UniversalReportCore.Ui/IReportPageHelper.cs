@@ -9,7 +9,7 @@ namespace UniversalReportCore.Ui
     {
         Task<PaginatedList<TViewModel>> GetPagedDataAsync(PagedQueryParameters<TEntity> parameters, int totalCount = 0);
 #pragma warning disable CS0108
-        PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys);
+        PagedQueryParameters<TEntity> CreateQueryParameters(PreQueryArguments preQueryArgs);
 #pragma warning restore CS0108
         TViewModel MapDictionaryToObject(Dictionary<string, dynamic> data);
 

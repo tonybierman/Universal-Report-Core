@@ -81,12 +81,12 @@ namespace UniversalReportCore.Ui
             return new FilterConfig<TEntity>(_filterProvider, _filterFactory, filterKeys);
         }
 
-        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
+        PagedQueryParametersBase IReportPageHelperBase.CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
-            return CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds, filterKeys);
+            return CreateQueryParameters(preQueryArgs);
         }
 
-        public virtual PagedQueryParameters<TEntity> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds, string[]? filterKeys)
+        public virtual PagedQueryParameters<TEntity> CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
             throw new NotImplementedException();
         }
