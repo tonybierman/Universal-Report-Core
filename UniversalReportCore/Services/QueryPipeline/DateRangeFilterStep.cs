@@ -1,55 +1,47 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UniversalReportCore.PagedQueries;
 using System.Linq.Expressions;
 using System.Reflection;
+using UniversalReportCore.PagedQueries;
 
 namespace UniversalReportCore.Services.QueryPipeline
 {
     public class DateRangeFilterStep<TEntity> : IQueryPipelineStep<TEntity> where TEntity : class
     {
-        /// <summary>
-        /// Executes a query with date filtering, supporting dot notation for nested properties.
-        /// </summary>
-        /// <typeparam name="TEntity">The entity type.</typeparam>
-        /// <param name="query">The input IQueryable to filter.</param>
-        /// <param name="parameters">Query parameters including date filter.</param>
-        /// <returns>Filtered IQueryable based on date range.</returns>
         public IQueryable<TEntity> Execute(IQueryable<TEntity> query, PagedQueryParameters<TEntity> parameters)
         {
             if (parameters.DateFilter != null && parameters.DateFilter.HasValue)
             {
                 string[] propertyParts = parameters.DateFilter.PropertyName.Split('.');
-                PropertyInfo propertyInfo = typeof(TEntity).GetProperty(propertyParts[0]);
+                ParameterExpression param = Expression.Parameter(typeof(TEntity), "e");
 
-                if (propertyParts.Length == 1 && propertyInfo != null)
+                Expression propertyAccess = param;
+
+                foreach (var part in propertyParts)
                 {
-                    query = query.Where(e => EF.Property<DateTime>(e, propertyParts[0]) >= parameters.DateFilter.StartDate)
-                                .Where(e => EF.Property<DateTime>(e, propertyParts[0]) <= parameters.DateFilter.EndDate);
+                    PropertyInfo propertyInfo = propertyAccess.Type.GetProperty(part);
+                    if (propertyInfo == null) throw new ArgumentException("Invalid property name.");
+                    propertyAccess = Expression.Property(propertyAccess, part);
+                    // Check if the final property is DateTime, intermediate properties can be objects
+                    if (part == propertyParts.Last() && propertyAccess.Type != typeof(DateTime))
+                        throw new ArgumentException("Property must be DateTime.");
                 }
-                else if (propertyParts.Length > 1)
+
+                if (propertyAccess != param) // Ensure we have a valid property path
                 {
-                    var parameter = Expression.Parameter(typeof(TEntity), "e");
-                    Expression propertyAccess = parameter;
+                    var startDate = parameters.DateFilter.StartDate != DateTime.MinValue ? parameters.DateFilter.StartDate : DateTime.MinValue;
+                    var endDate = parameters.DateFilter.EndDate != DateTime.MinValue ? parameters.DateFilter.EndDate : DateTime.MaxValue;
 
-                    foreach (var part in propertyParts)
-                    {
-                        propertyAccess = Expression.Property(propertyAccess, part);
-                    }
+                    Expression startExpr = startDate != DateTime.MinValue ? Expression.GreaterThanOrEqual(propertyAccess, Expression.Constant(startDate)) : null;
+                    Expression endExpr = endDate != DateTime.MaxValue ? Expression.LessThanOrEqual(propertyAccess, Expression.Constant(endDate)) : null;
 
-                    var startDateLambda = Expression.Lambda<Func<TEntity, bool>>(
-                        Expression.GreaterThanOrEqual(propertyAccess, Expression.Constant(parameters.DateFilter.StartDate)),
-                        parameter);
+                    Expression condition = startExpr != null && endExpr != null
+                        ? Expression.AndAlso(startExpr, endExpr)
+                        : startExpr ?? endExpr ?? Expression.Constant(true);
 
-                    var endDateLambda = Expression.Lambda<Func<TEntity, bool>>(
-                        Expression.LessThanOrEqual(propertyAccess, Expression.Constant(parameters.DateFilter.EndDate)),
-                        parameter);
-
-                    query = query.Where(startDateLambda).Where(endDateLambda);
+                    var lambda = Expression.Lambda<Func<TEntity, bool>>(condition, param);
+                    query = query.Where(lambda);
                 }
             }
             return query;
