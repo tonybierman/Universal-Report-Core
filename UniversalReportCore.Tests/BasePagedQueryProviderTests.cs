@@ -213,19 +213,19 @@ namespace UniversalReportCore.Tests
         }
     }
 
-    public class ReportColumnDefinition : IReportColumnDefinition
-    {
-        public string DisplayName { get; set; } = string.Empty;
-        public bool IsSortable { get; set; }
-        public bool IsDisplayKey { get; set; }
-        public string? DefaultSort { get; set; }
-        public string? CssClass { get; set; }
-        public bool IsSortDescending { get; set; }
-        public string PropertyName { get; set; } = string.Empty;
-        public string ViewModelName { get; set; } = string.Empty;
-        public string? RenderPartial { get; set; }
-        public bool HideInPortrait { get; set; }
-        public AggregationType Aggregation { get; set; }
-        public Type? ViewModelType => null;
-    }
+    //public class ReportColumnDefinition : IReportColumnDefinition
+    //{
+    //    public string DisplayName { get; set; } = string.Empty;
+    //    public bool IsSortable { get; set; }
+    //    public bool IsDisplayKey { get; set; }
+    //    public string? DefaultSort { get; set; }
+    //    public string? CssClass { get; set; }
+    //    public bool IsSortDescending { get; set; }
+    //    public string PropertyName { get; set; } = string.Empty;
+    //    public string ViewModelName { get; set; } = string.Empty;
+    //    public string? RenderPartial { get; set; }
+    //    public bool HideInPortrait { get; set; }
+    //    public AggregationType Aggregation { get; set; }
+    //    public Type? ViewModelType => null;
+    //}
 }

@@ -51,7 +51,7 @@ namespace UniversalReportCore.Ui.ViewModels
                 return ColumnDefinition.ValueSelector(Item, type, property);
             }
 
-            return null;
+            return property?.GetValue(Item);
         }
 
         private static readonly IFieldFormatter[] Formatters = new IFieldFormatter[]

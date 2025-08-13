@@ -11,9 +11,9 @@ namespace UniversalReportCore.Tests
         {
             var column = new ReportColumnDefinition();
 
-            Assert.Equal(column.DisplayName, string.Empty);
-            Assert.Equal(column.PropertyName, string.Empty);
-            Assert.Equal(column.ViewModelName, string.Empty);
+            Assert.Null(column.DisplayName);
+            Assert.Null(column.PropertyName);
+            Assert.Null(column.ViewModelName);
             Assert.False(column.IsDisplayKey);
             Assert.False(column.IsSortable);
             Assert.Null(column.DefaultSort);
