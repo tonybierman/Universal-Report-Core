@@ -1,4 +1,7 @@
-﻿namespace UniversalReportCore
+﻿using System.Reflection;
+using UniversalReportCore.ViewModels;
+
+namespace UniversalReportCore
 {
     public interface IReportColumnDefinition
     {
@@ -14,5 +17,6 @@
         bool HideInPortrait { get; set; }
         AggregationType Aggregation { get; set; }
         Type? ViewModelType { get; }
+        Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get; set; }
     }
 }

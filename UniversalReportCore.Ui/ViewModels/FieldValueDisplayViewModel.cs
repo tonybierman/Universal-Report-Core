@@ -45,8 +45,13 @@ namespace UniversalReportCore.Ui.ViewModels
         public object? GetValue()
         {
             var type = Item?.GetType();
-            var property = type?.GetProperty(PropertyName);
-            return property?.GetValue(Item);
+            var property = type != null && PropertyName != null ? type.GetProperty(PropertyName) : null;
+            if (ColumnDefinition.ValueSelector != null && Item != null)
+            {
+                return ColumnDefinition.ValueSelector(Item, type, property);
+            }
+
+            return null;
         }
 
         private static readonly IFieldFormatter[] Formatters = new IFieldFormatter[]
