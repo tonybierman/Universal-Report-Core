@@ -15,7 +15,7 @@ namespace UniversalReportCore.PagedQueries
     {
         private readonly IReportColumnDefinition[] _columns;
         private readonly int[]? _cohortIds;
-        private readonly FilterConfig<T>? _filterConfig;
+        private readonly IFilterConfig<T>? _filterConfig;
         private readonly Func<IQueryable<T>, IReportColumnDefinition[], Task<Dictionary<string, dynamic>>> _computeAggregates;
         private readonly Func<IQueryable<T>, int, IQueryable<T>> _ensureCohortPredicate;
         private readonly Func<IQueryable<T>, int[]?, IQueryable<T>> _ensureAggregatePredicate;
@@ -23,7 +23,7 @@ namespace UniversalReportCore.PagedQueries
         public CohortAggregateStage(
             IReportColumnDefinition[] columns,
             int[]? cohortIds,
-            FilterConfig<T>? filterConfig,
+            IFilterConfig<T>? filterConfig,
             Func<IQueryable<T>, IReportColumnDefinition[], Task<Dictionary<string, dynamic>>> computeAggregates,
             Func<IQueryable<T>, int, IQueryable<T>> ensureCohortPredicate,
             Func<IQueryable<T>, int[]?, IQueryable<T>> ensureAggregatePredicate)

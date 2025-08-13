@@ -9,5 +9,5 @@ namespace UniversalReportCore
     public record FilterConfig<T>(
         IFilterProvider<T> FilterProvider,
         FilterFactory<T> FilterFactory,
-        string[] FilterKeys);
+        string[] FilterKeys) : IFilterConfig<T>;
 }

@@ -11,7 +11,7 @@ namespace UniversalReportCore
     /// Factory class for building filter expressions based on selected filter keys.
     /// </summary>
     /// <typeparam name="T">The type of entity being filtered.</typeparam>
-    public class FilterFactory<T>
+    public class FilterFactory<T> : IFilterFactory<T>
     {
         /// <summary>
         /// The filter provider supplying facet keys and their corresponding filter expressions.
