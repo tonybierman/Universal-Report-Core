@@ -1,9 +1,7 @@
 ﻿@model UniversalReportCore.Ui.ViewModels.FieldValueDisplayViewModel
-
 @{
     var fieldVal = Model.GetValue();
-    var propertyType = Model.Item?.GetType().GetProperty(Model.PropertyName)?.PropertyType;
+    var propertyType = fieldVal?.GetType() ?? typeof(object);
     var formattedValue = Model.FormatFieldValue(fieldVal, propertyType);
 }
-
 @formattedValue
