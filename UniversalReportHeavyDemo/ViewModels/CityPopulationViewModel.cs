@@ -2,9 +2,9 @@
 
 namespace UniversalReportHeavyDemo.ViewModels
 {
-    public class CityPopulationViewModel : IEntityViewModel<int>
+    public class CityPopulationViewModel : BaseEntityViewModel, IEntityViewModel<int>
     {
-        public int Id { get; set; }  // Primary Key
+        public int? Id { get; set; }  // Primary Key
         public string? CountryOrArea { get; set; }
         public int? Year { get; set; }
         public string? Area { get; set; }

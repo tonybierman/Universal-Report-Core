@@ -61,9 +61,9 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             return columns;
         }
 
-        public override PagedQueryParameters<CityPopulation> CreateQueryParameters(string queryType, IReportColumnDefinition[] columns, int? pageIndex, string? sort, int? ipp, int[]? cohortIds)
+        public override PagedQueryParameters<CityPopulation> CreateQueryParameters(PreQueryArguments args)
         {
-            return _queryFactory.CreateQueryParameters(queryType, columns, pageIndex, sort, ipp, cohortIds);
+            return _queryFactory.CreateQueryParameters(args);
         }
     }
 }
