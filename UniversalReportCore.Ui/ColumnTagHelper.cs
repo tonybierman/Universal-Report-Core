@@ -84,9 +84,10 @@ namespace UniversalReportCore.Ui
 
             output.TagName = "td";
             var cssClasses = $"{cssAlign}" +
-                            (Column.HideInPortrait ? " hide-in-portrait" : "");
+                            (Column.HideInPortrait ? " hide-in-portrait" : "no-wrap");
 
             output.Attributes.Add("class", cssClasses);
+            output.Attributes.Add("style", "white-space: nowrap;");
 
             // Determine the correct ViewModel type or default to EntityFieldViewModel
             Type viewModelType = Column.ViewModelType ?? typeof(EntityFieldViewModel);

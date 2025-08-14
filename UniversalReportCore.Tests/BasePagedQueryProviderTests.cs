@@ -40,10 +40,9 @@ namespace UniversalReportCore.Tests
             var query = _dbContext.Widgets.AsQueryable();
             var result = await _queryProvider.ComputeAggregates(query, columns);
             Assert.NotNull(result);
-            Assert.Contains("City", result);
+            Assert.DoesNotContain("City", result);
             Assert.Contains("Value", result);
             Assert.Contains("IntValue", result);
-            Assert.Null(result["City"]);
             Assert.Equal(3000000m, result["Value"]);
             Assert.Equal(3000000, result["IntValue"]);
         }
@@ -60,10 +59,9 @@ namespace UniversalReportCore.Tests
             var query = _dbContext.Widgets.AsQueryable();
             var result = await _queryProvider.ComputeAggregates(query, columns);
             Assert.NotNull(result);
-            Assert.Contains("City", result);
+            Assert.DoesNotContain("City", result);
             Assert.Contains("Value", result);
             Assert.Contains("IntValue", result);
-            Assert.Null(result["City"]);
             Assert.Equal(1000000m, result["Value"]);
             Assert.Equal(1000000.0, result["IntValue"]);
         }
@@ -95,10 +93,9 @@ namespace UniversalReportCore.Tests
             var query = _dbContext.Widgets.AsQueryable();
             var result = await _queryProvider.ComputeAggregates(query, columns);
             Assert.NotNull(result);
-            Assert.Contains("City", result);
+            Assert.DoesNotContain("City", result);
             Assert.Contains("Value", result);
             Assert.Contains("IntValue", result);
-            Assert.Null(result["City"]);
             Assert.Equal(800000m, result["Value"]);
             Assert.Equal(800000, result["IntValue"]);
         }
@@ -115,10 +112,9 @@ namespace UniversalReportCore.Tests
             var query = _dbContext.Widgets.AsQueryable();
             var result = await _queryProvider.ComputeAggregates(query, columns);
             Assert.NotNull(result);
-            Assert.Contains("City", result);
+            Assert.DoesNotContain("City", result);
             Assert.Contains("Value", result);
             Assert.Contains("IntValue", result);
-            Assert.Null(result["City"]);
             Assert.Equal(1200000m, result["Value"]);
             Assert.Equal(1200000, result["IntValue"]);
         }
