@@ -36,12 +36,12 @@ namespace UniversalReportCore.Ui
             sb.Append("<th>");
             sb.Append("<ul class=\"list-group list-group-flush small\">");
 
-            foreach (var filter in FilterOptions)
+            foreach (var filter in FilterOptions.OrderBy(t => t.Text))
             {
                 var isChecked = filter.Selected ? "checked" : "";
 
                 sb.Append($@"
-                    <li class='list-group-item bg-transparent border-0 py-1 px-2'>
+                    <li class='list-group-item bg-transparent text-secondary border-0 py-1 px-2'>
                         <label class='d-flex align-items-center'>
                             <input type='checkbox' 
                                    name='filters' 
