@@ -3,11 +3,11 @@
 }
 @foreach (var group in Model.Links.GroupBy(r => r.Taxonomy))
 {
-    <h2>@group.Key</h2>
+    <h2 class="mt-3">@group.Key</h2>
     <ul class="list-group list-group-flush">
         @foreach (var report in group)
         {
-            <li class="list-group-item"><a asp-route-slug="@report.Slug" asp-page="@report.ReportPath">@report.Subtitle</a><br />@report.Description</li>
+            <li class="list-group-item list-group-item-secondary rounded mb-2"><a asp-route-slug="@report.Slug" asp-page="@report.ReportPath">@report.Subtitle</a><br />@report.Description</li>
         }
     </ul>
 }
