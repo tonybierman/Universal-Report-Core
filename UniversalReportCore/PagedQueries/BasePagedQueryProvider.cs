@@ -94,7 +94,7 @@ namespace UniversalReportCore.PagedQueries
 
                     case AggregationType.None:
                     default:
-                        aggregateResults[propertyName] = null;
+                        //aggregateResults[propertyName] = null;
                         break;
                 }
             }
