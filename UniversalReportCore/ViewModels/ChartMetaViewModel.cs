@@ -54,12 +54,15 @@
         /// </summary>
         public string? PartialName { get; set; }
 
+        public AggregationType Aggregation { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartMetaViewModel"/> class with default values.
         /// </summary>
         public ChartMetaViewModel()
         {
             ChartType = "bar";
+            Aggregation = AggregationType.None;
         }
     }
 }
