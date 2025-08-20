@@ -13,14 +13,7 @@ namespace UniversalReportCore.PageMetadata
         public override string? TaxonomySlug => CategorySlug;
         public override string? Description => null;
 
-        /// <summary>
-        /// Retrieves metadata for the report's chart representation.
-        /// This method can be overridden by derived classes to provide custom chart metadata.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ChartMetaViewModel"/> containing the chart metadata, or <c>null</c> if no chart metadata is available.
-        /// </returns>
-        public virtual ChartMetaViewModel? GetChartMeta() => null;
+        public virtual Dictionary<string, ChartMetaViewModel>? ChartMeta { get => null; }
 
         public virtual string? GetActionWellPartial() => null;
     }

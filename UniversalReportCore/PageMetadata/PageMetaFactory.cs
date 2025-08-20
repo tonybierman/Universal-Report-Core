@@ -59,6 +59,15 @@ namespace UniversalReportCore.PageMetadata
             return provider.GetPageMeta();
         }
 
+
+        /// <summary>
+        /// Retrieves the action well partial view name associated with the specified slug.
+        /// </summary>
+        /// <param name="slug">The unique identifier for the provider whose action well partial is to be retrieved. Cannot be null or
+        /// empty.</param>
+        /// <returns>The name of the action well partial view associated with the specified slug, or <see langword="null"/> if no
+        /// partial view is defined.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified <paramref name="slug"/>.</exception>
         public string? GetActionWellPartial(string slug)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
@@ -71,12 +80,13 @@ namespace UniversalReportCore.PageMetadata
         }
 
         /// <summary>
-        /// Retrieves chart metadata for a given page based on its slug.
+        /// Retrieves the chart metadata associated with the specified slug.
         /// </summary>
-        /// <param name="slug">The slug identifying the page.</param>
-        /// <returns>A <see cref="ChartMetaViewModel"/> containing chart metadata for the page, or null if not available.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified slug.</exception>
-        public ChartMetaViewModel? GetChartMeta(string slug)
+        /// <param name="slug">The unique identifier for the provider whose chart metadata is to be retrieved. Cannot be null or empty.</param>
+        /// <returns>A dictionary containing chart metadata, where the keys represent chart identifiers and the values are <see
+        /// cref="ChartMetaViewModel"/> objects.  Returns <see langword="null"/> if no metadata is available.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified <paramref name="slug"/>.</exception>
+        public Dictionary<string, ChartMetaViewModel>? GetChartMeta(string slug)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
@@ -84,7 +94,7 @@ namespace UniversalReportCore.PageMetadata
                 throw new InvalidOperationException($"Unsupported meta for page: {slug}");
             }
 
-            return provider.GetChartMeta();
+            return provider.ChartMeta;
         }
 
         /// <summary>

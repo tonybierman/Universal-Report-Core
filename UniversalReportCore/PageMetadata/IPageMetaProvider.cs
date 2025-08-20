@@ -46,11 +46,7 @@ namespace UniversalReportCore.PageMetadata
         /// <returns>A <see cref="PageMetaViewModel"/> containing the metadata for the report page.</returns>
         PageMetaViewModel GetPageMeta();
 
-        /// <summary>
-        /// Retrieves metadata for the report's chart representation, if applicable.
-        /// </summary>
-        /// <returns>A <see cref="ChartMetaViewModel"/> containing chart metadata, or null if not applicable.</returns>
-        ChartMetaViewModel? GetChartMeta();
+        Dictionary<string, ChartMetaViewModel>? ChartMeta { get; }
 
         string? GetActionWellPartial();
     }
