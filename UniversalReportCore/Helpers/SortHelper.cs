@@ -42,6 +42,6 @@
         /// <param name="input">The sort order string.</param>
         /// <returns>A string describing the sort order.</returns>
         public static string? Description(string? input) =>
-            input == null ? null : $"by {BaseSortKey(input)} {(IsDescending(input) ? "Descending" : "Ascending")}";
+            input == null ? null : $"by {StringHelper.SplitPascalCase(BaseSortKey(input))} {(IsDescending(input) ? "Descending" : "Ascending")}";
     }
 }

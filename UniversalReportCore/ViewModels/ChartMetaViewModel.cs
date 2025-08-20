@@ -5,6 +5,8 @@
     /// </summary>
     public class ChartMetaViewModel
     {
+        public string ChartSlug { get; set; }
+
         /// <summary>
         /// Gets or sets the title of the chart.
         /// </summary>
@@ -62,6 +64,7 @@
         /// </summary>
         public ChartMetaViewModel()
         {
+            ChartSlug = "Default";
             ChartType = "bar";
             Aggregation = AggregationType.None;
             Transformation = TransformationType.None;
