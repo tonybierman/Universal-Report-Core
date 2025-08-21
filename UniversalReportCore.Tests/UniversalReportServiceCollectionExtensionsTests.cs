@@ -75,6 +75,8 @@ namespace UniversalReportCore.Tests
 
         public string CategorySlug => throw new NotImplementedException();
 
+        public Dictionary<string, ChartMetaViewModel>? ChartMeta => throw new NotImplementedException();
+
         string? IPageMetaProvider.Description => throw new NotImplementedException();
 
         string IPageMetaProvider.RouteLiteral => throw new NotImplementedException();
@@ -82,11 +84,6 @@ namespace UniversalReportCore.Tests
         string IPageMetaProvider.TaxonomySlug => throw new NotImplementedException();
 
         bool IPageMetaProvider.IsPublished => throw new NotImplementedException();
-
-        public ChartMetaViewModel? GetChartMeta()
-        {
-            throw new NotImplementedException();
-        }
 
         public PageMetaViewModel GetPageMeta()
         {

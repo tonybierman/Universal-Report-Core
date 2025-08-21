@@ -18,7 +18,7 @@ namespace UniversalReportCore.Tests
             _mockProvider = new Mock<IPageMetaProvider>();
             _mockProvider.Setup(p => p.Slug).Returns("TestPage");
             _mockProvider.Setup(p => p.GetPageMeta()).Returns(new PageMetaViewModel { Title = "Test", Subtitle = "Test Subtitle" });
-            _mockProvider.Setup(p => p.GetChartMeta()).Returns((ChartMetaViewModel?)null);
+            _mockProvider.Setup(p => p.ChartMeta).Returns((Dictionary<string, ChartMetaViewModel>?)null);
             _mockProvider.Setup(p => p.GetActionWellPartial()).Returns("TestPartial");
 
             var providers = new List<IPageMetaProvider> { _mockProvider.Object };
@@ -64,22 +64,6 @@ namespace UniversalReportCore.Tests
 
             Assert.IsType<InvalidOperationException>(result);
             Assert.Equal("Unsupported meta for page: NonExistentPage", result.Message);
-        }
-
-        [Fact]
-        public void GetChartMeta_ShouldReturnChartMeta_ForValidSlug()
-        {
-            var mockProviderWithChart = new Mock<IPageMetaProvider>();
-            mockProviderWithChart.Setup(p => p.Slug).Returns("ChartPage");
-            mockProviderWithChart.Setup(p => p.GetChartMeta()).Returns(new ChartMetaViewModel { ChartType = "Bar" });
-
-            var providers = new List<IPageMetaProvider> { mockProviderWithChart.Object };
-            var factory = new PageMetaFactory(providers);
-
-            var result = factory.GetChartMeta("ChartPage");
-
-            Assert.NotNull(result);
-            Assert.Equal("Bar", result.ChartType);
         }
 
         [Fact]
@@ -140,6 +124,8 @@ namespace UniversalReportCore.Tests
         public string? Description => throw new NotImplementedException();
 
         public bool IsPublished => throw new NotImplementedException();
+
+        public Dictionary<string, ChartMetaViewModel>? ChartMeta => throw new NotImplementedException();
 
         public PageMetaViewModel GetPageMeta() => _meta;
         public ChartMetaViewModel? GetChartMeta() => null;
