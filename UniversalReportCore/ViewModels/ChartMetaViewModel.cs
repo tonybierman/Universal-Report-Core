@@ -18,10 +18,16 @@
         public string Subtitle { get; set; }
 
         /// <summary>
-        /// Gets or sets the label for the chart's axis.
+        /// Gets or sets the label for the chart's Y axis.
         /// Optional property.
         /// </summary>
-        public string? AxisLabel { get; set; }
+        public string? AxisYLabel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label for the chart's X axis.
+        /// Optional property.
+        /// </summary>
+        public string? AxisXLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the type of chart to display (e.g., "bar", "line", "pie").
