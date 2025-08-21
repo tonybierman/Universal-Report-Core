@@ -73,5 +73,6 @@ namespace UniversalReportCore.Tests
         public Type? ViewModelType => throw new NotImplementedException();
 
         public Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IFieldFormatter FieldFormatter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

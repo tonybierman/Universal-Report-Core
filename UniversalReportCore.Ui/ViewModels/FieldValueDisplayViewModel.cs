@@ -61,6 +61,16 @@ namespace UniversalReportCore.Ui.ViewModels
             new DefaultFormatter()
         };
 
+        public string FormatFieldValue(object value, IFieldFormatter formatter)
+        {
+            if (formatter.CanHandle(value, value?.GetType()))
+            {
+                return formatter.Format(value, value?.GetType());
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>
         /// Formats the field value based on its type or property type using a pipeline of formatters.
         /// </summary>

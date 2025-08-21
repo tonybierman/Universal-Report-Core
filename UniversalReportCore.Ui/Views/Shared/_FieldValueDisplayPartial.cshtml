@@ -2,6 +2,6 @@
 @{
     var fieldVal = Model.GetValue();
     var propertyType = fieldVal?.GetType() ?? typeof(object);
-    var formattedValue = Model.FormatFieldValue(fieldVal, propertyType);
+    var formattedValue = Model.ColumnDefinition.FieldFormatter != null ? Model.FormatFieldValue(fieldVal, Model.ColumnDefinition.FieldFormatter) : Model.FormatFieldValue(fieldVal, propertyType);
 }
 @formattedValue
