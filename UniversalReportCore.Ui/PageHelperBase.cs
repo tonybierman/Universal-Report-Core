@@ -106,7 +106,7 @@ namespace UniversalReportCore.Ui
             return null;
         }
 
-        public List<ChartDataPoint> GetChartData(IPaginatedList items, string key)
+        public virtual List<ChartDataPoint> GetChartData(IPaginatedList items, string key)
         {
             return _mapper.Map<List<ChartDataPoint>>(
                 items,
