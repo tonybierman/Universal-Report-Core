@@ -10,6 +10,8 @@
         /// </summary>
         public string? Label { get; set; }
 
+        public string? ToolTip { get; set; }
+
         /// <summary>
         /// Gets or sets the dictionary containing values for different datasets.
         /// The keys represent dataset names, and the values represent numerical data points.

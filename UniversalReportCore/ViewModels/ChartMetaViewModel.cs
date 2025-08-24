@@ -29,6 +29,8 @@
         /// </summary>
         public string? AxisXLabel { get; set; }
 
+        public string? DataSetLabel { get; set; }
+
         /// <summary>
         /// Gets or sets the type of chart to display (e.g., "bar", "line", "pie").
         /// Defaults to "bar".
@@ -70,6 +72,7 @@
         /// </summary>
         public ChartMetaViewModel()
         {
+            DataSetLabel = "Units";
             ChartSlug = "Default";
             ChartType = "bar";
             Aggregation = AggregationType.None;
