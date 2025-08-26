@@ -3,12 +3,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Common;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UniversalReportCore.HardQuerystringVariables;
+using UniversalReportCore.Ui.Helpers;
+using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui
 {
@@ -28,6 +36,9 @@ namespace UniversalReportCore.Ui
         [HtmlAttributeName("model")]
         public IReportQueryParams? Model { get; set; }
 
+        [HtmlAttributeName("viewmodel")]
+        public BaseEntityViewModel? ViewModel { get; set; }
+
         [HtmlAttributeName("sort")]
         public string Sort { get; set; }
 
@@ -44,6 +55,13 @@ namespace UniversalReportCore.Ui
             // Set up the <th> element
             output.TagName = "th";
             output.Attributes.SetAttribute("class", $"text-left {(Column.HideInPortrait ? "hide-in-portrait" : "")}");
+
+            // Tooltip with category if available
+            string category = ViewModel?.GetType().GetProperty(Column.PropertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
+            if (!string.IsNullOrEmpty(category))
+            {
+                output.Attributes.SetAttribute("title", category);
+            }
 
             // If the column is sortable, generate the <a> link
             if (Column.IsSortable)

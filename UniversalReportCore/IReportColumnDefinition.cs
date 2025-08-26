@@ -18,7 +18,7 @@ namespace UniversalReportCore
         AggregationType Aggregation { get; set; }
         Type? ViewModelType { get; }
         Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get; set; }
-
+        public string? ToolTip { get; set; }
         public IFieldFormatter FieldFormatter { get; set; }
     }
 }
