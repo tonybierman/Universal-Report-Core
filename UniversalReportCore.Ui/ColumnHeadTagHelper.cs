@@ -57,7 +57,10 @@ namespace UniversalReportCore.Ui
             output.Attributes.SetAttribute("class", $"text-left {(Column.HideInPortrait ? "hide-in-portrait" : "")}");
 
             // Tooltip with category if available
-            string category = ViewModel?.GetType().GetProperty(Column.PropertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
+            string category = (Column?.PropertyName ?? Column?.ViewModelName) is string propertyName
+                ? ViewModel?.GetType().GetProperty(propertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty
+                : string.Empty; 
+
             if (!string.IsNullOrEmpty(category))
             {
                 output.Attributes.SetAttribute("title", category);
