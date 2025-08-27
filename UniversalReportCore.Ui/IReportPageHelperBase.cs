@@ -16,7 +16,7 @@ namespace UniversalReportCore.Ui
         List<IReportColumnDefinition> GetReportColumns(string slug);
         Task<ICohort[]?> GetCohortsAsync(int[] cohortIds);
         PagedQueryParametersBase CreateQueryParameters(PreQueryArguments preQueryArgs);
-        List<ChartDataPoint> GetChartData(IPaginatedList items, string key);
+        List<ChartDataPoint> GetChartData(IPaginatedList items, string chartSlug, string propertyName);
         List<(string Heading, List<SelectListItem> Options)> GetFilterSelectList(string[]? keys);
         IFilterProviderBase FilterProvider { get; }
         bool HasFilters(List<IReportColumnDefinition> columns);

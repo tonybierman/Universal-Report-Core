@@ -139,7 +139,7 @@ namespace UniversalReportCore.Tests
             throw new NotImplementedException();
         }
 
-        public List<ChartDataPoint> GetChartData(IPaginatedList items, string key)
+        public List<ChartDataPoint> GetChartData(IPaginatedList items, string chartSlug, string propertyName)
         {
             throw new NotImplementedException();
         }

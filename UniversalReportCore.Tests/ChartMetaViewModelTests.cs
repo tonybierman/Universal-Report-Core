@@ -21,7 +21,7 @@ namespace UniversalReportCore.Tests
             Assert.Equal("bar", chartMeta.ChartType);
             Assert.Null(chartMeta.AxisXLabel);
             Assert.Null(chartMeta.AxisYLabel);
-            Assert.Null(chartMeta.TakeTop);
+            Assert.Null(chartMeta.ParetoPercent);
             Assert.Null(chartMeta.PartialName);
             Assert.False(chartMeta.IgnoreZeroes);
             Assert.False(chartMeta.IsHistorical);
@@ -39,7 +39,7 @@ namespace UniversalReportCore.Tests
                 AxisYLabel = "Lorem Ipsum",
                 ChartType = "line",
                 IgnoreZeroes = true,
-                TakeTop = 10,
+                ParetoPercent = 10,
                 DataEndpoint = "/api/chart/data",
                 IsHistorical = true,
                 PartialName = "_ChartPartial"
@@ -52,7 +52,7 @@ namespace UniversalReportCore.Tests
             Assert.Equal("Lorem Ipsum", chartMeta.AxisYLabel);
             Assert.Equal("line", chartMeta.ChartType);
             Assert.True(chartMeta.IgnoreZeroes);
-            Assert.Equal(10, chartMeta.TakeTop);
+            Assert.Equal(10, chartMeta.ParetoPercent);
             Assert.Equal("/api/chart/data", chartMeta.DataEndpoint);
             Assert.True(chartMeta.IsHistorical);
             Assert.Equal("_ChartPartial", chartMeta.PartialName);

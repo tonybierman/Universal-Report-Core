@@ -43,10 +43,10 @@
         public bool IgnoreZeroes { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of data points to display in the chart.
+        /// Gets or sets the Pareto precent to breakout individually.
         /// Optional property.
         /// </summary>
-        public int? TakeTop { get; set; }
+        public int? ParetoPercent { get; set; }
 
         /// <summary>
         /// Gets or sets the API endpoint from which the chart will fetch data.

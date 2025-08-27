@@ -106,13 +106,14 @@ namespace UniversalReportCore.Ui
             return null;
         }
 
-        public virtual List<ChartDataPoint> GetChartData(IPaginatedList items, string key)
+        public virtual List<ChartDataPoint> GetChartData(IPaginatedList items, string chartSlug, string propertyName)
         {
             return _mapper.Map<List<ChartDataPoint>>(
                 items,
                 opts =>
                 {
-                    opts.Items["Key"] = key;
+                    opts.Items["ChartSlug"] = chartSlug;
+                    opts.Items["PropertyName"] = propertyName;
                 }
             );
         }
