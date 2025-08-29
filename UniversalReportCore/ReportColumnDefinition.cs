@@ -13,6 +13,7 @@ namespace UniversalReportCore
         public string DisplayName { get; set; } = default!;
         public string PropertyName { get; set; } = default!;
         public string? ViewModelName { get; set; }
+        public string? Description { get; set; }
         public bool IsDisplayKey { get; set; }
         public bool IsSortable { get; set; }
         public string? DefaultSort { get; set; }

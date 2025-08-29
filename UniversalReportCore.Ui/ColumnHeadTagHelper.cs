@@ -63,13 +63,17 @@ namespace UniversalReportCore.Ui
                 : null;
 
             // Tooltip with category if available
-            string category = (Column?.PropertyName ?? Column?.ViewModelName) is string propertyName
-                ? ViewModel?.GetType().GetProperty(propertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty
-                : string.Empty; 
-
-            if (!string.IsNullOrEmpty(category))
+            string? toolTip = Column.Description;
+            if (toolTip == null)
             {
-                output.Attributes.SetAttribute("title", category);
+                toolTip = (Column?.PropertyName ?? Column?.ViewModelName) is string propertyName
+                    ? ViewModel?.GetType().GetProperty(propertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? null
+                    : null;
+            }
+
+            if (!string.IsNullOrEmpty(toolTip))
+            {
+                output.Attributes.SetAttribute("title", toolTip);
             }
 
             // If the column is sortable, generate the <a> link

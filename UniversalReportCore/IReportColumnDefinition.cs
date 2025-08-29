@@ -6,6 +6,7 @@ namespace UniversalReportCore
     public interface IReportColumnDefinition
     {
         string DisplayName { get; set; }
+        public string? Description { get; set; }
         bool IsSortable { get; set; }
         bool IsDisplayKey { get; set; }
         string? DefaultSort { get; set; }
