@@ -17,6 +17,8 @@ namespace UniversalReportCore.Ui
         {
             _urlHelperFactory = urlHelperFactory;
         }
+        [HtmlAttributeName("column")]
+        public IReportColumnDefinition Column { get; set; } = null!;
 
         [HtmlAttributeName("options")]
         public List<SelectListItem> FilterOptions { get; set; } = new();
@@ -32,16 +34,27 @@ namespace UniversalReportCore.Ui
                 return;
             }
 
+            if (Column == null || Column.PropertyName == null)
+            {
+                output.SuppressOutput();
+                return;
+            }
+
             var sb = new StringBuilder();
             sb.Append("<th>");
-            sb.Append("<ul class=\"list-group list-group-flush small\">");
+            sb.Append("<div class=\"dropdown\">");
+            sb.Append($"<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton{Column.PropertyName}\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">");
+            sb.Append("<i class=\"ms-Icon ms-Icon--Filter\" aria-hidden=\"true\"></i>");
+            sb.Append("</button>");
+
+            sb.Append($"<ul class=\"dropdown-menu small\" aria-labelledby=\"dropdownMenuButton{Column.PropertyName}\">");
 
             foreach (var filter in FilterOptions.OrderBy(t => t.Text))
             {
                 var isChecked = filter.Selected ? "checked" : "";
 
                 sb.Append($@"
-                    <li class='list-group-item bg-transparent text-secondary border-0 py-1 px-2'>
+                    <li class='dropdown-item'>
                         <label class='d-flex align-items-center'>
                             <input type='checkbox' 
                                    name='filters' 
