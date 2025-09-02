@@ -32,36 +32,36 @@
                     }
                 </tr>
                 <form method="get">
-                <tr class="bg-light collapse" id="collapseFilter">
-                    @foreach (var column in Model?.ReportColumns)
-                    {
-                        var options = Model?.FilterOptions
-                        .Where(a => a.Heading == column.PropertyName)
-                        .Select(a => a.Options)
-                        .FirstOrDefault();
+                    <tr class="bg-light collapse" id="collapseFilter">
+                        @foreach (var column in Model?.ReportColumns)
+                        {
+                            var options = Model?.FilterOptions
+                                .Where(a => a.Heading == column.PropertyName)
+                                .Select(a => a.Options)
+                                .FirstOrDefault();
 
-                        if (options != null)
-                        {
-                            <column-filter column="@column" options="@options"></column-filter>
+                            if (options != null)
+                            {
+                                <column-filter column="@column" options="@options"></column-filter>
+                            }
+                            else
+                            {
+                                <th></th>
+                            }
                         }
-                        else
+                        <!-- Preserve Other Query Parameters -->
+                        <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                        <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                        <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                        <input type="hidden" name="pi" value="@Model.Params.Pi" />
+                        @if (Model.Params.CohortIds.Value != null)
                         {
-                            <th></th>
+                            @foreach (var cohortId in Model.Params.CohortIds.Value)
+                            {
+                                <input type="hidden" name="cohortIds" value="@cohortId" />
+                            }
                         }
-                    }
-                    <!-- Preserve Other Query Parameters -->
-                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-                    <input type="hidden" name="pi" value="@Model.Params.Pi" />
-                    @if (Model.Params.CohortIds.Value != null)
-                    {
-                        @foreach (var cohortId in Model.Params.CohortIds.Value)
-                        {
-                            <input type="hidden" name="cohortIds" value="@cohortId" />
-                        }
-                    }
-                </tr>
+                    </tr>
                 </form>
             </thead>
 
@@ -124,67 +124,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const accordion = document.getElementById("collapseFilter");
-
-            // Restore state from localStorage
-            const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
-            Object.keys(savedState).forEach(id => {
-                const element = document.getElementById(id);
-                if (element && savedState[id]) {
-                    new bootstrap.Collapse(element, { toggle: true });
-                }
-            });
-
-            // Save state when accordion is shown or hidden
-            accordion.addEventListener("shown.bs.collapse", event => {
-                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
-                savedState[event.target.id] = true;
-                localStorage.setItem("accordionState", JSON.stringify(savedState));
-            });
-
-            accordion.addEventListener("hidden.bs.collapse", event => {
-                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
-                savedState[event.target.id] = false;
-                localStorage.setItem("accordionState", JSON.stringify(savedState));
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            function restoreAccordionState(accordionId, storageKey) {
-                const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
-                Object.keys(savedState).forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element && savedState[id]) {
-                        new bootstrap.Collapse(element, { toggle: true });
-                    }
-                });
-            }
-
-            function trackAccordionState(accordionId, storageKey) {
-                const accordion = document.getElementById(accordionId);
-                if (!accordion) return;
-
-                accordion.addEventListener("shown.bs.collapse", event => {
-                    const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
-                    savedState[event.target.id] = true;
-                    localStorage.setItem(storageKey, JSON.stringify(savedState));
-                });
-
-                accordion.addEventListener("hidden.bs.collapse", event => {
-                    const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
-                    savedState[event.target.id] = false;
-                    localStorage.setItem(storageKey, JSON.stringify(savedState));
-                });
-            }
-
-            // Restore states
-            restoreAccordionState("collapseFilter", "accordionFilterState");
-
-            // Track state changes
-            trackAccordionState("collapseFilter", "accordionFilterState");
-        });
-    </script>
+    <script src="~/js/reports-index.js"></script>
 }
