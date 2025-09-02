@@ -1,40 +1,34 @@
 ﻿@model UniversalReportCore.Ui.ViewModels.FacetedBrowserViewModel
 
 <form method="get">
-    @foreach (var filterGroup in Model.FilterOptions)
-    {
-        <fieldset class="border p-3 mb-1">
-            <legend class="w-auto px-2 text-secondary fw-bold h6">@filterGroup.Heading</legend>
-            <ul class="list-group list-group-flush">
-                @foreach (var filter in filterGroup.Options)
+    <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
+        <span class="btn-group btn-group-sm" role="group" aria-label="First group">
+            @if (Model.ShowFilterButton.HasValue && Model.ShowFilterButton == true)
+            {
+                <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                    @Html.Raw(Model.FilterButtonHtml)
+                </button>
+            }
+            @if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
+            {
+                <!-- Preserve Other Query Parameters -->
+                <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                <input type="hidden" name="pi" value="@Model.Params.Pi" />
+
+                @if (Model.Params.CohortIds.Value != null)
                 {
-                    bool isSelected = filter.Selected;
-                    <li class="list-group-item">
-                        <label>
-                            <input type="checkbox"
-                                   name="filters"
-                                   value="@filter.Value"
-                                   checked="@isSelected"
-                                   onchange="this.form.submit()" />
-                            @filter.Text
-                        </label>
-                    </li>
+                    @foreach (var cohortId in Model.Params.CohortIds.Value)
+                    {
+                        <input type="hidden" name="cohortIds" value="@cohortId" />
+                    }
                 }
-            </ul>
-        </fieldset>
-    }
 
-    <!-- Preserve Other Query Parameters -->
-    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-    <input type="hidden" name="sortOrder" value="@Model.SortOrder" />
-    <input type="hidden" name="pi" value="@Model.PageIndex" />
-
-    @if (Model.Params.CohortIds.Value != null)
-    {
-        @foreach (var cohortId in Model.Params.CohortIds.Value)
-        {
-            <input type="hidden" name="cohortIds" value="@cohortId" />
-        }
-    }
+                <button type="submit" class="btn btn-secondary d-flex align-items-center">
+                    @Html.Raw(Model.ClearFilterButtonHtml)
+                </button>
+            }
+        </span>
+    </span>
 </form>

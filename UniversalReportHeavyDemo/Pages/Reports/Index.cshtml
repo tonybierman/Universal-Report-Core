@@ -1,53 +1,28 @@
 ﻿@page "{slug}"
 @model UniversalReportHeavyDemo.Pages.Reports.IndexModel
+
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
 }
+
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 
 <div class="container mt-4">
+
     @if (!string.IsNullOrEmpty(Model.ActionWellPartial))
     {
         @await Html.PartialAsync(Model.ActionWellPartial)
     }
-    <form method="get">
-        <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
-            <span class="btn-group btn-group-sm" role="group" aria-label="First group">
-                @if (Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable)
-                {
-                    <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
-                        <i class="ms-Icon ms-Icon--FilterSolid me-2" aria-hidden="true"></i> Filters
-                    </button>
-                }
-                @if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
-                {
-                    <!-- Preserve Other Query Parameters -->
-                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-                    <input type="hidden" name="pi" value="@Model.Params.Pi" />
 
-                    @if (Model.Params.CohortIds.Value != null)
-                    {
-                        @foreach (var cohortId in Model.Params.CohortIds.Value)
-                        {
-                            <input type="hidden" name="cohortIds" value="@cohortId" />
-                        }
-                    }
-
-                    <button type="submit" class="btn btn-secondary d-flex align-items-center">
-                        <i class="ms-Icon ms-Icon--ClearFilter me-2" aria-hidden="true"></i> Clear Filters
-                    </button>
-                }
-            </span>
-
-        </span>
-    </form>
+    @await Html.PartialAsync("_FacetedBrowserPartial", new FacetedBrowserViewModel
+    {
+        ShowFilterButton = Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable,
+        Params = Model.Params,
+        CurrentSort = Model.CurrentSort
+    })
 
     @if (Model.Items != null && Model.Items.Any())
     {
-
-
         <table class="table vertical-borders table-striped mt-3">
             <thead>
                 <tr class="bg-light">
@@ -147,6 +122,7 @@
         }
     </div>
 </div>
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -206,11 +182,9 @@
 
             // Restore states
             restoreAccordionState("collapseFilter", "accordionFilterState");
-            restoreAccordionState("collapseChart", "accordionChartState");
 
             // Track state changes
             trackAccordionState("collapseFilter", "accordionFilterState");
-            trackAccordionState("collapseChart", "accordionChartState");
         });
     </script>
 }
