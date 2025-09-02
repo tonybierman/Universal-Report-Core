@@ -28,7 +28,12 @@
                 <tr class="bg-light">
                     @foreach (var column in Model?.ReportColumns)
                     {
-                        <column-heading column="@column" model="@Model?.Params" viewmodel="@(Model?.Items.Cast<BaseEntityViewModel>().FirstOrDefault())" sort="@Model?.CurrentSort" page="/Reports/Index"></column-heading>
+                        <column-heading column="@column" 
+                            model="@Model?.Params" 
+                            viewmodel="@(Model?.Items.Cast<BaseEntityViewModel>().FirstOrDefault())" 
+                            sort="@Model?.CurrentSort" 
+                            page="/Reports/Index">
+                        </column-heading>
                     }
                 </tr>
                 <form method="get">
@@ -42,7 +47,9 @@
 
                             if (options != null)
                             {
-                                <column-filter column="@column" options="@options"></column-filter>
+                                <column-filter column="@column" 
+                                    options="@options">
+                                </column-filter>
                             }
                             else
                             {
@@ -71,7 +78,10 @@
                     <tr>
                         @foreach (var column in Model?.ReportColumns)
                         {
-                            <column-field column="column" item="item" slug="@Model?.Params.Slug.Value"></column-field>
+                            <column-field column="column" 
+                                item="item" 
+                                slug="@Model?.Params.Slug.Value">
+                            </column-field>
                         }
                     </tr>
                 }
@@ -87,7 +97,13 @@
                             <tr class="justify-content-center">
                                 @foreach (var column in Model?.ReportColumns)
                                 {
-                                    <cohort-footer column="@column" model="@Model?.Params" cohort-id="@cohortId" items="Model?.Items" cohorts="Model?.Cohorts" page="/Reports/Index"></cohort-footer>
+                                    <cohort-footer column="@column" 
+                                        model="@Model?.Params" 
+                                        cohort-id="@cohortId" 
+                                        items="Model?.Items" 
+                                        cohorts="Model?.Cohorts" 
+                                        page="/Reports/Index">
+                                    </cohort-footer>
                                 }
                             </tr>
                         }
@@ -95,7 +111,10 @@
                     <tr class="bg-light justify-content-center">
                         @foreach (var column in Model?.ReportColumns)
                         {
-                            <column-footer column="@column" model="@Model?.Params" items="Model?.Items"></column-footer>
+                            <column-footer column="@column" 
+                                model="@Model?.Params" 
+                                items="Model?.Items">
+                            </column-footer>
                         }
                     </tr>
                 </tfoot>
@@ -109,11 +128,18 @@
     <div class="text-center">
         @if (@Model?.Items?.Count > 0)
         {
-            <partial name="_ReportItemsPerPageSelectorPartial" model="new ItemsPerPageSelectorViewModel(Model?.Params, Model?.Items)" />
+            <partial name="_ReportItemsPerPageSelectorPartial" 
+                model="new ItemsPerPageSelectorViewModel(Model?.Params, Model?.Items)" />
         }
         @if (Model?.Items?.HasMultiplePages == true)
         {
-            <partial name="_ReportPagingNavigationPartial" model="new ReportPagingNavigationViewModel() { CurrentSort = Model?.CurrentSort, Params = Model?.Params, Items = Model?.Items }" />
+            <partial name="_ReportPagingNavigationPartial" 
+                model="new ReportPagingNavigationViewModel() 
+                {   
+                    CurrentSort = Model?.CurrentSort, 
+                    Params = Model?.Params, 
+                    Items = Model?.Items 
+                }" />
         }
         @if (Model?.Items?.Meta?.ContainsKey("QueryDuration") == true)
         {
