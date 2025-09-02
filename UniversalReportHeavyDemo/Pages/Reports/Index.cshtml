@@ -3,7 +3,214 @@
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
 }
-<partial name="_PageHeadingPartial" model="@Model.PageMeta" />
+@await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
+
 <div class="container mt-4">
-    <partial name="_ReportTablePartial"/>
+    @if (!string.IsNullOrEmpty(Model.ActionWellPartial))
+    {
+        @await Html.PartialAsync(Model.ActionWellPartial)
+    }
+    <form method="get">
+        <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Toolbar with button groups">
+            <span class="btn-group btn-group-sm" role="group" aria-label="First group">
+                @if (Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable)
+                {
+                    <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                        <i class="ms-Icon ms-Icon--FilterSolid me-2" aria-hidden="true"></i> Filters
+                    </button>
+                }
+                @if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
+                {
+                    <!-- Preserve Other Query Parameters -->
+                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                    <input type="hidden" name="pi" value="@Model.Params.Pi" />
+
+                    @if (Model.Params.CohortIds.Value != null)
+                    {
+                        @foreach (var cohortId in Model.Params.CohortIds.Value)
+                        {
+                            <input type="hidden" name="cohortIds" value="@cohortId" />
+                        }
+                    }
+
+                    <button type="submit" class="btn btn-secondary d-flex align-items-center">
+                        <i class="ms-Icon ms-Icon--ClearFilter me-2" aria-hidden="true"></i> Clear Filters
+                    </button>
+                }
+            </span>
+
+        </span>
+    </form>
+
+    @if (Model.Items != null && Model.Items.Any())
+    {
+
+
+        <table class="table vertical-borders table-striped mt-3">
+            <thead>
+                <tr class="bg-light">
+                    @foreach (var column in Model?.ReportColumns)
+                    {
+                        <column-heading column="@column" model="@Model?.Params" viewmodel="@(Model?.Items.Cast<BaseEntityViewModel>().FirstOrDefault())" sort="@Model?.CurrentSort" page="/Reports/Index"></column-heading>
+                    }
+                </tr>
+                <form method="get">
+                <tr class="bg-light collapse" id="collapseFilter">
+                    @foreach (var column in Model?.ReportColumns)
+                    {
+                        var options = Model?.FilterOptions
+                        .Where(a => a.Heading == column.PropertyName)
+                        .Select(a => a.Options)
+                        .FirstOrDefault();
+
+                        if (options != null)
+                        {
+                            <column-filter column="@column" options="@options"></column-filter>
+                        }
+                        else
+                        {
+                            <th></th>
+                        }
+                    }
+                    <!-- Preserve Other Query Parameters -->
+                    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+                    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+                    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+                    <input type="hidden" name="pi" value="@Model.Params.Pi" />
+                    @if (Model.Params.CohortIds.Value != null)
+                    {
+                        @foreach (var cohortId in Model.Params.CohortIds.Value)
+                        {
+                            <input type="hidden" name="cohortIds" value="@cohortId" />
+                        }
+                    }
+                </tr>
+                </form>
+            </thead>
+
+            <tbody>
+                @foreach (BaseEntityViewModel item in Model?.Items)
+                {
+                    <tr>
+                        @foreach (var column in Model?.ReportColumns)
+                        {
+                            <column-field column="column" item="item" slug="@Model?.Params.Slug.Value"></column-field>
+                        }
+                    </tr>
+                }
+            </tbody>
+
+            @if (Model?.Items?.Aggregates?.Any() == true)
+            {
+                <tfoot>
+                    @if (Model?.Params.CohortIds.Value?.Any() == true)
+                    {
+                        @foreach (var cohortId in Model?.Params.CohortIds.Value)
+                        {
+                            <tr class="justify-content-center">
+                                @foreach (var column in Model?.ReportColumns)
+                                {
+                                    <cohort-footer column="@column" model="@Model?.Params" cohort-id="@cohortId" items="Model?.Items" cohorts="Model?.Cohorts" page="/Reports/Index"></cohort-footer>
+                                }
+                            </tr>
+                        }
+                    }
+                    <tr class="bg-light justify-content-center">
+                        @foreach (var column in Model?.ReportColumns)
+                        {
+                            <column-footer column="@column" model="@Model?.Params" items="Model?.Items"></column-footer>
+                        }
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">No data available for this report.</p>
+    }
+    <div class="text-center">
+        @if (@Model?.Items?.Count > 0)
+        {
+            <partial name="_ReportItemsPerPageSelectorPartial" model="new ItemsPerPageSelectorViewModel(Model?.Params, Model?.Items)" />
+        }
+        @if (Model?.Items?.HasMultiplePages == true)
+        {
+            <partial name="_ReportPagingNavigationPartial" model="new ReportPagingNavigationViewModel() { CurrentSort = Model?.CurrentSort, Params = Model?.Params, Items = Model?.Items }" />
+        }
+        @if (Model?.Items?.Meta?.ContainsKey("QueryDuration") == true)
+        {
+            var queryDuration = Model?.Items?.Meta?["QueryDuration"];
+            <p class="small mt-4"><i>Query Duration: @queryDuration</i></p>
+        }
+    </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const accordion = document.getElementById("collapseFilter");
+
+            // Restore state from localStorage
+            const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+            Object.keys(savedState).forEach(id => {
+                const element = document.getElementById(id);
+                if (element && savedState[id]) {
+                    new bootstrap.Collapse(element, { toggle: true });
+                }
+            });
+
+            // Save state when accordion is shown or hidden
+            accordion.addEventListener("shown.bs.collapse", event => {
+                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+                savedState[event.target.id] = true;
+                localStorage.setItem("accordionState", JSON.stringify(savedState));
+            });
+
+            accordion.addEventListener("hidden.bs.collapse", event => {
+                const savedState = JSON.parse(localStorage.getItem("accordionState")) || {};
+                savedState[event.target.id] = false;
+                localStorage.setItem("accordionState", JSON.stringify(savedState));
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function restoreAccordionState(accordionId, storageKey) {
+                const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
+                Object.keys(savedState).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element && savedState[id]) {
+                        new bootstrap.Collapse(element, { toggle: true });
+                    }
+                });
+            }
+
+            function trackAccordionState(accordionId, storageKey) {
+                const accordion = document.getElementById(accordionId);
+                if (!accordion) return;
+
+                accordion.addEventListener("shown.bs.collapse", event => {
+                    const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
+                    savedState[event.target.id] = true;
+                    localStorage.setItem(storageKey, JSON.stringify(savedState));
+                });
+
+                accordion.addEventListener("hidden.bs.collapse", event => {
+                    const savedState = JSON.parse(localStorage.getItem(storageKey)) || {};
+                    savedState[event.target.id] = false;
+                    localStorage.setItem(storageKey, JSON.stringify(savedState));
+                });
+            }
+
+            // Restore states
+            restoreAccordionState("collapseFilter", "accordionFilterState");
+            restoreAccordionState("collapseChart", "accordionChartState");
+
+            // Track state changes
+            trackAccordionState("collapseFilter", "accordionFilterState");
+            trackAccordionState("collapseChart", "accordionChartState");
+        });
+    </script>
+}

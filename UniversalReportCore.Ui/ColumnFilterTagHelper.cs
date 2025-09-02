@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,6 +18,10 @@ namespace UniversalReportCore.Ui
         {
             _urlHelperFactory = urlHelperFactory;
         }
+
+        [HtmlAttributeName("text")]
+        public string DisplayText { get; set; } = "Filter";
+
         [HtmlAttributeName("column")]
         public IReportColumnDefinition Column { get; set; } = null!;
 
@@ -44,7 +49,7 @@ namespace UniversalReportCore.Ui
             sb.Append("<th>");
             sb.Append("<div class=\"dropdown\">");
             sb.Append($"<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton{Column.PropertyName}\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">");
-            sb.Append("<i class=\"ms-Icon ms-Icon--Filter\" aria-hidden=\"true\"></i>");
+            sb.Append($"{DisplayText}");
             sb.Append("</button>");
 
             sb.Append($"<ul class=\"dropdown-menu small\" aria-labelledby=\"dropdownMenuButton{Column.PropertyName}\">");

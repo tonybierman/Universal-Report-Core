@@ -61,9 +61,9 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
             return columns;
         }
 
-        public override PagedQueryParameters<CityPopulation> CreateQueryParameters(PreQueryArguments args)
+        public override PagedQueryParameters<CityPopulation> CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
-            return _queryFactory.CreateQueryParameters(args);
+            return _queryFactory.CreateQueryParameters(preQueryArgs, EnsureFilterConfig(preQueryArgs.FilterKeys));
         }
     }
 }
