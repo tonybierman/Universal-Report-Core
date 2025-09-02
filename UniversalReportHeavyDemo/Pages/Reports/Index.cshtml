@@ -36,40 +36,14 @@
                         </column-heading>
                     }
                 </tr>
-                <form method="get">
-                    <tr class="bg-light collapse" id="collapseFilter">
-                        @foreach (var column in Model?.ReportColumns)
-                        {
-                            var options = Model?.FilterOptions
-                                .Where(a => a.Heading == column.PropertyName)
-                                .Select(a => a.Options)
-                                .FirstOrDefault();
 
-                            if (options != null)
-                            {
-                                <column-filter column="@column" 
-                                    options="@options">
-                                </column-filter>
-                            }
-                            else
-                            {
-                                <th></th>
-                            }
-                        }
-                        <!-- Preserve Other Query Parameters -->
-                        <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-                        <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-                        <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-                        <input type="hidden" name="pi" value="@Model.Params.Pi" />
-                        @if (Model.Params.CohortIds.Value != null)
-                        {
-                            @foreach (var cohortId in Model.Params.CohortIds.Value)
-                            {
-                                <input type="hidden" name="cohortIds" value="@cohortId" />
-                            }
-                        }
-                    </tr>
-                </form>
+                @await Html.PartialAsync("_FacetedBrowserFiltersPartial", new FacetedBrowserViewModel
+                {
+                    Params = Model.Params,
+                    CurrentSort = Model.CurrentSort,
+                    ReportColumns = Model.ReportColumns.ToArray(),
+                    FilterOptions = Model.FilterOptions
+                })
             </thead>
 
             <tbody>

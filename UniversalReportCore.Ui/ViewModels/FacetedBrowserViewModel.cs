@@ -13,6 +13,10 @@ namespace UniversalReportCore.Ui.ViewModels
     /// </summary>
     public class FacetedBrowserViewModel
     {
+        public IReportColumnDefinition[]? ReportColumns { get; set; }
+
+        public List<(string Heading, List<SelectListItem> Options)>? FilterOptions { get; set; }
+
         /// <summary>
         /// Gets or sets the query parameters for the report.
         /// </summary>
@@ -21,7 +25,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// </value>
         public IReportQueryParams Params { get; set; }
 
-        public bool? ShowFilterButton { get; set; }
+        public bool ShowFilterButton { get; set; }
         public string? FilterButtonHtml { get; set; }  = "Filters";
         public string? ClearFilterButtonHtml { get; set; } = "Clear Filters";
 
