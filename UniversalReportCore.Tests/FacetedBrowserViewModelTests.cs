@@ -31,9 +31,6 @@ namespace UniversalReportCore.Tests
 
             // Assert
             Assert.Null(viewModel.Params);
-            Assert.Null(viewModel.FilterOptions);
-            Assert.Null(viewModel.PageIndex);
-            Assert.Null(viewModel.SortOrder);
         }
 
         [Fact]
@@ -64,76 +61,6 @@ namespace UniversalReportCore.Tests
             Assert.False(viewModel.Params.CheckSanity());
             Assert.False(viewModel.Params.IsSane);
             Assert.False(viewModel.Params.IsHard);
-        }
-
-        [Fact]
-        public void FacetedBrowserViewModel_FilterOptions_Should_Accept_And_Return_List()
-        {
-            // Arrange
-            var viewModel = new FacetedBrowserViewModel();
-            var filterOptions = new List<(string Heading, List<SelectListItem> Options)>
-            {
-                ("Category", new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Option1", Value = "1" },
-                    new SelectListItem { Text = "Option2", Value = "2" }
-                })
-            };
-
-            // Act
-            viewModel.FilterOptions = filterOptions;
-
-            // Assert
-            Assert.NotNull(viewModel.FilterOptions);
-            Assert.Single(viewModel.FilterOptions);
-            Assert.Equal("Category", viewModel.FilterOptions[0].Heading);
-            Assert.Equal(2, viewModel.FilterOptions[0].Options.Count);
-        }
-
-        [Fact]
-        public void FacetedBrowserViewModel_PageIndex_Should_Not_Affect_Params_Pi()
-        {
-            // Arrange
-            var viewModel = new FacetedBrowserViewModel();
-            var queryParams = new ReportQueryParamsBase(
-                pi: new HardenedPagingIndex(2),
-                ipp: new HardenedItemsPerPage(10),
-                sortOrder: new HardenedColumnSort("asc"),
-                cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
-                slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(new string[] { "key1" })
-            );
-            viewModel.Params = queryParams;
-
-            // Act
-            viewModel.PageIndex = 3;
-
-            // Assert
-            Assert.Equal(3, viewModel.PageIndex);
-            Assert.Equal(2, viewModel.Params.Pi.Value);
-        }
-
-        [Fact]
-        public void FacetedBrowserViewModel_SortOrder_Should_Not_Affect_Params_SortOrder()
-        {
-            // Arrange
-            var viewModel = new FacetedBrowserViewModel();
-            var queryParams = new ReportQueryParamsBase(
-                pi: new HardenedPagingIndex(0),
-                ipp: new HardenedItemsPerPage(10),
-                sortOrder: new HardenedColumnSort("asc"),
-                cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
-                slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(new string[] { "key1" })
-            );
-            viewModel.Params = queryParams;
-
-            // Act
-            viewModel.SortOrder = "desc";
-
-            // Assert
-            Assert.Equal("desc", viewModel.SortOrder);
-            Assert.Equal("asc", viewModel.Params.SortOrder.Value);
         }
 
         [Fact]
