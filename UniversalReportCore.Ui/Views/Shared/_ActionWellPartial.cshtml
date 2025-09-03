@@ -1,0 +1,10 @@
+﻿@using UniversalReportCore.Ui.Pages
+@using UniversalReportCore.Ui.ViewModels
+@using UniversalReportCore.ViewModels
+@model ActionWellViewModel
+@addTagHelper *, UniversalReportCore.Ui
+
+@foreach (var item in Model.SubPartials)
+{
+    <partial name="@item.PartialName" model="item.Data" />
+}

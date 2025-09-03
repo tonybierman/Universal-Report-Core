@@ -68,7 +68,7 @@ namespace UniversalReportCore.PageMetadata
         /// <returns>The name of the action well partial view associated with the specified slug, or <see langword="null"/> if no
         /// partial view is defined.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified <paramref name="slug"/>.</exception>
-        public string? GetActionWellPartial(string slug)
+        public ActionWellViewModel GetActionWell(string slug)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)
@@ -76,7 +76,7 @@ namespace UniversalReportCore.PageMetadata
                 throw new InvalidOperationException($"Unsupported meta for page: {slug}");
             }
 
-            return provider.GetActionWellPartial();
+            return provider.GetActionWell();
         }
 
         /// <summary>

@@ -41,6 +41,6 @@ namespace UniversalReportCore.PageMetadata
         /// </summary>
         /// <param name="slug"></param>
         /// <returns></returns>
-        string? GetActionWellPartial(string slug);
+        ActionWellViewModel GetActionWell(string slug);
     }
 }

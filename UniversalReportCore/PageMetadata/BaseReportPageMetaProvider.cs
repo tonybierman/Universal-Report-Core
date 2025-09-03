@@ -15,6 +15,6 @@ namespace UniversalReportCore.PageMetadata
 
         public virtual Dictionary<string, ChartMetaViewModel>? ChartMeta { get => null; }
 
-        public virtual string? GetActionWellPartial() => null;
+        public virtual ActionWellViewModel GetActionWell() => new ActionWellViewModel();
     }
 }

@@ -48,6 +48,6 @@ namespace UniversalReportCore.PageMetadata
 
         Dictionary<string, ChartMetaViewModel>? ChartMeta { get; }
 
-        string? GetActionWellPartial();
+        ActionWellViewModel GetActionWell();
     }
 }

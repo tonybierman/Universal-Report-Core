@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -12,11 +15,9 @@ using UniversalReportCore.Helpers;
 using UniversalReportCore.PagedQueries;
 using UniversalReportCore.PageMetadata;
 using UniversalReportCore.Ui;
-using UniversalReportCore.ViewModels;
-using Microsoft.CSharp.RuntimeBinder;
 using UniversalReportCore.Ui.Helpers;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Authorization;
+using UniversalReportCore.Ui.ViewModels;
+using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui.Pages
 {
@@ -47,7 +48,7 @@ namespace UniversalReportCore.Ui.Pages
         public List<(string Heading, List<SelectListItem> Options)> FilterOptions { get; private set; }
         public string? SelectedFilter { get; set; }
         public bool HasFiltersAvailable { get; set; }
-        public string? ActionWellPartial { get; set; }
+        public ActionWellViewModel ActionWell { get; set; } = new ActionWellViewModel();
         public ReportPageModel(
             ILogger<ReportPageModel> logger,
             IMapper mapper,
