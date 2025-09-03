@@ -4,11 +4,13 @@
 @model ActionWellViewModel
 @addTagHelper *, UniversalReportCore.Ui
 
-@foreach (var item in Model.SubPartials)
-{
+<form method="get">
     <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Action Well Toolbar">
         <span class="btn-group btn-group-sm" role="group" aria-label="Action Well Group 1">
-            <partial name="@item.PartialName" model="item.Data" />
+            @foreach (var item in Model.SubPartials)
+            {
+                <partial name="@item.PartialName" model="item.Data" />
+            }
         </span>
     </span>
-}
+</form>

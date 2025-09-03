@@ -48,7 +48,7 @@ namespace UniversalReportCore.Ui.Pages
         public List<(string Heading, List<SelectListItem> Options)> FilterOptions { get; private set; }
         public string? SelectedFilter { get; set; }
         public bool HasFiltersAvailable { get; set; }
-        public ActionWellViewModel ActionWell { get; set; } = new ActionWellViewModel();
+        public ActionWellViewModel ActionWell { get; set; }
         public ReportPageModel(
             ILogger<ReportPageModel> logger,
             IMapper mapper,

@@ -8,6 +8,12 @@ namespace UniversalReportCore.ViewModels
 {
     public class ActionWellViewModel
     {
-        public IEnumerable<SubPartialViewModel> SubPartials { get; set; } = Enumerable.Empty<SubPartialViewModel>();
+        public ActionWellViewModel(IList<SubPartialViewModel> subPartials)
+        {
+            SubPartials = new List<SubPartialViewModel>();
+            SubPartials.AddRange(subPartials);
+        }
+
+        public List<SubPartialViewModel> SubPartials { get; set; }
     }
 }
