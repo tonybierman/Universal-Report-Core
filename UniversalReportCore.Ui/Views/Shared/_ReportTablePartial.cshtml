@@ -2,27 +2,8 @@
 @using UniversalReportCore.Ui.Pages
 @using UniversalReportCore.Ui.ViewModels
 @using UniversalReportCore.ViewModels
-@inject IPageMetaFactory PageMetaFactory
 @model ReportPageModel
 @addTagHelper *, UniversalReportCore.Ui
-
-@{
-    List<SubPartialViewModel> partials = new List<SubPartialViewModel>
-    {
-        new SubPartialViewModel
-        {
-            PartialName = "_FacetedBrowserPartial",
-            Data = new FacetedBrowserViewModel
-            {
-                ShowFilterButton = Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable,
-                Params = Model.Params,
-                CurrentSort = Model.CurrentSort
-            }
-        }
-    };
-
-    Model.ActionWell = PageMetaFactory.GetActionWell(Model.Params.Slug.Value, partials);
-}
 
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 

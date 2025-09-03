@@ -1,8 +1,27 @@
 ﻿@page "{slug}"
+@using UniversalReportCore.PageMetadata
+@inject IPageMetaFactory PageMetaFactory
+
 @model UniversalReportHeavyDemo.Pages.Reports.IndexModel
 
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
+
+    List<SubPartialViewModel> partials = new List<SubPartialViewModel>
+    {
+        new SubPartialViewModel
+        {
+            PartialName = "_FacetedBrowserPartial",
+            Data = new FacetedBrowserViewModel
+            {
+                ShowFilterButton = Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable,
+                Params = Model.Params,
+                CurrentSort = Model.CurrentSort
+            }
+        }
+    };
+
+    Model.ActionWell = PageMetaFactory.GetActionWell(Model.Params.Slug.Value, partials);
 }
 
 @await Html.PartialAsync("_ReportTablePartial", Model)
