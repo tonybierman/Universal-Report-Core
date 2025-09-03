@@ -11,13 +11,17 @@
     {
         new SubPartialViewModel
         {
-            PartialName = "_FacetedBrowserPartial",
+            PartialName = "_FacetedBrowserActionWellPartial",
             Data = new FacetedBrowserViewModel
             {
                 ShowFilterButton = Model.Items != null && Model.Items.Any() && Model.HasFiltersAvailable,
                 Params = Model.Params,
                 CurrentSort = Model.CurrentSort
             }
+        },
+        new SubPartialViewModel
+        {
+            PartialName = "_SearchActionWellPartial"
         }
     };
 
