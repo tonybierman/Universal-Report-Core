@@ -85,12 +85,12 @@ namespace UniversalReportCore.Tests
 
         bool IPageMetaProvider.IsPublished => throw new NotImplementedException();
 
-        public PageMetaViewModel GetPageMeta()
+        public ActionWellViewModel GetActionWell(IList<SubPartialViewModel> subPartials)
         {
             throw new NotImplementedException();
         }
 
-        string? IPageMetaProvider.GetActionWellPartial()
+        public PageMetaViewModel GetPageMeta()
         {
             throw new NotImplementedException();
         }

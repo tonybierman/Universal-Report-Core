@@ -19,7 +19,7 @@ namespace UniversalReportCore.Tests
             _mockProvider.Setup(p => p.Slug).Returns("TestPage");
             _mockProvider.Setup(p => p.GetPageMeta()).Returns(new PageMetaViewModel { Title = "Test", Subtitle = "Test Subtitle" });
             _mockProvider.Setup(p => p.ChartMeta).Returns((Dictionary<string, ChartMetaViewModel>?)null);
-            _mockProvider.Setup(p => p.GetActionWellPartial()).Returns("TestPartial");
+            _mockProvider.Setup(p => p.GetActionWell(new List<SubPartialViewModel>())).Returns(new ActionWellViewModel(new List<SubPartialViewModel>()));
 
             var providers = new List<IPageMetaProvider> { _mockProvider.Object };
             _factory = new PageMetaFactory(providers);
@@ -86,15 +86,15 @@ namespace UniversalReportCore.Tests
         [Fact]
         public void GetActionWellPartial_ShouldReturnPartial_ForValidSlug()
         {
-            var result = _factory.GetActionWellPartial("TestPage");
+            var result = _factory.GetActionWell("TestPage", new List<SubPartialViewModel>());
 
-            Assert.Equal("TestPartial", result);
+            Assert.IsType<ActionWellViewModel>(result);
         }
 
         [Fact]
         public void GetActionWellPartial_ShouldThrowInvalidOperationException_ForUnknownSlug()
         {
-            var result = Record.Exception(() => _factory.GetActionWellPartial("NonExistentPage"));
+            var result = Record.Exception(() => _factory.GetActionWell("NonExistentPage", null));
 
             Assert.IsType<InvalidOperationException>(result);
             Assert.Equal("Unsupported meta for page: NonExistentPage", result.Message);
@@ -130,6 +130,11 @@ namespace UniversalReportCore.Tests
         public PageMetaViewModel GetPageMeta() => _meta;
         public ChartMetaViewModel? GetChartMeta() => null;
         public string? GetActionWellPartial() => null;
+
+        public ActionWellViewModel GetActionWell(IList<SubPartialViewModel> subPartials)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class PageMetaPolicyAttribute : Attribute
