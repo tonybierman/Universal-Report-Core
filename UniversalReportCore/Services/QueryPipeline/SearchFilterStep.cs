@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,32 +12,67 @@ namespace UniversalReportCore.Services.QueryPipeline
     {
         public IQueryable<TEntity> Execute(IQueryable<TEntity> query, PagedQueryParameters<TEntity> parameters)
         {
-            if (parameters.SearchFilter != null && !string.IsNullOrEmpty(parameters.SearchFilter.Value))
+            // Check if search filters exist and are not empty
+            if (parameters.SearchFilters != null && parameters.SearchFilters.Any())
             {
-                string[] propertyParts = parameters.SearchFilter.PropertyName.Split('.');
-                ParameterExpression param = Expression.Parameter(typeof(TEntity), "e");
+                // Group filters by PropertyName for OR logic within same property
+                var groups = parameters.SearchFilters
+                    .Where(f => !string.IsNullOrEmpty(f.Value))
+                    .GroupBy(f => f.PropertyName)
+                    .ToList();
 
-                Expression propertyAccess = param;
-
-                foreach (var part in propertyParts)
+                if (groups.Any())
                 {
-                    PropertyInfo propertyInfo = propertyAccess.Type.GetProperty(part);
-                    if (propertyInfo == null) throw new ArgumentException("Invalid property name.");
-                    propertyAccess = Expression.Property(propertyAccess, part);
-                    if (part == propertyParts.Last() && propertyAccess.Type != typeof(string))
-                        throw new ArgumentException("Property must be string.");
-                }
+                    // Define parameter for expression
+                    ParameterExpression param = Expression.Parameter(typeof(TEntity), "e");
+                    Expression overallCondition = null;
 
-                if (propertyAccess != param)
-                {
-                    var searchValue = parameters.SearchFilter.Value;
-                    var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                    Expression condition = Expression.Call(propertyAccess, containsMethod, Expression.Constant(searchValue));
+                    // Process each property group
+                    foreach (var group in groups)
+                    {
+                        // Split property path for nested properties
+                        string[] propertyParts = group.Key.Split('.');
+                        Expression propertyAccess = param;
 
-                    var lambda = Expression.Lambda<Func<TEntity, bool>>(condition, param);
-                    query = query.Where(lambda);
+                        // Build property access expression
+                        foreach (var part in propertyParts)
+                        {
+                            PropertyInfo propertyInfo = propertyAccess.Type.GetProperty(part);
+                            if (propertyInfo == null) throw new ArgumentException("Invalid property name.");
+                            propertyAccess = Expression.Property(propertyAccess, part);
+                            // Validate final property is string
+                            if (part == propertyParts.Last() && propertyAccess.Type != typeof(string))
+                                throw new ArgumentException("Property must be string.");
+                        }
+
+                        // Ensure valid property path
+                        if (propertyAccess != param)
+                        {
+                            // Get string.Contains method for comparison
+                            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                            Expression groupExpr = null;
+
+                            // Combine filters for same property with OR
+                            foreach (var filter in group)
+                            {
+                                Expression condition = Expression.Call(propertyAccess, containsMethod, Expression.Constant(filter.Value));
+                                groupExpr = groupExpr == null ? condition : Expression.OrElse(groupExpr, condition);
+                            }
+
+                            // Combine different properties with AND
+                            overallCondition = overallCondition == null ? groupExpr : Expression.AndAlso(overallCondition, groupExpr);
+                        }
+                    }
+
+                    // Apply combined filter expression to query
+                    if (overallCondition != null)
+                    {
+                        var lambda = Expression.Lambda<Func<TEntity, bool>>(overallCondition, param);
+                        query = query.Where(lambda);
+                    }
                 }
             }
+            // Return filtered or original query
             return query;
         }
     }

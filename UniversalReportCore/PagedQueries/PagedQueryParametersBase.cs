@@ -32,7 +32,7 @@ namespace UniversalReportCore.PagedQueries
         /// <summary>
         /// Gets or sets an optional text filter for search queries.
         /// </summary>
-        public TextFilter SearchFilter { get; set; }
+        public TextFilter[] SearchFilters { get; set; }
 
         /// <summary>
         /// Gets the number of items per page.
