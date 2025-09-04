@@ -1,0 +1,28 @@
+﻿@using UniversalReportCore.Helpers
+@using UniversalReportCore.Ui.ViewModels
+@model SearchViewModel
+
+<div class="bg-light collapse p-3" id="collapseSearch">
+
+    @if (Model == null || Model.ReportColumns == null || !Model.ReportColumns.Any())
+    {
+        <p>No columns available for search.</p>
+        return;
+    }
+
+    <form method="get">
+
+        @foreach (var column in Model.ReportColumns.Where(a => a.PropertyName != null))
+        {
+            <div class="form-group">
+                <label style="width: 200px;" for=@($"query{column.PropertyName}")>@($"{StringHelper.SplitPascalCase(column.PropertyName)}")</label>
+                <input type="text" id=@($"query{column.PropertyName}") name=@($"query{column.PropertyName}") style="width: 200px;" />
+            </div>
+
+        }
+
+        <button class="btn btn-primary mt-3">Search</button>
+
+    </form>
+</div>
+
