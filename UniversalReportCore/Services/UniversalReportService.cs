@@ -45,6 +45,7 @@ namespace UniversalReport.Services
                 new ReportFilterStep<TEntity>(),
                 new FacetedFilterStep<TEntity>(),
                 new DateRangeFilterStep<TEntity>(),
+                new SearchFilterStep<TEntity>(),
                 new CohortFilterStep<TEntity>(),
                 new SortingStep<TEntity>()
 

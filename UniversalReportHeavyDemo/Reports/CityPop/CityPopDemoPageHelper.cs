@@ -63,7 +63,13 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
 
         public override PagedQueryParameters<CityPopulation> CreateQueryParameters(PreQueryArguments preQueryArgs)
         {
-            return _queryFactory.CreateQueryParameters(preQueryArgs, EnsureFilterConfig(preQueryArgs.FilterKeys));
+            var parameters = _queryFactory.CreateQueryParameters(preQueryArgs, EnsureFilterConfig(preQueryArgs.FilterKeys));
+
+            parameters.SearchFilter = new UniversalReportCore.PagedQueries.TextFilter(
+              "Iran",
+              "CountryOrArea");
+
+            return parameters;
         }
     }
 }
