@@ -15,6 +15,7 @@ namespace UniversalReportCore.PagedQueries
         public int? Ipp { get; set; }
         public int[]? CohortIds { get; set; }
         public string[]? FilterKeys { get; set; }
+        public TextFilter[]? SearchFilters { get; set; }
 
         public PreQueryArguments(string queryType, IReportColumnDefinition[] columns, int? pageIndex = null, string? sort = null, int? ipp = null, int[]? cohortIds = null, string[]? filterKeys = null)
         {

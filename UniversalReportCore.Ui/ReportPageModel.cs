@@ -208,6 +208,13 @@ namespace UniversalReportCore.Ui.Pages
                 Params.FilterKeys.Value
             );
 
+
+            // TODO: Remove hardcoded search filters
+            preQueryArgs.SearchFilters = new[] {
+                new UniversalReportCore.PagedQueries.TextFilter("Iran", "CountryOrArea"),
+                new UniversalReportCore.PagedQueries.TextFilter("Germany", "CountryOrArea")
+            };
+
             // Load data
             var parameters = pageHelper.CreateQueryParameters(preQueryArgs);
             parameters.DisplayKey = displayKey;

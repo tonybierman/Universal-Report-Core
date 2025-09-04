@@ -44,6 +44,8 @@ namespace UniversalReportCore.PagedQueries
             var retval = provider.BuildPagedQuery(preQueryArgs, filterConfig, provider.EnsureReportQuery());
             retval.FilterKeys = filterConfig?.FilterKeys ?? Array.Empty<string>();
 
+            retval.SearchFilters = preQueryArgs.SearchFilters;
+
             return retval;
         }
     }

@@ -65,12 +65,6 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
         {
             var parameters = _queryFactory.CreateQueryParameters(preQueryArgs, EnsureFilterConfig(preQueryArgs.FilterKeys));
 
-            //parameters.SearchFilters = new[] {
-            //    new UniversalReportCore.PagedQueries.TextFilter("Iran", "CountryOrArea"),
-            //    new UniversalReportCore.PagedQueries.TextFilter("Bam", "City"),
-            //    new UniversalReportCore.PagedQueries.TextFilter("Germany", "CountryOrArea")
-            //};
-
             return parameters;
         }
     }
