@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace UniversalReportCore.HardQuerystringVariables
 {
@@ -33,6 +34,43 @@ namespace UniversalReportCore.HardQuerystringVariables
         {
             IsSane = true;
             return IsSane;
+        }
+
+        protected bool IsSafeQueryString(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return false;
+
+            // Check length to prevent buffer overflow attempts
+            if (input.Length > 2048) return false;
+
+            // Common SQL injection patterns
+            string[] sqlPatterns = {
+                "(--)|(\\b(union|select|insert|delete|update|drop|alter|create|truncate|exec|execute)\\b)",
+                "[;']|(--)|(\\|\\|)|(/\\*)|(\\*/)"
+            };
+
+            // Common XSS patterns
+            string[] xssPatterns = {
+                "<script", "javascript:", "onerror=", "onload=", "<iframe", "<img", "eval(",
+                "expression(", "vbscript:", "<svg", "<object", "<embed"
+            };
+
+            // Combine patterns
+            string pattern = string.Join("|", sqlPatterns.Concat(xssPatterns));
+
+            // Check for malicious patterns
+            if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
+                return false;
+
+            // Check for encoded characters
+            if (input.Contains("%") || input.Contains("&"))
+                return false;
+
+            // Basic character validation
+            if (!Regex.IsMatch(input, @"^[a-zA-Z0-9\s\-\_\.\,\=]*$"))
+                return false;
+
+            return true;
         }
     }
 }
