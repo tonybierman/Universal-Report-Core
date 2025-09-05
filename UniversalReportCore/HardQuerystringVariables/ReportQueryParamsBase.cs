@@ -43,6 +43,11 @@ namespace UniversalReportCore.HardQuerystringVariables
         public HardenedFilterKeys FilterKeys { get; set; }
 
         /// <summary>
+        /// Gets the hardened search queries parameter.
+        /// </summary>
+        public HardenedSearchQueries SearchQueries { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether all query parameters are hardened.
         /// </summary>
         public bool IsHard => Array.All(a => a?.IsHard ?? false);
@@ -65,7 +70,8 @@ namespace UniversalReportCore.HardQuerystringVariables
             HardenedColumnSort sortOrder,
             HardenedCohortIdentifiers cohortIds,
             HardenedReportSlug slug,
-            HardenedFilterKeys filterKeys)
+            HardenedFilterKeys filterKeys,
+            HardenedSearchQueries hardenedSearchQueries)
         {
             Pi = pi;
             Ipp = ipp;
@@ -73,6 +79,7 @@ namespace UniversalReportCore.HardQuerystringVariables
             CohortIds = cohortIds;
             Slug = slug;
             FilterKeys = filterKeys;
+            SearchQueries = hardenedSearchQueries;
         }
 
         /// <summary>

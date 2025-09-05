@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Routing;
 using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.HardQuerystringVariables.Hardened;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UniversalReportCore.Ui
 {
@@ -11,9 +13,13 @@ namespace UniversalReportCore.Ui
         {
             var httpContext = bindingContext.HttpContext;
             var query = httpContext.Request.Query;
-            var routeData = httpContext.GetRouteData();  // Retrieve route data
-            var slug = routeData.Values["slug"]?.ToString();  // Get slug from route data
-            var sku = routeData.Values["sku"]?.ToString();  // Get slug from route data
+            var routeData = httpContext.GetRouteData();
+            var slug = routeData.Values["slug"]?.ToString();
+            var sku = routeData.Values["sku"]?.ToString();
+
+            var searchDict = query
+                .Where(kvp => kvp.Key.StartsWith("query") && !string.IsNullOrEmpty(kvp.Value))
+                .ToDictionary(kvp => kvp.Key.Substring("query".Length), kvp => kvp.Value.ToString());
 
             var model = new ReportQueryParamsBase
             (
@@ -21,10 +27,10 @@ namespace UniversalReportCore.Ui
                 new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"])),
                 new HardenedColumnSort(query["SortOrder"]),
                 new HardenedCohortIdentifiers(query["CohortIds"].Select(int.Parse).ToArray()),
-                new HardenedReportSlug(slug),  // Use the slug from route data
-                new HardenedFilterKeys(query["Filters"])
+                new HardenedReportSlug(slug),
+                new HardenedFilterKeys(query["Filters"]),
+                new HardenedSearchQueries(searchDict)
             );
-
             bindingContext.Result = ModelBindingResult.Success(model);
             return Task.CompletedTask;
         }
