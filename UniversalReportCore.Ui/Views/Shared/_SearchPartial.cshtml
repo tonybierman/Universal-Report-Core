@@ -21,6 +21,32 @@
 
         }
 
+        @if(Model.Params != null)
+        {
+            <!-- Preserve Other Query Parameters -->
+            <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+            <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+            <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+            <input type="hidden" name="pi" value="@Model.Params.Pi" />
+            @if (Model.Params.CohortIds.Value != null)
+            {
+                @foreach (var cohortId in Model.Params.CohortIds.Value)
+                {
+                    <input type="hidden" name="cohortIds" value="@cohortId" />
+                }
+            }
+
+            @if (Model.Params.FilterKeys.Value != null)
+            {
+                @foreach (var filterKey in Model.Params.FilterKeys.Value)
+                {
+                    <input type="hidden" name="filters" value="@filterKey" />
+                }
+            }
+        }
+
+
+
         <button class="btn btn-primary mt-3">Search</button>
 
     </form>

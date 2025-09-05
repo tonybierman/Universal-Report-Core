@@ -13,7 +13,13 @@
 
     @if (Model.Items != null && Model.Items.Any())
     {
-        @await Html.PartialAsync("_SearchPartial", new SearchViewModel { ReportColumns = Model.ReportColumns?.ToArray() })
+        @await Html.PartialAsync("_SearchPartial", new SearchViewModel
+        {
+            Params = Model.Params,
+            CurrentSort = Model.CurrentSort,
+            ReportColumns = Model.ReportColumns.ToArray(),
+            FilterOptions = Model.FilterOptions
+        })
 
         <table class="table vertical-borders table-striped mt-3">
             <thead>
@@ -32,9 +38,9 @@
                 @await Html.PartialAsync("_FacetedBrowserFiltersPartial", new FacetedBrowserViewModel
                 {
                     Params = Model.Params,
-                        CurrentSort = Model.CurrentSort,
-                        ReportColumns = Model.ReportColumns.ToArray(),
-                        FilterOptions = Model.FilterOptions
+                    CurrentSort = Model.CurrentSort,
+                    ReportColumns = Model.ReportColumns.ToArray(),
+                    FilterOptions = Model.FilterOptions
                 })
         </thead>
 

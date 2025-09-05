@@ -10,6 +10,8 @@ namespace UniversalReportCore.Ui.ViewModels
 {
     public class SearchViewModel
     {
+        public List<(string Heading, List<SelectListItem> Options)>? FilterOptions { get; set; }
+
         public IReportColumnDefinition[]? ReportColumns { get; set; }
 
         public IReportQueryParams Params { get; set; }
