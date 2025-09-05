@@ -209,7 +209,7 @@ namespace UniversalReportCore.Ui.Pages
                 Params.FilterKeys.Value
             );
 
-            if (Params.SearchQueries.Value != null && Params.CohortIds.Value.Any())
+            if (Params.SearchQueries.Value != null && Params.SearchQueries.Value.Any())
             {
                 if (!Params.SearchQueries.Validate())
                     return StatusCode(422); // "Invalid search."
@@ -217,7 +217,7 @@ namespace UniversalReportCore.Ui.Pages
                 List<TextFilter> textFilters = new();
                 foreach (var filter in Params.SearchQueries.Value)
                 {
-                    textFilters.Add(new UniversalReportCore.PagedQueries.TextFilter(filter.Value, filter.Key));
+                    textFilters.Add(new UniversalReportCore.PagedQueries.TextFilter(filter.Value, filter.Key.Replace("query", "")));
                 }
 
                 preQueryArgs.SearchFilters = textFilters.ToArray();
