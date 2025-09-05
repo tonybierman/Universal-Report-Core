@@ -13,6 +13,7 @@ namespace UniversalReportCore.HardQuerystringVariables
         HardenedReportSlug Slug { get; }
         HardenedColumnSort SortOrder { get; set; }
         HardenedFilterKeys FilterKeys { get; set; }
+        HardenedSearchQueries SearchQueries { get; set; }
 
         bool CheckSanity();
     }

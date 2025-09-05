@@ -45,7 +45,7 @@ namespace UniversalReportCore.HardQuerystringVariables
         /// <summary>
         /// Gets the hardened search queries parameter.
         /// </summary>
-        public HardenedSearchQueries SearchQueries { get; private set; }
+        public HardenedSearchQueries SearchQueries { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether all query parameters are hardened.

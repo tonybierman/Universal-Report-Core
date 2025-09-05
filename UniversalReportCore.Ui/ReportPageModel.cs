@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -208,12 +209,25 @@ namespace UniversalReportCore.Ui.Pages
                 Params.FilterKeys.Value
             );
 
+            if (Params.SearchQueries.Value != null && Params.CohortIds.Value.Any())
+            {
+                if (!Params.SearchQueries.Validate())
+                    return StatusCode(422); // "Invalid search."
+
+                List<TextFilter> textFilters = new();
+                foreach (var filter in Params.SearchQueries.Value)
+                {
+                    textFilters.Add(new UniversalReportCore.PagedQueries.TextFilter(filter.Value, filter.Key));
+                }
+
+                preQueryArgs.SearchFilters = textFilters.ToArray();
+            }
 
             // TODO: Remove hardcoded search filters
-            preQueryArgs.SearchFilters = new[] {
-                new UniversalReportCore.PagedQueries.TextFilter("Iran", "CountryOrArea"),
-                new UniversalReportCore.PagedQueries.TextFilter("Germany", "CountryOrArea")
-            };
+            //preQueryArgs.SearchFilters = new[] {
+            //    new UniversalReportCore.PagedQueries.TextFilter("Iran", "CountryOrArea"),
+            //    new UniversalReportCore.PagedQueries.TextFilter("Germany", "CountryOrArea")
+            //};
 
             // Load data
             var parameters = pageHelper.CreateQueryParameters(preQueryArgs);
