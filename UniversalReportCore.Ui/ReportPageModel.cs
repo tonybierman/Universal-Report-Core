@@ -211,8 +211,9 @@ namespace UniversalReportCore.Ui.Pages
 
             if (Params.SearchQueries.Value != null && Params.SearchQueries.Value.Any())
             {
-                if (!Params.SearchQueries.Validate())
-                    return StatusCode(422); // "Invalid search."
+                // TODO: Re-enable search validation after implementing a more robust solution.
+                //if (!Params.SearchQueries.Validate())
+                //    return StatusCode(422); // "Invalid search."
 
                 List<TextFilter> textFilters = new();
                 foreach (var filter in Params.SearchQueries.Value)
@@ -222,12 +223,6 @@ namespace UniversalReportCore.Ui.Pages
 
                 preQueryArgs.SearchFilters = textFilters.ToArray();
             }
-
-            // TODO: Remove hardcoded search filters
-            //preQueryArgs.SearchFilters = new[] {
-            //    new UniversalReportCore.PagedQueries.TextFilter("Iran", "CountryOrArea"),
-            //    new UniversalReportCore.PagedQueries.TextFilter("Germany", "CountryOrArea")
-            //};
 
             // Load data
             var parameters = pageHelper.CreateQueryParameters(preQueryArgs);

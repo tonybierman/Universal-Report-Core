@@ -14,9 +14,15 @@
 
         @foreach (var column in Model.ReportColumns.Where(a => a.PropertyName != null))
         {
+            KeyValuePair<string, string>? search = null;
+            @if (Model.Params.SearchQueries.Value != null)
+            {
+                search = Model.Params.SearchQueries.Value.FirstOrDefault(a => a.Key == column.PropertyName);
+            }
+
             <div class="form-group">
                 <label style="width: 200px;" for=@($"query{column.PropertyName}")>@($"{StringHelper.SplitPascalCase(column.PropertyName)}")</label>
-                <input type="text" id=@($"query{column.PropertyName}") name=@($"query{column.PropertyName}") style="width: 200px;" />
+                <input type="text" id=@($"query{column.PropertyName}") name=@($"query{column.PropertyName}") style="width: 200px;" value=@(search?.Value) />
             </div>
 
         }
