@@ -3,6 +3,20 @@
 @addTagHelper *, UniversalReportCore.Ui
 
 <form method="get">
+
+    <!-- Preserve Other Query Parameters -->
+    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="pi" value="@Model.Params.Pi.Value" />
+    @if (Model.Params.CohortIds.Value != null)
+    {
+        @foreach (var cohortId in Model.Params.CohortIds.Value)
+        {
+            <input type="hidden" name="cohortIds" value="@cohortId" />
+        }
+    }
+
     <tr class="bg-light collapse" id="collapseFilter">
         @foreach (var column in Model?.ReportColumns)
         {
@@ -22,18 +36,7 @@
                 <th></th>
             }
         }
-        <!-- Preserve Other Query Parameters -->
-        <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-        <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-        <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-        <input type="hidden" name="pi" value="@Model.Params.Pi" />
-        @if (Model.Params.CohortIds.Value != null)
-        {
-            @foreach (var cohortId in Model.Params.CohortIds.Value)
-            {
-                <input type="hidden" name="cohortIds" value="@cohortId" />
-            }
-        }
+
         @if (Model.Params.SearchQueries.Value != null)
         {
             @foreach (var search in Model.Params.SearchQueries.Value)

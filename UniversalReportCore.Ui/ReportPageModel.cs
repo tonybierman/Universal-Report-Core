@@ -179,6 +179,7 @@ namespace UniversalReportCore.Ui.Pages
             HasFiltersAvailable = pageHelper.HasFilters(ReportColumns);
 
             // Set the sort order
+            // TODO: This is problematic
             Params.SortOrder = new HardenedColumnSort(Params.SortOrder.Value ?? pageHelper.DefaultSort);
             if (!(Params.SortOrder.CheckSanity() && Params.SortOrder.Validate(ReportColumns)))
             {

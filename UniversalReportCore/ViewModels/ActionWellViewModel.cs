@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.ViewModels
 {
@@ -15,5 +16,9 @@ namespace UniversalReportCore.ViewModels
         }
 
         public List<SubPartialViewModel> SubPartials { get; set; }
+
+        public IReportQueryParams Params { get; set; }
+
+        public string? CurrentSort { get; set; }
     }
 }

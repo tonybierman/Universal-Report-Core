@@ -5,6 +5,21 @@
 @addTagHelper *, UniversalReportCore.Ui
 
 <form method="get">
+
+    <!-- Preserve Other Query Parameters -->
+    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
+    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="pi" value="@Model.Params.Pi.Value" />
+
+    @if (Model.Params.CohortIds.Value != null)
+    {
+        @foreach (var cohortId in Model.Params.CohortIds.Value)
+        {
+            <input type="hidden" name="cohortIds" value="@cohortId" />
+        }
+    }
+
     <span class="d-inline-flex align-items-center me-2 mb-2" role="toolbar" aria-label="Action Well Toolbar">
         <span class="btn-group btn-group-sm" role="group" aria-label="Action Well Group 1">
             @foreach (var item in Model.SubPartials)

@@ -21,7 +21,14 @@
         },
         new SubPartialViewModel
         {
-            PartialName = "_SearchActionWellPartial"
+            PartialName = "_SearchActionWellPartial",
+            Data= new SearchViewModel
+            {
+                Params = Model.Params,
+                CurrentSort = Model.CurrentSort,
+                ReportColumns = Model.ReportColumns.ToArray(),
+                FilterOptions = Model.FilterOptions,
+            }
         }
     };
 

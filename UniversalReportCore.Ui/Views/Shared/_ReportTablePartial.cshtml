@@ -5,6 +5,11 @@
 @model ReportPageModel
 @addTagHelper *, UniversalReportCore.Ui
 
+@{
+    Model.ActionWell.Params = Model.Params;
+    Model.ActionWell.CurrentSort = Model.CurrentSort;
+}
+
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
 
 <div class="container mt-4">

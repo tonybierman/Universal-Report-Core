@@ -8,20 +8,14 @@
 }
 @if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
 {
-    <!-- Preserve Other Query Parameters -->
-    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
-    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-    <input type="hidden" name="pi" value="@Model.Params.Pi" />
 
-    @if (Model.Params.CohortIds.Value != null)
+    @if (Model.Params.SearchQueries.Value != null)
     {
-        @foreach (var cohortId in Model.Params.CohortIds.Value)
+        @foreach (var search in Model.Params.SearchQueries.Value)
         {
-            <input type="hidden" name="cohortIds" value="@cohortId" />
+            <input type="hidden" name=@($"query{search.Key}") value=@($"{search.Value}") />
         }
     }
-
     <button type="submit" class="btn btn-secondary d-flex align-items-center">
         @Html.Raw(Model.ClearFilterButtonHtml)
     </button>
