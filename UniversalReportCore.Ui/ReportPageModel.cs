@@ -50,6 +50,8 @@ namespace UniversalReportCore.Ui.Pages
         public string? SelectedFilter { get; set; }
         public bool HasFiltersAvailable { get; set; }
         public ActionWellViewModel ActionWell { get; set; }
+        public string? SearchCssClasses { get;set; }
+        public string? ActionWellCssClasses { get;set; }
         public ReportPageModel(
             ILogger<ReportPageModel> logger,
             IMapper mapper,

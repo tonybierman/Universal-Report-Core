@@ -7,6 +7,8 @@
 @{
     ViewData["Title"] = $"{Model.PageMeta.Title} {Model.PageMeta.Subtitle}";
 
+    Model.SearchCssClasses = "bg-light rounded";
+
     List<SubPartialViewModel> partials = new List<SubPartialViewModel>
     {
         new SubPartialViewModel

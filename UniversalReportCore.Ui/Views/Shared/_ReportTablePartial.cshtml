@@ -14,17 +14,22 @@
 
 <div class="container mt-4">
 
-    @await Html.PartialAsync("_ActionWellPartial", Model.ActionWell)
+    <div class="@(Model.ActionWellCssClasses)">
+        @await Html.PartialAsync("_ActionWellPartial", Model.ActionWell)
+    </div>
 
     @if (Model.Items != null && Model.Items.Any())
     {
-        @await Html.PartialAsync("_SearchPartial", new SearchViewModel
-        {
-            Params = Model.Params,
-            CurrentSort = Model.CurrentSort,
-            ReportColumns = Model.ReportColumns.ToArray(),
-            FilterOptions = Model.FilterOptions
-        })
+        <div class="@(Model.SearchCssClasses)">
+            @await Html.PartialAsync("_SearchPartial", new SearchViewModel
+            {
+                Params = Model.Params,
+                CurrentSort = Model.CurrentSort,
+                ReportColumns = Model.ReportColumns.ToArray(),
+                FilterOptions = Model.FilterOptions
+            })
+        </div>
+
 
         <table class="table vertical-borders table-striped mt-3">
             <thead>

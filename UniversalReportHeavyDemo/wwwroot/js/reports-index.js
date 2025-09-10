@@ -23,6 +23,6 @@
     }
 
     // Apply to both filter and search
-    //manageAccordionState("collapseFilter", "accordionFilterState");
-    manageAccordionState("collapseSearch", "accordionSearchState");
+    manageAccordionState("collapseFilter", "accordionFilterState");
+    //manageAccordionState("collapseSearch", "accordionSearchState");
 });
