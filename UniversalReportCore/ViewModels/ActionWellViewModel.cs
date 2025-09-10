@@ -20,5 +20,7 @@ namespace UniversalReportCore.ViewModels
         public IReportQueryParams Params { get; set; }
 
         public string? CurrentSort { get; set; }
+
+        public string? ResetFiltersButtonHtml { get; set; } = "Reset";
     }
 }

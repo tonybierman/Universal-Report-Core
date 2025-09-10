@@ -17,5 +17,7 @@ namespace UniversalReportCore.Ui.ViewModels
         public IReportQueryParams Params { get; set; }
 
         public string? CurrentSort { get; set; }
+
+        public string? ApplySearchButtonHtml { get; set; } = "Apply";
     }
 }
