@@ -18,17 +18,6 @@
                 Params = Model.Params,
                 CurrentSort = Model.CurrentSort
             }
-        },
-        new SubPartialViewModel
-        {
-            PartialName = "_SearchActionWellPartial",
-            Data= new SearchViewModel
-            {
-                Params = Model.Params,
-                CurrentSort = Model.CurrentSort,
-                ReportColumns = Model.ReportColumns.ToArray(),
-                FilterOptions = Model.FilterOptions,
-            }
         }
     };
 
@@ -36,7 +25,3 @@
 }
 
 @await Html.PartialAsync("_ReportTablePartial", Model)
-
-@section Scripts {
-    <script src="~/js/reports-index.js"></script>
-}

@@ -63,8 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Restore states
     restoreAccordionState("collapseFilter", "accordionFilterState");
     restoreAccordionState("collapseChart", "accordionChartState");
+    restoreAccordionState("collapseSearch", "accordionSearchState");
 
     // Track state changes
     trackAccordionState("collapseFilter", "accordionFilterState");
     trackAccordionState("collapseChart", "accordionChartState");
+    trackAccordionState("collapseSearch", "accordionSearchState");
 });

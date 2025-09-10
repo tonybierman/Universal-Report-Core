@@ -48,7 +48,7 @@ namespace UniversalReportCore.Ui
             var sb = new StringBuilder();
             sb.Append("<th>");
             sb.Append("<div class=\"dropdown\">");
-            sb.Append($"<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton{Column.PropertyName}\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">");
+            sb.Append($"<button class=\"btn btn-secondary btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton{Column.PropertyName}\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">");
             sb.Append($"{DisplayText}");
             sb.Append("</button>");
 

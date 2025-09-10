@@ -2,7 +2,7 @@
 
 @if (Model.ShowFilterButton)
 {
-    <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+    <button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch,#collapseFilter" aria-expanded="false" aria-controls="collapseSearch,collapseFilter">
         @Html.Raw(Model.FilterButtonHtml)
     </button>
 }
