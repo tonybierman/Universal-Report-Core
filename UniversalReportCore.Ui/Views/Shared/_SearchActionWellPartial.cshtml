@@ -1,18 +1,3 @@
 ﻿<button class="btn btn-primary d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-    Search
+    @Html.Raw("Advanced Search")
 </button>
-
-@if (Model?.Params?.SearchQueries?.Value != null && Model.Params.SearchQueries.Value.Count > 0)
-{
-    @if (Model.Params.FilterKeys.Value != null)
-    {
-        @foreach (var filterKey in Model.Params.FilterKeys.Value)
-        {
-            <input type="hidden" name="filters" value="@filterKey" />
-        }
-    }
-
-    <button type="submit" class="btn btn-secondary d-flex align-items-center">
-        @Html.Raw("Clear Search")
-    </button>
-}

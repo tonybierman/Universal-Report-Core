@@ -6,17 +6,3 @@
         @Html.Raw(Model.FilterButtonHtml)
     </button>
 }
-@if (Model.Params.FilterKeys.Value != null && Model.Params.FilterKeys.Value.Length > 0)
-{
-
-    @if (Model.Params.SearchQueries.Value != null)
-    {
-        @foreach (var search in Model.Params.SearchQueries.Value)
-        {
-            <input type="hidden" name=@($"query{search.Key}") value=@($"{search.Value}") />
-        }
-    }
-    <button type="submit" class="btn btn-secondary d-flex align-items-center">
-        @Html.Raw(Model.ClearFilterButtonHtml)
-    </button>
-}
