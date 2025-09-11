@@ -26,7 +26,7 @@
             }
         }
 
-        @foreach (var column in Model.ReportColumns.Where(a => a.PropertyName != null))
+        @foreach (var column in Model.ReportColumns.Where(a => a.PropertyName != null && a.IsSearchable))
         {
             KeyValuePair<string, string>? search = null;
             @if (Model.Params.SearchQueries.Value != null)

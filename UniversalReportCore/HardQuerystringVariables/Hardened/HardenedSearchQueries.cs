@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using UniversalReportCore.Helpers;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
@@ -11,25 +12,21 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
             Value = searchDict;
         }
 
-        public bool Validate()
+        public bool Validate(List<IReportColumnDefinition> reportColumns)
         {
-            if (Value == null)
-            {
-                IsValid = true;
-                return IsValid;
-            }
+            if (Value == null) return true;
 
             foreach (var pair in Value)
             {
-                if (!IsSafeQueryString(pair.Key) || !IsSafeQueryString(pair.Value))
+                if (!IsSafeQueryString(pair.Key) || !IsSafeQueryString(pair.Value) ||
+                    !reportColumns.Any(c => c.IsSearchable && c.PropertyName == pair.Key))
                 {
                     IsValid = false;
-                    return IsValid;
+                    return false;
                 }
             }
-
             IsValid = true;
-            return IsValid;
+            return true;
         }
     }
 }

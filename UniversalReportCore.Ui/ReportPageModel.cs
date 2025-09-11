@@ -215,8 +215,8 @@ namespace UniversalReportCore.Ui.Pages
             if (Params.SearchQueries.Value != null && Params.SearchQueries.Value.Any())
             {
                 // TODO: Re-enable search validation after implementing a more robust solution.
-                //if (!Params.SearchQueries.Validate())
-                //    return StatusCode(422); // "Invalid search."
+                if (!Params.SearchQueries.Validate(ReportColumns))
+                    return StatusCode(422); // "Invalid search."
 
                 List<TextFilter> textFilters = new();
                 foreach (var filter in Params.SearchQueries.Value)

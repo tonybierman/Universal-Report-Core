@@ -16,6 +16,7 @@ namespace UniversalReportCore
         public string? Description { get; set; }
         public bool IsDisplayKey { get; set; }
         public bool IsSortable { get; set; }
+        public bool IsSearchable { get; set; } = true;
         public string? DefaultSort { get; set; }
         public string? CssClass { get; set; }
         public bool IsSortDescending { get; set; }

@@ -48,6 +48,7 @@ namespace UniversalReportHeavyDemo.Reports.CityPop
                     DisplayName = "Population",
                     PropertyName = "Value",
                     IsSortable = true,
+                    IsSearchable = false,
                     Aggregation = AggregationType.Sum
                 }
             };
