@@ -75,5 +75,6 @@ namespace UniversalReportCore.Tests
         public Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IFieldFormatter FieldFormatter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string? Description { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsSearchable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
