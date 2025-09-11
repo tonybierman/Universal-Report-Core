@@ -4,6 +4,8 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
     public class HardenedSearchQueries : HardenedVariable<Dictionary<string, string>?>
     {
+        public HardenedSearchQueries() { }
+
         public HardenedSearchQueries(Dictionary<string, string> searchDict)
         {
             Value = searchDict;

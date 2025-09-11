@@ -44,7 +44,8 @@ namespace UniversalReportCore.Tests
                 sortOrder: new HardenedColumnSort("asc"),
                 cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
                 slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key2" })
+                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key2" }),
+                searchQueries: new HardenedSearchQueries(null)
             );
 
             // Act
@@ -74,7 +75,8 @@ namespace UniversalReportCore.Tests
                 sortOrder: new HardenedColumnSort("asc"),
                 cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
                 slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key2" })
+                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key2" }),
+                searchQueries: new HardenedSearchQueries(null)
             );
             viewModel.Params = queryParams;
 
@@ -94,7 +96,8 @@ namespace UniversalReportCore.Tests
                 sortOrder: new HardenedColumnSort("asc"),
                 cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
                 slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key3" })
+                filterKeys: new HardenedFilterKeys(new string[] { "key1", "key3" }),
+                searchQueries: new HardenedSearchQueries(null)
             );
             viewModel.Params = queryParams;
             var filterProvider = new MockFilterProvider(new Dictionary<string, string[]>
@@ -119,7 +122,8 @@ namespace UniversalReportCore.Tests
                 sortOrder: new HardenedColumnSort("asc"),
                 cohortIds: new HardenedCohortIdentifiers(new int[] { 1, 2, 3 }),
                 slug: new HardenedReportSlug("report-slug"),
-                filterKeys: new HardenedFilterKeys(null)
+                filterKeys: new HardenedFilterKeys(null),
+                searchQueries: new HardenedSearchQueries(null)
             );
             viewModel.Params = queryParams;
             var filterProvider = new MockFilterProvider(new Dictionary<string, string[]>());

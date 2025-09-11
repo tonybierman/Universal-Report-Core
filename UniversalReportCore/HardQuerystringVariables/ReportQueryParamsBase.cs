@@ -71,7 +71,7 @@ namespace UniversalReportCore.HardQuerystringVariables
             HardenedCohortIdentifiers cohortIds,
             HardenedReportSlug slug,
             HardenedFilterKeys filterKeys,
-            HardenedSearchQueries hardenedSearchQueries)
+            HardenedSearchQueries searchQueries)
         {
             Pi = pi;
             Ipp = ipp;
@@ -79,7 +79,7 @@ namespace UniversalReportCore.HardQuerystringVariables
             CohortIds = cohortIds;
             Slug = slug;
             FilterKeys = filterKeys;
-            SearchQueries = hardenedSearchQueries;
+            SearchQueries = searchQueries;
         }
 
         /// <summary>

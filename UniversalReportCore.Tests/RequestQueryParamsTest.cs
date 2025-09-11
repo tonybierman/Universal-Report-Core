@@ -47,7 +47,9 @@ namespace UniversalReportCore.Tests
                 MockVariable<HardenedColumnSort>(isHard, isSane, checkSanity),
                 MockVariable<HardenedCohortIdentifiers>(isHard, isSane, checkSanity),
                 MockVariable<HardenedReportSlug>(isHard, isSane, checkSanity),
-                MockVariable<HardenedFilterKeys>(isHard, isSane, checkSanity)
+                MockVariable<HardenedFilterKeys>(isHard, isSane, checkSanity),
+                MockVariable<HardenedSearchQueries>(isHard, isSane, checkSanity)
+
             );
         }
 
