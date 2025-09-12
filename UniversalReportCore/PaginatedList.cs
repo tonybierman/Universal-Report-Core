@@ -13,6 +13,8 @@ namespace UniversalReportCore
     /// <typeparam name="T">The type of items in the paginated list.</typeparam>
     public class PaginatedList<T> : List<T>, IPaginatedList
     {
+        public Type EntityViewModelType => typeof(T);
+
         // Current page index
         public int PageIndex { get; private set; }
 

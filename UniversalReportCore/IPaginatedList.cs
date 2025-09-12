@@ -4,6 +4,7 @@
 
     public interface IPaginatedList : IEnumerable
     {
+        Type EntityViewModelType { get; }
         Dictionary<string, dynamic>? Aggregates { get; }
         string DisplayMessage { get; }
         int EndItem { get; }

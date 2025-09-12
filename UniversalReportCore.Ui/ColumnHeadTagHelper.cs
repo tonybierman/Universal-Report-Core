@@ -58,7 +58,7 @@ namespace UniversalReportCore.Ui
             output.Attributes.SetAttribute("class", $"text-left {(Column.HideInPortrait ? "hide-in-portrait" : "")}");
 
             // Display attribute for display name if available
-            string? displayName = (Column?.PropertyName ?? Column?.ViewModelName) is string displayNamePropertyName
+            string? displayName = (Column?.PropertyName ?? Column?.ViewModelPropertyName) is string displayNamePropertyName
                 ? ViewModel?.GetType().GetProperty(displayNamePropertyName)?.GetCustomAttribute<DisplayAttribute>()?.Name ?? null
                 : null;
 
@@ -66,7 +66,7 @@ namespace UniversalReportCore.Ui
             string? toolTip = Column.Description;
             if (toolTip == null)
             {
-                toolTip = (Column?.PropertyName ?? Column?.ViewModelName) is string propertyName
+                toolTip = (Column?.PropertyName ?? Column?.ViewModelPropertyName) is string propertyName
                     ? ViewModel?.GetType().GetProperty(propertyName)?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? null
                     : null;
             }
@@ -92,7 +92,7 @@ namespace UniversalReportCore.Ui
 
                 var linkTag = new TagBuilder("a");
                 linkTag.Attributes["href"] = url;
-                linkTag.InnerHtml.Append(Column.DisplayName ?? displayName ?? Column.ViewModelName ?? Column.PropertyName);
+                linkTag.InnerHtml.Append(Column.DisplayName ?? displayName ?? Column.ViewModelPropertyName ?? Column.PropertyName);
 
                 output.Content.AppendHtml(linkTag);
 
@@ -109,7 +109,7 @@ namespace UniversalReportCore.Ui
             else
             {
                 // Just render the column display name if it's not sortable
-                output.Content.Append(Column.DisplayName ?? displayName ?? Column.ViewModelName ?? Column.PropertyName);
+                output.Content.Append(Column.DisplayName ?? displayName ?? Column.ViewModelPropertyName ?? Column.PropertyName);
             }
         }
     }

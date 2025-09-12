@@ -21,8 +21,9 @@
     @if (Model.Items != null && Model.Items.Any())
     {
         <div class="@(Model.SearchCssClasses)">
-            @await Html.PartialAsync("_SearchPartial", new SearchViewModel
+            @await Html.PartialAsync("_SearchPartial", new SearchViewModel()
             {
+                EntityViewModelType = Model.Items?.EntityViewModelType,
                 Params = Model.Params,
                 CurrentSort = Model.CurrentSort,
                 ReportColumns = Model.ReportColumns.ToArray(),

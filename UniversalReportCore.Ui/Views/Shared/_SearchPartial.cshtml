@@ -28,6 +28,18 @@
 
         @foreach (var column in Model.ReportColumns.Where(a => a.PropertyName != null && a.IsSearchable))
         {
+            // Only strings are searchable.  Check sure if the underlying property is a string
+            // TODO: Consider adding support other types like int, DateTime, etc.
+            var property = Model.EntityViewModelType != null && column.PropertyName != null ? Model.EntityViewModelType.GetProperty(column.PropertyName) : null;
+            if(property == null)
+            {
+                property = Model.EntityViewModelType != null && column.ViewModelPropertyName != null ? Model.EntityViewModelType.GetProperty(column.ViewModelPropertyName) : null;
+            }
+            if (property == null || property.PropertyType != typeof(string))
+            {
+                continue; // Skip non-string properties
+            }
+
             KeyValuePair<string, string>? search = null;
             @if (Model.Params.SearchQueries.Value != null)
             {

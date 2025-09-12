@@ -58,9 +58,9 @@ namespace UniversalReportCore.Ui
                 {
                     fieldVal = item.GetType().GetProperty(column.PropertyName)?.GetValue(item);
                 }
-                if (fieldVal == null && !string.IsNullOrEmpty(column.ViewModelName))
+                if (fieldVal == null && !string.IsNullOrEmpty(column.ViewModelPropertyName))
                 {
-                    fieldVal = item.GetType().GetProperty(column.ViewModelName)?.GetValue(item);
+                    fieldVal = item.GetType().GetProperty(column.ViewModelPropertyName)?.GetValue(item);
                 }
 
                 // Right-align null or numeric values
@@ -90,7 +90,7 @@ namespace UniversalReportCore.Ui
             output.Attributes.Add("style", "white-space: nowrap;");
 
             // Determine the correct ViewModel type or default to EntityFieldViewModel
-            Type viewModelType = Column.ViewModelType ?? typeof(EntityFieldViewModel);
+            Type viewModelType = Column.ColumnViewModelType ?? typeof(EntityFieldViewModel);
 
             // Use Activator.CreateInstance to dynamically instantiate the ViewModel
             object viewModelInstance;

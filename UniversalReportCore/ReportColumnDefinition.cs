@@ -12,7 +12,7 @@ namespace UniversalReportCore
 
         public string DisplayName { get; set; } = default!;
         public string PropertyName { get; set; } = default!;
-        public string? ViewModelName { get; set; }
+        public string? ViewModelPropertyName { get; set; }
         public string? Description { get; set; }
         public bool IsDisplayKey { get; set; }
         public bool IsSortable { get; set; }
@@ -23,7 +23,7 @@ namespace UniversalReportCore
         public string? RenderPartial { get; set; }
         public bool HideInPortrait { get; set; }
         public AggregationType Aggregation { get; set; }
-        public Type? ViewModelType { get; set; }
+        public Type? ColumnViewModelType { get; set; }
         public Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get; set; }
         public IFieldFormatter FieldFormatter { get; set; } = default!;
     }

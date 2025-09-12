@@ -35,7 +35,7 @@ namespace UniversalReportCore.Ui.ViewModels
         {
             Item = item;
             ColumnDefinition = column;
-            PropertyName = column.ViewModelName ?? column.PropertyName;
+            PropertyName = column.ViewModelPropertyName ?? column.PropertyName;
         }
 
         /// <summary>

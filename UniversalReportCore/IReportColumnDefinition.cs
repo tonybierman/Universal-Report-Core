@@ -14,11 +14,11 @@ namespace UniversalReportCore
         string? CssClass { get; set; }
         bool IsSortDescending { get; set; }
         string PropertyName { get; set; }
-        string ViewModelName { get; set; }
+        string ViewModelPropertyName { get; set; }
         string? RenderPartial { get; set; }
         bool HideInPortrait { get; set; }
         AggregationType Aggregation { get; set; }
-        Type? ViewModelType { get; }
+        Type? ColumnViewModelType { get; }
         Func<BaseEntityViewModel, Type?, PropertyInfo?, object>? ValueSelector { get; set; }
         public IFieldFormatter FieldFormatter { get; set; }
     }
