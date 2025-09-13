@@ -3,15 +3,35 @@
 @{
     var prevDisabled = !@Model.Items.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !@Model.Items.HasNextPage ? "disabled" : "";
+    var prevRouteValues = new Dictionary<string, object?>
+    {
+        { "slug", Model.Params.Slug.Value },
+        { "ipp", Model.Params.Ipp.Value },
+        { "sortOrder", Model.CurrentSort },
+        { "pi", Model.Items.PageIndex - 1 },
+        { "cohortIds", Model.Params.CohortIds.Value },
+        { "filters", Model.Params.FilterKeys.Value }
+    };
+    var nextRouteValues = new Dictionary<string, object?>
+    {
+        { "slug", Model.Params.Slug.Value },
+        { "ipp", Model.Params.Ipp.Value },
+        { "sortOrder", Model.CurrentSort },
+        { "pi", Model.Items.PageIndex + 1 },
+        { "cohortIds", Model.Params.CohortIds.Value },
+        { "filters", Model.Params.FilterKeys.Value }
+    };
+    foreach (var search in Model.Params.SearchQueries.Value)
+    {
+        prevRouteValues.Add($"query{search.Key}", search.Value);
+        nextRouteValues.Add($"query{search.Key}", search.Value);
+    }
 }
 <div class="mt-2">
-    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex - 1, cohortIds = Model.Params.CohortIds.Value, filters = Model.Params.FilterKeys.Value })"
-       class="btn btn-sm btn-primary @prevDisabled">
+    <a href="@Url.Page("/Reports/Index", prevRouteValues)" class="btn btn-sm btn-primary @prevDisabled">
         Previous
     </a>
-
-    <a href="@Url.Page("/Reports/Index", new { slug = Model.Params.Slug.Value, ipp=Model.Params.Ipp.Value, sortOrder = Model.CurrentSort, pi = Model.Items.PageIndex + 1, cohortIds = Model.Params.CohortIds.Value, filters = Model.Params.FilterKeys.Value })"
-       class="btn btn-sm btn-primary @nextDisabled">
+    <a href="@Url.Page("/Reports/Index", nextRouteValues)" class="btn btn-sm btn-primary @nextDisabled">
         Next
     </a>
 </div>
