@@ -18,4 +18,18 @@
     {
         <input type="hidden" name="cohortIds" value="@cohortId" />
     }
+    @if (Model.Params.SearchQueries.Value != null)
+    {
+        @foreach (var search in Model.Params.SearchQueries.Value)
+        {
+            <input type="hidden" name=@($"query{search.Key}") value=@($"{search.Value}") />
+        }
+    }
+    @if (Model.Params.FilterKeys.Value != null)
+    {
+        @foreach (var filterKey in Model.Params.FilterKeys.Value)
+        {
+            <input type="hidden" name="filters" value="@filterKey" />
+        }
+    }
 </form>
