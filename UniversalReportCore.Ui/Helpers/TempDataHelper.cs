@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Json;
 
 namespace UniversalReportCore.Ui.Helpers
@@ -8,9 +9,9 @@ namespace UniversalReportCore.Ui.Helpers
         /// <summary>
         /// Determines if aggregates need to be recalculated by tracking changes in slug and cohort IDs.
         /// </summary>
-        public static bool ShouldRecalculateAggregates(ITempDataDictionary tempData, string slug, int[]? cohortIds, string[]? filterKeys)
+        public static bool ShouldRecalculateAggregates(ITempDataDictionary tempData, string slug, int[]? cohortIds, string[]? filterKeys, Dictionary<string, string>.ValueCollection? values)
         {
-            var parametersSnapshot = new { Slug = slug, CohortIds = cohortIds, FilterKeys = filterKeys };
+            var parametersSnapshot = new { Slug = slug, CohortIds = cohortIds, FilterKeys = filterKeys, Searches = values };
             var newJson = JsonSerializer.Serialize(parametersSnapshot);
 
             var existingJson = tempData["QueryParameters"] as string;

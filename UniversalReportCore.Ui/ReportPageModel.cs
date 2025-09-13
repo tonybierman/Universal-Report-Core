@@ -233,7 +233,7 @@ namespace UniversalReportCore.Ui.Pages
             if (!Params.FilterKeys.Validate(pageHelper.FilterProvider))
                 return StatusCode(422); // "Invalid filter provider key"
             //parameters.FilterKeys = Params.FilterKeys.Value;
-            parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value, Params.FilterKeys.Value);
+            parameters.ShouldAggregate = TempDataHelper.ShouldRecalculateAggregates(TempData, slug, Params.CohortIds.Value, Params.FilterKeys.Value, Params.SearchQueries?.Value?.Values);
 
             int totalCount = parameters.ShouldAggregate ? 0 : (TempData["TotalCount"] as int?) ?? 0;
 
