@@ -24,9 +24,11 @@ namespace UniversalReportCore.PagedQueries
             string? sort,
             int? ipp,
             int[]? cohortIds,
+            TextFilter[]? searchFilters,
             FilterConfig<T>? filterConfig)
         {
             var result = new PipelineResult<T>(query);
+            result.SearchFilters = searchFilters;
             foreach (var stage in _stages)
             {
                 result = await stage.ExecuteAsync(result);

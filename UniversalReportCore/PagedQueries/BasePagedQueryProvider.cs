@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
+using UniversalReportCore.Services.QueryPipeline;
 
 namespace UniversalReportCore.PagedQueries
 {
@@ -130,18 +133,22 @@ namespace UniversalReportCore.PagedQueries
             IQueryable<T>? reportQuery = null)
         {
             var pipeline = new QueryPipeline<T>()
+                .AddStage(new SearchFilterStep<T>())
                 .AddStage(new UserFilterStage<T>(EnsureUserFiltersPredicate))
                 .AddStage(new CohortAggregateStage<T>(preQueryArgs.Columns, preQueryArgs.CohortIds, filterConfig, ComputeAggregates, EnsureCohortPredicate, EnsureAggregatePredicate))
                 .AddStage(new MetadataStage<T>(EnsureMeta));
 
             var query = reportQuery ?? EnsureReportQuery() ?? throw new InvalidOperationException("No query provided");
 
+            //query = ApplySearchFilters(query, preQueryArgs.SearchFilters);
+
             return pipeline.ExecuteAsync(query, 
                 preQueryArgs.Columns, 
                 preQueryArgs.PageIndex, 
                 preQueryArgs.Sort, 
                 preQueryArgs.Ipp, 
-                preQueryArgs.CohortIds, 
+                preQueryArgs.CohortIds,
+                preQueryArgs.SearchFilters,
                 filterConfig).Result;
         }
     }

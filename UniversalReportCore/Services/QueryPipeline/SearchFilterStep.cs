@@ -8,15 +8,15 @@ using UniversalReportCore.PagedQueries;
 
 namespace UniversalReportCore.Services.QueryPipeline
 {
-    public class SearchFilterStep<TEntity> : IQueryPipelineStep<TEntity> where TEntity : class
+    public class SearchFilterStep<TEntity> : IPipelineStage<TEntity>, IQueryPipelineStep<TEntity> where TEntity : class
     {
-        public IQueryable<TEntity> Execute(IQueryable<TEntity> query, PagedQueryParameters<TEntity> parameters)
+        public IQueryable<TEntity> ApplySearchFilters(IQueryable<TEntity> query, TextFilter[]? searchFilters)
         {
             // Check if search filters exist and are not empty
-            if (parameters.SearchFilters != null && parameters.SearchFilters.Any())
+            if (searchFilters != null && searchFilters.Any())
             {
                 // Group filters by PropertyName for OR logic within same property
-                var groups = parameters.SearchFilters
+                var groups = searchFilters
                     .Where(f => !string.IsNullOrEmpty(f.Value))
                     .GroupBy(f => f.PropertyName)
                     .ToList();
@@ -74,6 +74,18 @@ namespace UniversalReportCore.Services.QueryPipeline
             }
             // Return filtered or original query
             return query;
+        }
+
+        public IQueryable<TEntity> Execute(IQueryable<TEntity> query, PagedQueryParameters<TEntity> parameters)
+        {
+            return ApplySearchFilters(query, parameters.SearchFilters);
+        }
+
+        public Task<PipelineResult<TEntity>> ExecuteAsync(PipelineResult<TEntity> input)
+        {
+            input.Query = ApplySearchFilters(input.Query, input.SearchFilters); // Returns 
+            
+            return Task.FromResult(input);
         }
     }
 }
