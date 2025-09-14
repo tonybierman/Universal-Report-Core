@@ -45,7 +45,7 @@ namespace UniversalReportCore.Tests
                 .AddStage(new MetadataStage<PipelineTestEntity>(_mockEnsureMeta.Object));
 
             // Act
-            var result = await pipeline.ExecuteAsync(_mockQuery.Object, _columns, 1, "name", 10, null, null);
+            var result = await pipeline.ExecuteAsync(_mockQuery.Object, _columns, 1, "name", 10, null, null, null);
 
             // Assert
             Assert.NotNull(result);
@@ -94,7 +94,7 @@ namespace UniversalReportCore.Tests
                     (q, i) => q))
                 .AddStage(new MetadataStage<PipelineTestEntity>(q => Task.FromResult(new Dictionary<string, dynamic>())));
             var query = reportQuery ?? throw new InvalidOperationException("No query provided");
-            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, filterConfig).Result;
+            return pipeline.ExecuteAsync(query, columns, pageIndex, sort, ipp, cohortIds, null, filterConfig).Result;
         }
     }
 }

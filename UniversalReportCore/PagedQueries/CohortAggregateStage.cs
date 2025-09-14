@@ -70,7 +70,7 @@ namespace UniversalReportCore.PagedQueries
                 }
             }
 
-            return new PipelineResult<T>(query1, aggregates, input.Metadata);
+            return new PipelineResult<T>(query1, input.SearchFilters, aggregates, input.Metadata);
         }
     }
 }

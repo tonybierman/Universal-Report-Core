@@ -20,7 +20,7 @@ namespace UniversalReportCore.PagedQueries
         public Task<PipelineResult<T>> ExecuteAsync(PipelineResult<T> input)
         {
             var filteredQuery = _filterPredicate(input.Query);
-            return Task.FromResult(new PipelineResult<T>(filteredQuery, input.Aggregates, input.Metadata));
+            return Task.FromResult(new PipelineResult<T>(filteredQuery, input.SearchFilters, input.Aggregates, input.Metadata));
         }
     }
 }

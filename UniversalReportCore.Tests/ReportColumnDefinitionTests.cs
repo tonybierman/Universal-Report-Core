@@ -13,7 +13,7 @@ namespace UniversalReportCore.Tests
 
             Assert.Null(column.DisplayName);
             Assert.Null(column.PropertyName);
-            Assert.Null(column.ViewModelName);
+            Assert.Null(column.ViewModelPropertyName);
             Assert.False(column.IsDisplayKey);
             Assert.False(column.IsSortable);
             Assert.Null(column.DefaultSort);
@@ -31,7 +31,7 @@ namespace UniversalReportCore.Tests
             {
                 DisplayName = "Test Column",
                 PropertyName = "TestProperty",
-                ViewModelName = "TestViewModel",
+                ViewModelPropertyName = "TestViewModelProperty",
                 IsDisplayKey = true,
                 IsSortable = true,
                 DefaultSort = "asc",
@@ -44,7 +44,7 @@ namespace UniversalReportCore.Tests
 
             Assert.Equal("Test Column", column.DisplayName);
             Assert.Equal("TestProperty", column.PropertyName);
-            Assert.Equal("TestViewModel", column.ViewModelName);
+            Assert.Equal("TestViewModelProperty", column.ViewModelPropertyName);
             Assert.True(column.IsDisplayKey);
             Assert.True(column.IsSortable);
             Assert.Equal("asc", column.DefaultSort);
@@ -62,7 +62,7 @@ namespace UniversalReportCore.Tests
             {
                 DisplayName = null,
                 PropertyName = null,
-                ViewModelName = null,
+                ViewModelPropertyName = null,
                 DefaultSort = null,
                 CssClass = null,
                 RenderPartial = null
@@ -70,7 +70,7 @@ namespace UniversalReportCore.Tests
 
             Assert.Null(column.DisplayName);
             Assert.Null(column.PropertyName);
-            Assert.Null(column.ViewModelName);
+            Assert.Null(column.ViewModelPropertyName);
             Assert.Null(column.DefaultSort);
             Assert.Null(column.CssClass);
             Assert.Null(column.RenderPartial);

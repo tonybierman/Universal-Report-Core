@@ -76,5 +76,8 @@ namespace UniversalReportCore.Tests
         public IFieldFormatter FieldFormatter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string? Description { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsSearchable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ViewModelPropertyName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public Type? ColumnViewModelType => throw new NotImplementedException();
     }
 }

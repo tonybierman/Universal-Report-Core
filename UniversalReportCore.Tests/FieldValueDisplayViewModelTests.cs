@@ -19,7 +19,7 @@ namespace UniversalReportCore.Ui.ViewModels.Tests
             _mockItem = new Mock<BaseEntityViewModel>();
             _mockColumnDefinition = new Mock<IReportColumnDefinition>();
             _mockColumnDefinition.Setup(c => c.PropertyName).Returns("TestProperty");
-            _mockColumnDefinition.Setup(c => c.ViewModelName).Returns((string)null);
+            _mockColumnDefinition.Setup(c => c.ViewModelPropertyName).Returns((string)null);
             _viewModel = new FieldValueDisplayViewModel(_mockItem.Object, _mockColumnDefinition.Object);
         }
 
@@ -44,7 +44,7 @@ namespace UniversalReportCore.Ui.ViewModels.Tests
         [Fact]
         public void Constructor_SetsPropertyName_FromViewModelName_WhenNotNull()
         {
-            _mockColumnDefinition.Setup(c => c.ViewModelName).Returns("CustomName");
+            _mockColumnDefinition.Setup(c => c.ViewModelPropertyName).Returns("CustomName");
             var viewModel = new FieldValueDisplayViewModel(_mockItem.Object, _mockColumnDefinition.Object);
             Assert.Equal("CustomName", viewModel.PropertyName);
         }

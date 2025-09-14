@@ -20,7 +20,7 @@ namespace UniversalReportCore.PagedQueries
         public async Task<PipelineResult<T>> ExecuteAsync(PipelineResult<T> input)
         {
             var metadata = await _ensureMeta(input.Query);
-            return new PipelineResult<T>(input.Query, input.Aggregates, metadata);
+            return new PipelineResult<T>(input.Query, input.SearchFilters, input.Aggregates, metadata);
         }
     }
 }

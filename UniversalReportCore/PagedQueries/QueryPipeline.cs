@@ -27,7 +27,7 @@ namespace UniversalReportCore.PagedQueries
             TextFilter[]? searchFilters,
             FilterConfig<T>? filterConfig)
         {
-            var result = new PipelineResult<T>(query);
+            var result = new PipelineResult<T>(query, searchFilters);
             result.SearchFilters = searchFilters;
             foreach (var stage in _stages)
             {
