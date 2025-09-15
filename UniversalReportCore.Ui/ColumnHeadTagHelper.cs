@@ -77,18 +77,27 @@ namespace UniversalReportCore.Ui
             }
 
             // If the column is sortable, generate the <a> link
-            if (Column.IsSortable)
+            if (Column != null && Column.IsSortable)
             {
                 var newSortOrder = Column.IsSortDescending ? $"{Column.PropertyName}Asc" : $"{Column.PropertyName}Desc";
-
-                var url = urlHelper.Page(Page, new
+                var routeValues = new Dictionary<string, object?>
                 {
-                    slug = Model?.Slug.Value,
-                    ipp = Model?.Ipp.Value,
-                    sortOrder = newSortOrder,
-                    cohortIds = Model?.CohortIds.Value,
-                    filters = Model?.FilterKeys.Value
-                });
+                    { "slug", Model?.Slug.Value },
+                    { "ipp", Model?.Ipp.Value },
+                    { "sortOrder", newSortOrder },
+                    { "cohortIds", Model?.CohortIds.Value },
+                    { "filters", Model?.FilterKeys.Value }
+                };
+
+                if (Model != null && Model.SearchQueries != null && Model.SearchQueries.Value != null)
+                {
+                    foreach (var search in Model.SearchQueries.Value)
+                    {
+                        routeValues.Add($"query{search.Key}", search.Value);
+                    }
+                }
+
+                var url = urlHelper.Page(Page, routeValues);
 
                 var linkTag = new TagBuilder("a");
                 linkTag.Attributes["href"] = url;
@@ -109,7 +118,7 @@ namespace UniversalReportCore.Ui
             else
             {
                 // Just render the column display name if it's not sortable
-                output.Content.Append(Column.DisplayName ?? displayName ?? Column.ViewModelPropertyName ?? Column.PropertyName);
+                output.Content.Append(Column?.DisplayName ?? displayName ?? Column?.ViewModelPropertyName ?? Column?.PropertyName);
             }
         }
     }
