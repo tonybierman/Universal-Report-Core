@@ -68,7 +68,7 @@ namespace UniversalReportCore.PageMetadata
         /// <returns>The name of the action well partial view associated with the specified slug, or <see langword="null"/> if no
         /// partial view is defined.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified <paramref name="slug"/>.</exception>
-        public ActionWellViewModel GetActionWell(string slug, IList<SubPartialViewModel> subPartials)
+        public ActionWellViewModel GetActionWell(string slug, List<SubPartialViewModel> subPartials)
         {
             var provider = _providers.FirstOrDefault(p => p.Slug == slug);
             if (provider == null)

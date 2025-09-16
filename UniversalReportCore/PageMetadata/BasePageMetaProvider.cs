@@ -14,7 +14,7 @@ namespace UniversalReportCore.PageMetadata
         public virtual string? CategorySlug => null;
         public virtual string? Description => null;
 
-        public ActionWellViewModel GetActionWell(IList<SubPartialViewModel> subPartials)
+        public virtual ActionWellViewModel GetActionWell(List<SubPartialViewModel> subPartials)
         {
             return new ActionWellViewModel(subPartials);
         }

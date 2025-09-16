@@ -14,6 +14,5 @@ namespace UniversalReportCore.PageMetadata
         public override string? Description => null;
 
         public virtual Dictionary<string, ChartMetaViewModel>? ChartMeta { get => null; }
-
     }
 }

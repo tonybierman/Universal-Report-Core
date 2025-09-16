@@ -131,7 +131,7 @@ namespace UniversalReportCore.Tests
         public ChartMetaViewModel? GetChartMeta() => null;
         public string? GetActionWellPartial() => null;
 
-        public ActionWellViewModel GetActionWell(IList<SubPartialViewModel> subPartials)
+        public ActionWellViewModel GetActionWell(List<SubPartialViewModel> subPartials)
         {
             throw new NotImplementedException();
         }
