@@ -5,7 +5,7 @@ using UniversalReportHeavyDemo.Reports;
 
 namespace UniversalReportHeavyDemo.Reports.CityPop
 {
-    public class CityPopDemoPageMetaProvider : BaseReportPageMetaProvider, IPageMetaProvider 
+    public class CityPopDemoPageMetaProvider : BaseReportPageMetaProvider, IPageMetaProvider
     {
         public string Slug => "CityPopDemo";
 

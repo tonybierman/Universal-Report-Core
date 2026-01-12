@@ -9,7 +9,7 @@ namespace UniversalReportHeavyDemo.Reports.Domain
 
         public PagedCityPopulationQueryProvider(ApplicationDbContext dbContext)
         {
-            _dbContext = dbContext;    
+            _dbContext = dbContext;
         }
 
         public override string Slug => throw new NotImplementedException();

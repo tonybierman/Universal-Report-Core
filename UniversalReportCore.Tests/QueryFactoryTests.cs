@@ -34,7 +34,7 @@ namespace UniversalReportCore.Tests
                 int? pageIndex,
                 string? sort,
                 int? ipp,
-                int[]? cohortIds, 
+                int[]? cohortIds,
                 IQueryable<Widget>? reportQuery)
             {
                 return new PagedQueryParameters<Widget>(columns, pageIndex, sort, ipp, cohortIds, null);

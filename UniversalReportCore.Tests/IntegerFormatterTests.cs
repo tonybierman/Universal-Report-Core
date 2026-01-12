@@ -39,9 +39,9 @@ namespace UniversalReportCore.Ui.ViewModels.Tests.FieldFormatting
         }
 
         [Fact]
-       
 
- public void CanHandle_NullWithLongType_ReturnsTrue()
+
+        public void CanHandle_NullWithLongType_ReturnsTrue()
         {
             var result = _formatter.CanHandle(null, typeof(long));
             Assert.True(result);

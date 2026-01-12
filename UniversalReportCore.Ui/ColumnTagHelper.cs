@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Policy;
 using UniversalReportCore;
+using UniversalReportCore.HardQuerystringVariables;
 using UniversalReportCore.Ui.ViewModels;
 using UniversalReportCore.ViewModels;
 
@@ -14,6 +15,9 @@ namespace UniversalReportCore.Ui
     {
         public IReportColumnDefinition Column { get; set; }
         public BaseEntityViewModel Item { get; set; }
+
+        public IReportQueryParams? Params { get; set; }
+        public string? CurrentSort { get; set; }
         public string Slug { get; set; }
 
         private readonly IHtmlHelper<dynamic> _htmlHelper;
@@ -96,7 +100,7 @@ namespace UniversalReportCore.Ui
             object viewModelInstance;
             try
             {
-                viewModelInstance = Activator.CreateInstance(viewModelType, Item, Column, Slug)!;
+                viewModelInstance = Activator.CreateInstance(viewModelType, Item, Column, Params, CurrentSort)!;
             }
             catch (MissingMethodException ex)
             {

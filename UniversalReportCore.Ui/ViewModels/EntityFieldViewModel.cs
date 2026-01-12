@@ -1,4 +1,6 @@
-﻿using UniversalReportCore.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using UniversalReportCore.HardQuerystringVariables;
+using UniversalReportCore.ViewModels;
 
 namespace UniversalReportCore.Ui.ViewModels
 {
@@ -17,22 +19,28 @@ namespace UniversalReportCore.Ui.ViewModels
         /// </summary>
         public IReportColumnDefinition Column { get; }
 
+        // Querystring Properties
+        public virtual IReportQueryParams? Params { get; set; }
+
         /// <summary>
-        /// Gets or sets the slug used for routing or identification.
+        /// Gets or sets the token used for sort order.
         /// </summary>
-        public string? Slug { get; set; }
+        public string? CurrentSort { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFieldViewModel"/> class.
         /// </summary>
         /// <param name="parent">The parent entity containing the field data.</param>
         /// <param name="column">The report column definition.</param>
-        /// <param name="slug">The slug used for routing or identification.</param>
-        public EntityFieldViewModel(IEntityViewModel<int> parent, IReportColumnDefinition column, string? slug)
+        /// <param name="queryParams">The query parameters used for routing or identification.</param>
+        /// <param name="currentSort">The token used for sort order.</param>
+        public EntityFieldViewModel(IEntityViewModel<int> parent, IReportColumnDefinition column, IReportQueryParams? queryParams, string? currentSort)
         {
             Parent = parent;
             Column = column;
-            Slug = slug;
+            Params = queryParams;
+            CurrentSort = currentSort;
         }
     }
 }

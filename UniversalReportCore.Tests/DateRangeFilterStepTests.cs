@@ -48,7 +48,7 @@ namespace UniversalReportCore.Tests
             };
 
             var result = step.Execute(_data, parameters).ToList();
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal(new DateTime(2025, 2, 1), result[0].CreatedAt);
         }
 

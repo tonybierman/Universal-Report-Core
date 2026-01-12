@@ -9,7 +9,7 @@ namespace UniversalReportHeavyDemo.Data
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             Debugger.Launch();
-            var lobConnectionString = "Server=127.0.0.1:3037;Database=UniversalReportDB;User=demo;Password=password;"; 
+            var lobConnectionString = "Server=127.0.0.1:3037;Database=UniversalReportDB;User=demo;Password=password;";
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseMySql(lobConnectionString, ServerVersion.AutoDetect(lobConnectionString));
 
