@@ -140,11 +140,11 @@ namespace UniversalReportCore.PagedQueries
 
             var query = reportQuery ?? EnsureReportQuery() ?? throw new InvalidOperationException("No query provided");
 
-            return pipeline.ExecuteAsync(query, 
-                preQueryArgs.Columns, 
-                preQueryArgs.PageIndex, 
-                preQueryArgs.Sort, 
-                preQueryArgs.Ipp, 
+            return pipeline.ExecuteAsync(query,
+                preQueryArgs.Columns,
+                preQueryArgs.PageIndex,
+                preQueryArgs.Sort,
+                preQueryArgs.Ipp,
                 preQueryArgs.CohortIds,
                 preQueryArgs.SearchFilters,
                 filterConfig).Result;

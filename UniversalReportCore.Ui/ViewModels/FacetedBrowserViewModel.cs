@@ -26,7 +26,7 @@ namespace UniversalReportCore.Ui.ViewModels
         public IReportQueryParams Params { get; set; }
 
         public bool ShowFilterButton { get; set; }
-        public string? FilterButtonHtml { get; set; }  = "Filters";
+        public string? FilterButtonHtml { get; set; } = "Filters";
 
         /// <summary>
         /// Gets or sets the sort order for the displayed data.

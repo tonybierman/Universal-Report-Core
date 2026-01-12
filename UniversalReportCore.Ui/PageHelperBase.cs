@@ -72,7 +72,7 @@ namespace UniversalReportCore.Ui
 
         protected virtual FilterConfig<TEntity>? EnsureFilterConfig(string[]? filterKeys)
         {
-            if(filterKeys == null || filterKeys.Length == 0)
+            if (filterKeys == null || filterKeys.Length == 0)
             {
                 // If no filter keys are provided, return null
                 return null;

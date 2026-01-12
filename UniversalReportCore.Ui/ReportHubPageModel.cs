@@ -17,7 +17,7 @@ namespace UniversalReportCore.Ui
 
         public List<ReportLinkViewModel> Reports { get; set; }
 
-        public ReportHubPageModel(IPageMetaFactory pageMetaFactory) 
+        public ReportHubPageModel(IPageMetaFactory pageMetaFactory)
         {
             _pageMetaFactory = pageMetaFactory;
         }

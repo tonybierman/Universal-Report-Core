@@ -84,7 +84,7 @@ namespace UniversalReportCore.Services.QueryPipeline
         public Task<PipelineResult<TEntity>> ExecuteAsync(PipelineResult<TEntity> input)
         {
             input.Query = ApplySearchFilters(input.Query, input.SearchFilters); // Returns 
-            
+
             return Task.FromResult(input);
         }
     }

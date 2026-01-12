@@ -110,7 +110,7 @@ namespace UniversalReportCore.Ui
             IHtmlContent content = Column switch
             {
                 _ when !string.IsNullOrEmpty(Column.RenderPartial) =>
-                    await _htmlHelper.PartialAsync(Column.RenderPartial, 
+                    await _htmlHelper.PartialAsync(Column.RenderPartial,
                         viewModelInstance),
 
                 _ => await _htmlHelper.PartialAsync("_FieldValueDisplayPartial",

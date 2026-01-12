@@ -38,7 +38,7 @@ namespace UniversalReportCore.Ui.Pages
         [ModelBinder(BinderType = typeof(ReportQueryParamsBinderBase))]
         public virtual IReportQueryParams Params { get; set; }
         [BindProperty(SupportsGet = true)] public string? Id { get; set; }
-        
+
         // Properties
         [BindProperty] public PageMetaViewModel PageMeta { get; set; }
         public List<IReportColumnDefinition> ReportColumns { get; set; } = new();
@@ -50,8 +50,8 @@ namespace UniversalReportCore.Ui.Pages
         public string? SelectedFilter { get; set; }
         public bool HasFiltersAvailable { get; set; }
         public ActionWellViewModel ActionWell { get; set; }
-        public string? SearchCssClasses { get;set; }
-        public string? ActionWellCssClasses { get;set; }
+        public string? SearchCssClasses { get; set; }
+        public string? ActionWellCssClasses { get; set; }
         public ReportPageModel(
             ILogger<ReportPageModel> logger,
             IMapper mapper,
@@ -131,7 +131,7 @@ namespace UniversalReportCore.Ui.Pages
                 return NotFound();
             }
 
-            
+
 
             // Sanity check for paging index, items per page, or cohort IDs.
             if (!Params.Pi.IsSane || !Params.Ipp.IsSane || !Params.CohortIds.IsSane)
