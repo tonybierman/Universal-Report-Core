@@ -39,8 +39,9 @@ namespace UniversalReportCore.PageMetadata
         /// <summary>
         /// Retrieves the action well partial name for a given page based on its slug.
         /// </summary>
-        /// <param name="slug"></param>
-        /// <returns></returns>
+        /// <param name="slug">The slug identifying the page.</param>
+        /// <param name="subPartials">The list of sub-partial view models.</param>
+        /// <returns>An <see cref="ActionWellViewModel"/> containing the action well configuration.</returns>
         ActionWellViewModel GetActionWell(string slug, List<SubPartialViewModel> subPartials);
     }
 }

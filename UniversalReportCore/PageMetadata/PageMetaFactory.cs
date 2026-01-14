@@ -65,6 +65,7 @@ namespace UniversalReportCore.PageMetadata
         /// </summary>
         /// <param name="slug">The unique identifier for the provider whose action well partial is to be retrieved. Cannot be null or
         /// empty.</param>
+        /// <param name="subPartials">The list of sub-partial view models to include in the action well.</param>
         /// <returns>The name of the action well partial view associated with the specified slug, or <see langword="null"/> if no
         /// partial view is defined.</returns>
         /// <exception cref="InvalidOperationException">Thrown if no provider is found for the specified <paramref name="slug"/>.</exception>

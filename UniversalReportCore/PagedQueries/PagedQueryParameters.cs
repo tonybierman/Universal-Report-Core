@@ -59,7 +59,7 @@ namespace UniversalReportCore.PagedQueries
         /// <param name="sort">The sorting order.</param>
         /// <param name="itemsPerPage">The number of items per page.</param>
         /// <param name="cohortIds">An array of cohort identifiers for filtering.</param>
-        /// <param name="filterKeys">A string array of keys for filtering.</param>
+        /// <param name="filterConfig">The filter configuration for filtering.</param>
         /// <param name="reportFilter">An optional additional filter function.</param>
         /// <param name="aggregateLogic">An optional aggregation function.</param>
         /// <param name="metaLogic">An optional function for computing metadata.</param>

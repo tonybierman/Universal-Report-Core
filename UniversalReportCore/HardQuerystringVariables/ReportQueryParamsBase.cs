@@ -65,6 +65,8 @@ namespace UniversalReportCore.HardQuerystringVariables
         /// <param name="sortOrder">The column sorting parameter.</param>
         /// <param name="cohortIds">The cohort identifiers parameter.</param>
         /// <param name="slug">The report slug parameter.</param>
+        /// <param name="filterKeys">The filter keys parameter.</param>
+        /// <param name="searchQueries">The search queries parameter.</param>
         public ReportQueryParamsBase(HardenedPagingIndex pi,
             HardenedItemsPerPage ipp,
             HardenedColumnSort sortOrder,

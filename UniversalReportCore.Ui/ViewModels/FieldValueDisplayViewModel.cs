@@ -29,7 +29,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldValueDisplayViewModel"/> class.
         /// </summary>
-        /// <param name="item">The IEntityViewModel<int> object.</param>
+        /// <param name="item">The entity view model object.</param>
         /// <param name="column">The column definition.</param>
         public FieldValueDisplayViewModel(BaseEntityViewModel item, IReportColumnDefinition column)
         {
