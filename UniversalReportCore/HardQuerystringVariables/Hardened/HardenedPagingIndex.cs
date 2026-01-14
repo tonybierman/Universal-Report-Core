@@ -1,4 +1,4 @@
-﻿using UniversalReportCore.HardQuerystringVariables;
+using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
@@ -10,13 +10,21 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _min = 1;
         private readonly int _max = 10000;
 
+        /// <summary>
+        /// Gets a default "null object" instance representing no paging (null value, considered sane).
+        /// </summary>
+        public static HardenedPagingIndex Default { get; } = new HardenedPagingIndex(null);
+
         public HardenedPagingIndex() : base() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedPagingIndex"/> class.
         /// </summary>
         /// <param name="index">The paging index.</param>
-        public HardenedPagingIndex(int? index) : base(index) { }
+        public HardenedPagingIndex(int? index) : base(index) 
+        { 
+            CheckSanity();
+        }
 
         /// <summary>
         /// Checks whether the paging index is within a valid range.
@@ -24,7 +32,7 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         /// <returns>True if the index is sane; otherwise, false.</returns>
         public override bool CheckSanity()
         {
-            IsSane = Value == null || Value >= _min && Value <= _max;
+            IsSane = Value == null || (Value >= _min && Value <= _max);
             return IsSane;
         }
 
@@ -35,7 +43,6 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         /// <returns>True if the index is within the valid range; otherwise, false.</returns>
         public bool Validate(int totalPages)
         {
-            // TODO: totalPages == 0 is not really valid condition here
             IsValid = Value == null || Value <= totalPages || totalPages == 0;
             return IsValid;
         }

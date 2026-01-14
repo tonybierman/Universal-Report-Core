@@ -1,4 +1,4 @@
-﻿using UniversalReportCore.HardQuerystringVariables;
+using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
 {
@@ -10,13 +10,21 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _min = 0;
         private readonly int _max = 10000;
 
+        /// <summary>
+        /// Gets a default "null object" instance representing no items-per-page setting (null value).
+        /// </summary>
+        public static HardenedItemsPerPage Default { get; } = new HardenedItemsPerPage(null);
+
         public HardenedItemsPerPage() : base() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedItemsPerPage"/> class.
         /// </summary>
         /// <param name="ipp">The number of items per page.</param>
-        public HardenedItemsPerPage(int? ipp) : base(ipp) { }
+        public HardenedItemsPerPage(int? ipp) : base(ipp) 
+        { 
+            CheckSanity();
+        }
 
         /// <summary>
         /// Checks whether the number of items per page is within a valid range.

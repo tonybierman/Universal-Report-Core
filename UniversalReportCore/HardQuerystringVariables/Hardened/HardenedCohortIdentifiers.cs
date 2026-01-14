@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UniversalReportCore.HardQuerystringVariables;
 
 namespace UniversalReportCore.HardQuerystringVariables.Hardened
@@ -12,13 +12,21 @@ namespace UniversalReportCore.HardQuerystringVariables.Hardened
         private readonly int _max = 10000;
         private readonly int maxArraySize = 100;
 
+        /// <summary>
+        /// Gets a default "null object" instance representing no cohort identifiers.
+        /// </summary>
+        public static HardenedCohortIdentifiers Default { get; } = new HardenedCohortIdentifiers(null);
+
         public HardenedCohortIdentifiers() : base() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HardenedCohortIdentifiers"/> class.
         /// </summary>
         /// <param name="cohortIds">The array of cohort IDs.</param>
-        public HardenedCohortIdentifiers(int[]? cohortIds) : base(cohortIds) { }
+        public HardenedCohortIdentifiers(int[]? cohortIds) : base(cohortIds) 
+        { 
+            CheckSanity();
+        }
 
         /// <summary>
         /// Checks whether the cohort identifiers are within valid limits.

@@ -36,7 +36,7 @@ namespace UniversalReportCore.Ui.Pages
         // Querystring Properties
         [BindProperty(SupportsGet = true)]
         [ModelBinder(BinderType = typeof(ReportQueryParamsBinderBase))]
-        public virtual IReportQueryParams? Params { get; set; }
+        public virtual IReportQueryParams Params { get; set; }
         [BindProperty(SupportsGet = true)] public string? Id { get; set; }
 
         // Properties
@@ -69,6 +69,7 @@ namespace UniversalReportCore.Ui.Pages
             PageMeta = new PageMetaViewModel { Title = "Demo", Subtitle = "Lorem Ipsum" };
             _authorizationService = authorizationService;
             _policyProvider = policyProvider;
+            Params = ReportQueryParams.None;
         }
 
         public async Task<IActionResult> ReportPageGetAsync()
