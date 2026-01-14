@@ -20,7 +20,7 @@ namespace UniversalReportCore.Services.QueryPipeline
 
                 foreach (var part in propertyParts)
                 {
-                    PropertyInfo propertyInfo = propertyAccess.Type.GetProperty(part);
+                    PropertyInfo? propertyInfo = propertyAccess.Type.GetProperty(part);
                     if (propertyInfo == null) throw new ArgumentException("Invalid property name.");
                     propertyAccess = Expression.Property(propertyAccess, part);
                     // Check if the final property is DateTime, intermediate properties can be objects
@@ -33,8 +33,8 @@ namespace UniversalReportCore.Services.QueryPipeline
                     var startDate = parameters.DateFilter.StartDate != DateTime.MinValue ? parameters.DateFilter.StartDate : DateTime.MinValue;
                     var endDate = parameters.DateFilter.EndDate != DateTime.MinValue ? parameters.DateFilter.EndDate : DateTime.MaxValue;
 
-                    Expression startExpr = startDate != DateTime.MinValue ? Expression.GreaterThanOrEqual(propertyAccess, Expression.Constant(startDate)) : null;
-                    Expression endExpr = endDate != DateTime.MaxValue ? Expression.LessThanOrEqual(propertyAccess, Expression.Constant(endDate)) : null;
+                    Expression? startExpr = startDate != DateTime.MinValue ? Expression.GreaterThanOrEqual(propertyAccess, Expression.Constant(startDate)) : null;
+                    Expression? endExpr = endDate != DateTime.MaxValue ? Expression.LessThanOrEqual(propertyAccess, Expression.Constant(endDate)) : null;
 
                     Expression condition = startExpr != null && endExpr != null
                         ? Expression.AndAlso(startExpr, endExpr)

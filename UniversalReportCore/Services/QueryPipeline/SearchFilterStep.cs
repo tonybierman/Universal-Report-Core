@@ -25,7 +25,7 @@ namespace UniversalReportCore.Services.QueryPipeline
                 {
                     // Define parameter for expression
                     ParameterExpression param = Expression.Parameter(typeof(TEntity), "e");
-                    Expression overallCondition = null;
+                    Expression? overallCondition = null;
 
                     // Process each property group
                     foreach (var group in groups)
@@ -37,7 +37,7 @@ namespace UniversalReportCore.Services.QueryPipeline
                         // Build property access expression
                         foreach (var part in propertyParts)
                         {
-                            PropertyInfo propertyInfo = propertyAccess.Type.GetProperty(part);
+                            PropertyInfo? propertyInfo = propertyAccess.Type.GetProperty(part);
                             if (propertyInfo == null) throw new ArgumentException("Invalid property name.");
                             propertyAccess = Expression.Property(propertyAccess, part);
                             // Validate final property is string
@@ -49,8 +49,8 @@ namespace UniversalReportCore.Services.QueryPipeline
                         if (propertyAccess != param)
                         {
                             // Get string.Contains method for comparison
-                            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                            Expression groupExpr = null;
+                            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
+                            Expression? groupExpr = null;
 
                             // Combine filters for same property with OR
                             foreach (var filter in group)
@@ -60,7 +60,10 @@ namespace UniversalReportCore.Services.QueryPipeline
                             }
 
                             // Combine different properties with AND
-                            overallCondition = overallCondition == null ? groupExpr : Expression.AndAlso(overallCondition, groupExpr);
+                            if (groupExpr != null)
+                            {
+                                overallCondition = overallCondition == null ? groupExpr : Expression.AndAlso(overallCondition, groupExpr);
+                            }
                         }
                     }
 

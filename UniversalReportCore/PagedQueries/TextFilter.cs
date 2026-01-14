@@ -16,12 +16,12 @@
             Value = value;
         }
 
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the name of the property on which the filter will be applied.
         /// </summary>
-        public string PropertyName { get; set; }
+        public string PropertyName { get; set; } = default!;
 
         public bool HasValue => !string.IsNullOrWhiteSpace(Value) && !string.IsNullOrWhiteSpace(PropertyName);
     }

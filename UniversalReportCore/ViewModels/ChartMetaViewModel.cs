@@ -5,17 +5,17 @@
     /// </summary>
     public class ChartMetaViewModel
     {
-        public string ChartSlug { get; set; }
+        public string ChartSlug { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the title of the chart.
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the subtitle of the chart.
         /// </summary>
-        public string Subtitle { get; set; }
+        public string Subtitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the label for the chart's Y axis.
@@ -51,7 +51,7 @@
         /// <summary>
         /// Gets or sets the API endpoint from which the chart will fetch data.
         /// </summary>
-        public string DataEndpoint { get; set; }
+        public string DataEndpoint { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets a value indicating whether the chart represents historical data.

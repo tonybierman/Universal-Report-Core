@@ -35,7 +35,7 @@
         /// <summary>
         /// Gets or sets the name of the property on which the filter will be applied.
         /// </summary>
-        public string PropertyName { get; set; }
+        public string PropertyName { get; set; } = default!;
 
         /// <summary>
         /// Determines whether the filter has a valid date range for filtering.

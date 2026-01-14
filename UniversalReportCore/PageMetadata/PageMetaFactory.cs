@@ -54,7 +54,7 @@ namespace UniversalReportCore.PageMetadata
             }
 
             var attribute = provider.GetType().GetCustomAttribute<PageMetaPolicyAttribute>();
-            policy = attribute?.Policy; // Null if no policy (anonymous)
+            policy = attribute?.Policy ?? string.Empty; // Empty if no policy (anonymous)
 
             return provider.GetPageMeta();
         }

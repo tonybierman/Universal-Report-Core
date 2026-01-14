@@ -17,7 +17,7 @@ namespace UniversalReportCore.ViewModels
 
         public List<SubPartialViewModel> SubPartials { get; set; }
 
-        public IReportQueryParams Params { get; set; }
+        public IReportQueryParams? Params { get; set; }
 
         public string? CurrentSort { get; set; }
 

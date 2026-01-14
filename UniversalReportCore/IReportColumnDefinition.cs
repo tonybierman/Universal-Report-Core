@@ -14,7 +14,7 @@ namespace UniversalReportCore
         string? CssClass { get; set; }
         bool IsSortDescending { get; set; }
         string PropertyName { get; set; }
-        string ViewModelPropertyName { get; set; }
+        string? ViewModelPropertyName { get; set; }
         string? RenderPartial { get; set; }
         bool HideInPortrait { get; set; }
         AggregationType Aggregation { get; set; }

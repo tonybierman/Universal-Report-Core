@@ -15,7 +15,7 @@ namespace UniversalReportCore
         /// <summary>
         /// The deserialized data value used by the command during execution.
         /// </summary>
-        protected T _dataValue;
+        protected T _dataValue = default!;
 
         /// <summary>
         /// Deserializes a JSON string into the command’s data value.
@@ -25,7 +25,7 @@ namespace UniversalReportCore
         /// <exception cref="JsonException">Thrown if <paramref name="data"/> is null or empty.</exception>
         public object Deserialize(string data)
         {
-            return DeserializeData(data);
+            return DeserializeData(data)!;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace UniversalReportCore
         /// <remarks>Derived classes can override this method to reset additional state if needed.</remarks>
         public virtual void Reset()
         {
-            _dataValue = default; // Clears the stored data
+            _dataValue = default!; // Clears the stored data
         }
     }
 }

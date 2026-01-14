@@ -7,7 +7,7 @@ namespace UniversalReportCore
     {
         public ReportColumnDefinition()
         {
-            ValueSelector = (item, type, prop) => prop?.GetValue(item);
+            ValueSelector = (item, type, prop) => prop?.GetValue(item)!;
         }
 
         public string DisplayName { get; set; } = default!;

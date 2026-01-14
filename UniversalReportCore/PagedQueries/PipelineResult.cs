@@ -9,8 +9,6 @@ namespace UniversalReportCore.PagedQueries
     /// </summary>
     public class PipelineResult<T>
     {
-        private IQueryable<T> query;
-
         public IQueryable<T> Query { get; set; }
         public Dictionary<string, dynamic> Aggregates { get; }
         public Dictionary<string, dynamic> Metadata { get; }
