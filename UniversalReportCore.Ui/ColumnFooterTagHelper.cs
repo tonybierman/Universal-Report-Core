@@ -17,7 +17,7 @@ namespace UniversalReportCoreUi
         public IReportQueryParams? Model { get; set; }
 
         [HtmlAttributeName("items")]
-        public IPaginatedList Items { get; set; }
+        public IPaginatedList? Items { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

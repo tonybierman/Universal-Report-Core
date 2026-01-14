@@ -18,7 +18,7 @@ namespace UniversalReportCore.Ui.ViewModels.FieldFormatting
 
         public string Format(object value, Type propertyType)
         {
-            return value != null ? value.ToString() : "0";
+            return value?.ToString() ?? "0";
         }
     }
 }

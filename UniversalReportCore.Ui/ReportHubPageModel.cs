@@ -15,7 +15,7 @@ namespace UniversalReportCore.Ui
     {
         private readonly IPageMetaFactory _pageMetaFactory;
 
-        public List<ReportLinkViewModel> Reports { get; set; }
+        public List<ReportLinkViewModel>? Reports { get; set; }
 
         public ReportHubPageModel(IPageMetaFactory pageMetaFactory)
         {
@@ -29,7 +29,7 @@ namespace UniversalReportCore.Ui
                 .Select(provider =>
                 {
                     var meta = provider.GetPageMeta();
-                    return new ReportLinkViewModel(provider.RouteLiteral, provider.Slug, meta.Title, meta.Subtitle, provider.Description, StringHelper.SplitPascalCase(provider.TaxonomySlug));
+                    return new ReportLinkViewModel(provider.RouteLiteral, provider.Slug, meta.Title ?? string.Empty, meta.Subtitle ?? string.Empty, provider.Description ?? string.Empty, StringHelper.SplitPascalCase(provider.TaxonomySlug));
                 })
                 .OrderBy(item => item.Taxonomy)
                 .ThenBy(item => item.Subtitle)

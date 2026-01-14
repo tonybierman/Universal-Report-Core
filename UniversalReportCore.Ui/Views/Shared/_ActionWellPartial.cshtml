@@ -7,12 +7,12 @@
 <form method="get">
 
     <!-- Preserve Other Query Parameters -->
-    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+    <input type="hidden" name="slug" value="@Model.Params?.Slug.Value" />
+    <input type="hidden" name="ipp" value="@Model.Params?.Ipp.Value" />
     <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-    <input type="hidden" name="pi" value="@Model.Params.Pi.Value" />
+    <input type="hidden" name="pi" value="@Model.Params?.Pi.Value" />
 
-    @if (Model.Params.CohortIds.Value != null)
+    @if (Model.Params?.CohortIds.Value != null)
     {
         @foreach (var cohortId in Model.Params.CohortIds.Value)
         {
@@ -31,8 +31,8 @@
 </form>
 
 @{
-    bool hasSearchQueries = Model.Params.SearchQueries.Value?.Any() ?? false;
-    bool hasFilterKeys = Model.Params.FilterKeys.Value?.Any() ?? false;
+    bool hasSearchQueries = Model.Params?.SearchQueries.Value?.Any() ?? false;
+    bool hasFilterKeys = Model.Params?.FilterKeys.Value?.Any() ?? false;
 }
 
 @if (hasSearchQueries || hasFilterKeys)

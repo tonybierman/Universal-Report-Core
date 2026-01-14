@@ -6,8 +6,11 @@
 @addTagHelper *, UniversalReportCore.Ui
 
 @{
-    Model.ActionWell.Params = Model.Params;
-    Model.ActionWell.CurrentSort = Model.CurrentSort;
+    if (Model.ActionWell != null)
+    {
+        Model.ActionWell.Params = Model.Params;
+        Model.ActionWell.CurrentSort = Model.CurrentSort;
+    }
 }
 
 @await Html.PartialAsync("_PageHeadingPartial", Model.PageMeta)
@@ -35,12 +38,12 @@
         <table class="table vertical-borders table-striped mt-3">
             <thead>
                 <tr class="bg-light">
-                    @foreach (var column in Model?.ReportColumns)
+                    @foreach (var column in Model.ReportColumns!)
                     {
                         <column-heading column="@column"
-                                        model="@Model?.Params"
-                                        viewmodel="@(Model?.Items.Cast<BaseEntityViewModel>().FirstOrDefault())"
-                                        sort="@Model?.CurrentSort"
+                                        model="@Model.Params"
+                                        viewmodel="@(Model.Items!.Cast<BaseEntityViewModel>().FirstOrDefault())"
+                                        sort="@Model.CurrentSort"
                                         page="/Reports/Index">
                         </column-heading>
                     }
@@ -50,42 +53,42 @@
                 {
                     Params = Model.Params,
                     CurrentSort = Model.CurrentSort,
-                    ReportColumns = Model.ReportColumns.ToArray(),
+                    ReportColumns = Model.ReportColumns!.ToArray(),
                     FilterOptions = Model.FilterOptions
                 })
         </thead>
 
         <tbody>
-            @foreach (BaseEntityViewModel item in Model?.Items)
+            @foreach (BaseEntityViewModel item in Model.Items!)
                 {
                     <tr>
-                        @foreach (var column in Model?.ReportColumns)
+                        @foreach (var column in Model.ReportColumns!)
                         {
                             <column-field column="column"
                                           item="item"
-                                          current-sort="@Model?.CurrentSort"
-                                          params="@Model?.Params">
+                                          current-sort="@Model.CurrentSort"
+                                          params="@Model.Params">
                             </column-field>
                         }
                     </tr>
                 }
             </tbody>
 
-            @if (Model?.Items?.Aggregates?.Any() == true)
+            @if (Model.Items?.Aggregates?.Any() == true)
             {
                 <tfoot>
-                    @if (Model?.Params.CohortIds.Value?.Any() == true)
+                    @if (Model.Params?.CohortIds.Value?.Any() == true)
                     {
-                        @foreach (var cohortId in Model?.Params.CohortIds.Value)
+                        @foreach (var cohortId in Model.Params!.CohortIds.Value!)
                         {
                             <tr class="justify-content-center">
-                                @foreach (var column in Model?.ReportColumns)
+                                @foreach (var column in Model.ReportColumns!)
                                 {
                                     <cohort-footer column="@column"
-                                                   model="@Model?.Params"
+                                                   model="@Model.Params"
                                                    cohort-id="@cohortId"
-                                                   items="Model?.Items"
-                                                   cohorts="Model?.Cohorts"
+                                                   items="@Model.Items"
+                                                   cohorts="@Model.Cohorts"
                                                    page="/Reports/Index">
                                     </cohort-footer>
                                 }
@@ -93,11 +96,11 @@
                         }
                     }
                     <tr class="bg-light justify-content-center">
-                        @foreach (var column in Model?.ReportColumns)
+                        @foreach (var column in Model.ReportColumns!)
                         {
                             <column-footer column="@column"
-                                           model="@Model?.Params"
-                                           items="Model?.Items">
+                                           model="@Model.Params"
+                                           items="@Model.Items">
                             </column-footer>
                         }
                     </tr>
@@ -110,24 +113,24 @@
         <p class="text-muted">No data available for this report.</p>
     }
     <div class="text-center">
-        @if (@Model?.Items?.Count > 0)
+        @if (Model?.Items?.Count > 0 && Model?.Params != null)
         {
             <partial name="_ReportItemsPerPageSelectorPartial"
-                     model="new ItemsPerPageSelectorViewModel(Model?.Params, Model?.Items)" />
+                     model="new ItemsPerPageSelectorViewModel(Model.Params, Model.Items!)" />
         }
-        @if (Model?.Items?.HasMultiplePages == true)
+        @if (Model?.Items?.HasMultiplePages == true && Model?.Params != null)
         {
             <partial name="_ReportPagingNavigationPartial"
                      model="new ReportPagingNavigationViewModel()
                      {
-                         CurrentSort = Model?.CurrentSort,
-                         Params = Model?.Params,
-                         Items = Model?.Items
+                         CurrentSort = Model.CurrentSort,
+                         Params = Model.Params,
+                         Items = Model.Items!
                      }" />
                 }
         @if (Model?.Items?.Meta?.ContainsKey("QueryDuration") == true)
         {
-            var queryDuration = Model?.Items?.Meta?["QueryDuration"];
+            var queryDuration = Model.Items.Meta["QueryDuration"];
             <p class="small mt-4"><i>Query Duration: @queryDuration</i></p>
         }
     </div>

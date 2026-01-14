@@ -8,6 +8,6 @@ namespace UniversalReportCore.Ui.ViewModels
 {
     public class ReportHubViewModel
     {
-        public IList<ReportLinkViewModel> Links { get; set; }
+        public IList<ReportLinkViewModel>? Links { get; set; }
     }
 }

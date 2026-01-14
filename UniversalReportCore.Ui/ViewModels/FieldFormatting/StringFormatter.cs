@@ -28,7 +28,7 @@ namespace UniversalReportCore.Ui.ViewModels.FieldFormatting
             if (value is string str)
                 return string.Format(_format, str);
 
-            return null; // or throw exception based on requirements
+            return string.Empty; // or throw exception based on requirements
         }
     }
 }

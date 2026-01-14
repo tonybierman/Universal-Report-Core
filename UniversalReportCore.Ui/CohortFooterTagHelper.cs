@@ -29,13 +29,13 @@ namespace UniversalReportCoreUi
         public int CohortId { get; set; }
 
         [HtmlAttributeName("items")]
-        public IPaginatedList Items { get; set; }
+        public IPaginatedList? Items { get; set; }
 
         [HtmlAttributeName("cohorts")]
-        public ICohort[] Cohorts { get; set; }
+        public ICohort[]? Cohorts { get; set; }
 
         [HtmlAttributeName("page")]
-        public string Page { get; set; }
+        public string Page { get; set; } = "/Reports/Index";
 
         [ViewContext]
         public ViewContext ViewContext { get; set; } = null!;
@@ -50,7 +50,7 @@ namespace UniversalReportCoreUi
 
             if (Column.IsDisplayKey)
             {
-                var cohort = Cohorts.FirstOrDefault(c => c.Id == CohortId);
+                var cohort = Cohorts?.FirstOrDefault(c => c.Id == CohortId);
                 var url = urlHelper.Page(Page, new
                 {
                     slug = Model?.Slug.Value,

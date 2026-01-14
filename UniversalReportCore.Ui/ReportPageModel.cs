@@ -36,20 +36,20 @@ namespace UniversalReportCore.Ui.Pages
         // Querystring Properties
         [BindProperty(SupportsGet = true)]
         [ModelBinder(BinderType = typeof(ReportQueryParamsBinderBase))]
-        public virtual IReportQueryParams Params { get; set; }
+        public virtual IReportQueryParams? Params { get; set; }
         [BindProperty(SupportsGet = true)] public string? Id { get; set; }
 
         // Properties
         [BindProperty] public PageMetaViewModel PageMeta { get; set; }
         public List<IReportColumnDefinition> ReportColumns { get; set; } = new();
-        public string CurrentSort { get; set; }
-        public ICohort[] Cohorts { get; set; }
+        public string? CurrentSort { get; set; }
+        public ICohort[]? Cohorts { get; set; }
         public IPaginatedList? Items { get; protected set; }
         [BindProperty] public long[]? SelectedIds { get; set; }
-        public List<(string Heading, List<SelectListItem> Options)> FilterOptions { get; private set; }
+        public List<(string Heading, List<SelectListItem> Options)>? FilterOptions { get; private set; }
         public string? SelectedFilter { get; set; }
         public bool HasFiltersAvailable { get; set; }
-        public ActionWellViewModel ActionWell { get; set; }
+        public ActionWellViewModel? ActionWell { get; set; }
         public string? SearchCssClasses { get; set; }
         public string? ActionWellCssClasses { get; set; }
         public ReportPageModel(
@@ -74,7 +74,7 @@ namespace UniversalReportCore.Ui.Pages
         public async Task<IActionResult> ReportPageGetAsync()
         {
             // Check and validate query parameters
-            if (!Params.CheckSanity())
+            if (Params == null || !Params.CheckSanity())
             {
                 _logger.LogDebug("One or more query parameters are invalid.");
                 return StatusCode(422);
@@ -145,14 +145,19 @@ namespace UniversalReportCore.Ui.Pages
 
         public async Task<IActionResult> ReportPageGetAsync(string slug, string? displayKey = null)
         {
+            if (Params == null)
+            {
+                return StatusCode(422);
+            }
+
             if (Params.FilterKeys.Value == null)
             {
-                Params.FilterKeys = new HardenedFilterKeys(new List<string> { SelectedFilter }.ToArray());
+                Params.FilterKeys = new HardenedFilterKeys(new List<string?> { SelectedFilter }.Where(s => s != null).Cast<string>().ToArray());
             }
             else
             {
                 var filterList = Params.FilterKeys.Value.ToList();
-                if (filterList.Contains(SelectedFilter))
+                if (SelectedFilter != null && filterList.Contains(SelectedFilter))
                 {
                     // Remove if it already exists
                     filterList.Remove(SelectedFilter);
@@ -165,17 +170,14 @@ namespace UniversalReportCore.Ui.Pages
                         filterList.Add(SelectedFilter);
                     }
                 }
-                if (filterList != null)
-                {
-                    Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
-                }
+                Params.FilterKeys = new HardenedFilterKeys(filterList.ToArray());
             }
 
             // Page Helper
-            var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType);
+            var pageHelper = _pageHelperFactory.GetHelper(Params.Slug.ReportType ?? string.Empty);
 
             // Define report columns dynamically based on the query type
-            ReportColumns = pageHelper.GetReportColumns(Params.Slug.Value);
+            ReportColumns = pageHelper.GetReportColumns(Params.Slug.Value ?? string.Empty);
 
             // Are there any filters available
             HasFiltersAvailable = pageHelper.HasFilters(ReportColumns);
@@ -187,7 +189,7 @@ namespace UniversalReportCore.Ui.Pages
             {
                 return StatusCode(422);// "The specified report column does not exist."
             }
-            SortHelper.ConfigureSort(ReportColumns, Params.SortOrder.Value);
+            SortHelper.ConfigureSort(ReportColumns, Params.SortOrder.Value ?? string.Empty);
             CurrentSort = Params.SortOrder.Value;
 
             if (Params.CohortIds.Value != null && Params.CohortIds.Value.Any())

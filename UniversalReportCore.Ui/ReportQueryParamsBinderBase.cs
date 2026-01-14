@@ -23,18 +23,18 @@ namespace UniversalReportCore.Ui
 
             var model = new ReportQueryParamsBase
             (
-                new HardenedPagingIndex(ConvertToNullableInt(query["Pi"])),
-                new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"])),
-                new HardenedColumnSort(query["SortOrder"]),
-                new HardenedCohortIdentifiers(query["CohortIds"].Select(int.Parse).ToArray()),
-                new HardenedReportSlug(slug),
-                new HardenedFilterKeys(query["Filters"]),
+                new HardenedPagingIndex(ConvertToNullableInt(query["Pi"].ToString())),
+                new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"].ToString())),
+                new HardenedColumnSort(query["SortOrder"].ToString() ?? string.Empty),
+                new HardenedCohortIdentifiers(query["CohortIds"].Where(s => !string.IsNullOrEmpty(s)).Select(int.Parse).ToArray()),
+                new HardenedReportSlug(slug ?? string.Empty),
+                new HardenedFilterKeys(query["Filters"].Where(s => s != null).Cast<string>().ToArray()),
                 new HardenedSearchQueries(searchDict)
             );
             bindingContext.Result = ModelBindingResult.Success(model);
             return Task.CompletedTask;
         }
 
-        private int? ConvertToNullableInt(string value) => int.TryParse(value, out var result) ? result : null;
+        private int? ConvertToNullableInt(string? value) => int.TryParse(value, out var result) ? result : null;
     }
 }

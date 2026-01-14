@@ -13,12 +13,12 @@
     <form method="get">
 
         <!-- Preserve Other Query Parameters -->
-        <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-        <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+        <input type="hidden" name="slug" value="@Model.Params?.Slug.Value" />
+        <input type="hidden" name="ipp" value="@Model.Params?.Ipp.Value" />
         <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-        <input type="hidden" name="pi" value="@Model.Params.Pi.Value" />
+        <input type="hidden" name="pi" value="@Model.Params?.Pi.Value" />
 
-        @if (Model.Params.CohortIds.Value != null)
+        @if (Model.Params?.CohortIds.Value != null)
         {
             @foreach (var cohortId in Model.Params.CohortIds.Value)
             {
@@ -41,13 +41,13 @@
             }
 
             KeyValuePair<string, string>? search = null;
-            @if (Model.Params.SearchQueries.Value != null)
+            @if (Model.Params?.SearchQueries.Value != null)
             {
                 search = Model.Params.SearchQueries.Value.FirstOrDefault(a => a.Key == column.PropertyName);
             }
 
             <div class="form-group my-1">
-                <label style="width: 200px;" for=@($"query{column.PropertyName}")>@($"{StringHelper.SplitPascalCase(column.PropertyName)}")</label>
+                <label style="width: 200px;" for=@($"query{column.PropertyName}")>@($"{StringHelper.SplitPascalCase(column.PropertyName ?? string.Empty)}")</label>
                 <input type="text" id=@($"query{column.PropertyName}") name=@($"query{column.PropertyName}") style="width: 200px;" value=@(search?.Value) />
             </div>
 

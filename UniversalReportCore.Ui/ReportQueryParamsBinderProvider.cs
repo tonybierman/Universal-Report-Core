@@ -14,7 +14,7 @@ namespace UniversalReportCore.Ui
                 return new BinderTypeModelBinder(typeof(ReportQueryParamsBinderBase));
             }
 
-            return null;  // Return null to let the default binders handle other types
+            return null!;  // Return null to let the default binders handle other types
         }
     }
 }

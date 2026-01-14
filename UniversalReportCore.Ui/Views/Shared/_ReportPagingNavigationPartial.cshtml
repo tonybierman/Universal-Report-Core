@@ -1,8 +1,8 @@
 ﻿@using UniversalReportCore.PagedQueries
 @model UniversalReportCore.Ui.ViewModels.ReportPagingNavigationViewModel
 @{
-    var prevDisabled = !@Model.Items.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !@Model.Items.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.Items.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Items.HasNextPage ? "disabled" : "";
     var prevRouteValues = new Dictionary<string, object?>
     {
         { "slug", Model.Params.Slug.Value },
@@ -21,10 +21,14 @@
         { "cohortIds", Model.Params.CohortIds.Value },
         { "filters", Model.Params.FilterKeys.Value }
     };
-    foreach (var search in Model.Params.SearchQueries.Value)
+    var searchQueries = Model.Params.SearchQueries?.Value;
+    if (searchQueries != null)
     {
-        prevRouteValues.Add($"query{search.Key}", search.Value);
-        nextRouteValues.Add($"query{search.Key}", search.Value);
+        foreach (var search in searchQueries)
+        {
+            prevRouteValues.Add($"query{search.Key}", search.Value);
+            nextRouteValues.Add($"query{search.Key}", search.Value);
+        }
     }
 }
 <div class="mt-2">

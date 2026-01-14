@@ -1,15 +1,16 @@
 ﻿@model UniversalReportCore.Ui.ViewModels.FacetedBrowserViewModel
+@using UniversalReportCore
 @using UniversalReportCore.Ui
 @addTagHelper *, UniversalReportCore.Ui
 
 <form method="get">
 
     <!-- Preserve Other Query Parameters -->
-    <input type="hidden" name="slug" value="@Model.Params.Slug.Value" />
-    <input type="hidden" name="ipp" value="@Model.Params.Ipp.Value" />
+    <input type="hidden" name="slug" value="@Model.Params?.Slug.Value" />
+    <input type="hidden" name="ipp" value="@Model.Params?.Ipp.Value" />
     <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
-    <input type="hidden" name="pi" value="@Model.Params.Pi.Value" />
-    @if (Model.Params.CohortIds.Value != null)
+    <input type="hidden" name="pi" value="@Model.Params?.Pi.Value" />
+    @if (Model.Params?.CohortIds.Value != null)
     {
         @foreach (var cohortId in Model.Params.CohortIds.Value)
         {
@@ -18,9 +19,11 @@
     }
 
     <tr class="bg-light collapse" id="collapseFilter">
-        @foreach (var column in Model?.ReportColumns)
+        @if (Model.ReportColumns != null)
         {
-            var options = Model?.FilterOptions
+        @foreach (var column in Model.ReportColumns)
+        {
+            var options = (Model.FilterOptions ?? Enumerable.Empty<(string Heading, List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> Options)>())
             .Where(a => a.Heading == column.PropertyName)
             .Select(a => a.Options)
             .FirstOrDefault();
@@ -36,8 +39,9 @@
                 <th></th>
             }
         }
+        }
 
-        @if (Model.Params.SearchQueries.Value != null)
+        @if (Model.Params?.SearchQueries.Value != null)
         {
             @foreach (var search in Model.Params.SearchQueries.Value)
             {

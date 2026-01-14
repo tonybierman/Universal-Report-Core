@@ -16,7 +16,7 @@ namespace UniversalReportCore.Ui.ViewModels
 
         public IReportColumnDefinition[]? ReportColumns { get; set; }
 
-        public IReportQueryParams Params { get; set; }
+        public IReportQueryParams? Params { get; set; }
 
         public string? CurrentSort { get; set; }
 

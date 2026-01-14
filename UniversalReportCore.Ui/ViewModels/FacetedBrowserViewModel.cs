@@ -23,7 +23,7 @@ namespace UniversalReportCore.Ui.ViewModels
         /// <value>
         /// An object implementing <see cref="IReportQueryParams"/> that defines the parameters used to query the report data.
         /// </value>
-        public IReportQueryParams Params { get; set; }
+        public IReportQueryParams? Params { get; set; }
 
         public bool ShowFilterButton { get; set; }
         public string? FilterButtonHtml { get; set; } = "Filters";

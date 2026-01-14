@@ -17,14 +17,14 @@ namespace UniversalReportCore.Ui.ViewModels
         /// <summary>
         /// Gets or sets the dynamic object containing the property.
         /// </summary>
-        public BaseEntityViewModel Item { get; set; }
+        public BaseEntityViewModel? Item { get; set; }
 
         /// <summary>
         /// Gets or sets the property name to be accessed.
         /// </summary>
-        public string PropertyName { get; set; }
+        public string? PropertyName { get; set; }
 
-        public IReportColumnDefinition ColumnDefinition { get; set; }
+        public IReportColumnDefinition? ColumnDefinition { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldValueDisplayViewModel"/> class.
@@ -46,7 +46,7 @@ namespace UniversalReportCore.Ui.ViewModels
         {
             var type = Item?.GetType();
             var property = type != null && PropertyName != null ? type.GetProperty(PropertyName) : null;
-            if (ColumnDefinition.ValueSelector != null && Item != null)
+            if (ColumnDefinition?.ValueSelector != null && Item != null)
             {
                 return ColumnDefinition.ValueSelector(Item, type, property);
             }
@@ -63,9 +63,10 @@ namespace UniversalReportCore.Ui.ViewModels
 
         public string FormatFieldValue(object value, IFieldFormatter formatter)
         {
-            if (formatter.CanHandle(value, value?.GetType()))
+            var valueType = value?.GetType() ?? typeof(object);
+            if (value != null && formatter.CanHandle(value, valueType))
             {
-                return formatter.Format(value, value?.GetType());
+                return formatter.Format(value, valueType);
             }
 
             return string.Empty;

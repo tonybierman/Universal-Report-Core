@@ -103,7 +103,7 @@ namespace UniversalReportCore.Ui
 
         public virtual Task<ICohort[]?> GetCohortsAsync(int[] cohortIds)
         {
-            return null;
+            return Task.FromResult<ICohort[]?>(null);
         }
 
         public virtual List<ChartDataPoint> GetChartData(IPaginatedList items, string chartSlug, string propertyName)
@@ -161,7 +161,7 @@ namespace UniversalReportCore.Ui
 
         protected virtual void EnsureFacetedFilter(PagedQueryParameters<TEntity> parameters)
         {
-            var predicate = _filterFactory.BuildPredicate(parameters.FilterKeys);
+            var predicate = _filterFactory.BuildPredicate(parameters.FilterKeys ?? Array.Empty<string>());
 
             parameters.FacetedFilter = (query) =>
             {

@@ -41,10 +41,10 @@ namespace UniversalReportCore.Ui
         public BaseEntityViewModel? ViewModel { get; set; }
 
         [HtmlAttributeName("sort")]
-        public string Sort { get; set; }
+        public string? Sort { get; set; }
 
         [HtmlAttributeName("page")]
-        public string Page { get; set; }
+        public string Page { get; set; } = "/Reports/Index";
 
         [ViewContext]
         public ViewContext ViewContext { get; set; } = null!;
@@ -63,7 +63,7 @@ namespace UniversalReportCore.Ui
                 : null;
 
             // Tooltip with category if available
-            string? toolTip = Column.Description;
+            string? toolTip = Column?.Description;
             if (toolTip == null)
             {
                 toolTip = (Column?.PropertyName ?? Column?.ViewModelPropertyName) is string propertyName
@@ -106,7 +106,7 @@ namespace UniversalReportCore.Ui
                 output.Content.AppendHtml(linkTag);
 
                 // Show sort indicator
-                if (Column.PropertyName == Sort.Replace("Asc", "").Replace("Desc", ""))
+                if (Sort != null && Column.PropertyName == Sort.Replace("Asc", "").Replace("Desc", ""))
                 {
                     var sortIndicator = Column.IsSortDescending ? "↓" : "↑";
                     var spanTag = new TagBuilder("span");

@@ -1,7 +1,7 @@
 ﻿@model UniversalReportCore.Ui.ViewModels.ReportHubViewModel
 @{
 }
-@foreach (var group in Model.Links.GroupBy(r => r.Taxonomy))
+@foreach (var group in (Model.Links ?? Enumerable.Empty<UniversalReportCore.Ui.ViewModels.ReportLinkViewModel>()).GroupBy(r => r.Taxonomy))
 {
     <h2 class="mt-3">@group.Key</h2>
     <ul class="list-group list-group-flush">

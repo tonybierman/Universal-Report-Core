@@ -13,17 +13,17 @@ namespace UniversalReportCore.Ui
     [HtmlTargetElement("column-field")]
     public class ColumnTagHelper : TagHelper
     {
-        public IReportColumnDefinition Column { get; set; }
-        public BaseEntityViewModel Item { get; set; }
+        public IReportColumnDefinition Column { get; set; } = null!;
+        public BaseEntityViewModel Item { get; set; } = null!;
 
         public IReportQueryParams? Params { get; set; }
         public string? CurrentSort { get; set; }
-        public string Slug { get; set; }
+        public string? Slug { get; set; }
 
         private readonly IHtmlHelper<dynamic> _htmlHelper;
 
         [ViewContext]
-        public ViewContext ViewContext { get; set; }
+        public ViewContext ViewContext { get; set; } = null!;
 
         public ColumnTagHelper(IHtmlHelper<dynamic> htmlHelper)
         {
@@ -45,7 +45,7 @@ namespace UniversalReportCore.Ui
                 throw new ArgumentNullException(nameof(column));
 
             // Try to get explicit CSS class from item, but only if CssClass is non-null/empty
-            object cssAlign = null;
+            object? cssAlign = null;
             if (!string.IsNullOrEmpty(column.CssClass))
             {
                 cssAlign = item.GetType().GetProperty(column.CssClass)?.GetValue(item);
@@ -57,7 +57,7 @@ namespace UniversalReportCore.Ui
                 cssAlign = "text-start"; // Default to left alignment
 
                 // Get field value from PropertyName or fall back to ViewModelName, with null checks
-                object fieldVal = null;
+                object? fieldVal = null;
                 if (!string.IsNullOrEmpty(column.PropertyName))
                 {
                     fieldVal = item.GetType().GetProperty(column.PropertyName)?.GetValue(item);
@@ -74,7 +74,7 @@ namespace UniversalReportCore.Ui
                 }
             }
 
-            return cssAlign as string ?? cssAlign.ToString(); // Fallback to ToString if not string
+            return cssAlign as string ?? cssAlign?.ToString() ?? "text-start"; // Fallback to ToString if not string
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
