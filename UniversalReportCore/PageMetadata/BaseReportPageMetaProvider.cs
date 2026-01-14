@@ -8,7 +8,6 @@ namespace UniversalReportCore.PageMetadata
     /// </summary>
     public class BaseReportPageMetaProvider : BasePageMetaProvider
     {
-        public override string? RouteLiteral => "/Reports/Index";
         public override string CategorySlug => "Reports";
         public override string? TaxonomySlug => CategorySlug;
         public override string? Description => null;
