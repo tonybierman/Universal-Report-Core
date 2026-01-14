@@ -22,7 +22,7 @@ namespace UniversalReportCore.Ui
             _pageMetaFactory = pageMetaFactory;
         }
 
-        public async Task<IActionResult> ReportHubPageGetAsync()
+        public Task<IActionResult> ReportHubPageGetAsync()
         {
             Reports = _pageMetaFactory.Providers
                 .Where(a => a.IsPublished)
@@ -36,7 +36,7 @@ namespace UniversalReportCore.Ui
                 .ThenBy(item => item.Title)
                 .ToList();
 
-            return Page();
+            return Task.FromResult<IActionResult>(Page());
         }
     }
 }

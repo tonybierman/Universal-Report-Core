@@ -148,10 +148,9 @@ namespace UniversalReportCore.Ui
                         var convertedValue = Convert.ChangeType(value, targetType);
                         prop.SetValue(obj, convertedValue);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // Handle the exception (log, rethrow, or suppress as needed)
-                        //Console.WriteLine($"Failed to map {prop.Name}: {ex.Message}");
                     }
                 }
             }

@@ -40,7 +40,7 @@ namespace UniversalReportCore.Ui
                     new HardenedPagingIndex(ConvertToNullableInt(query["Pi"].ToString())),
                     new HardenedItemsPerPage(ConvertToNullableInt(query["Ipp"].ToString())),
                     new HardenedColumnSort(query["SortOrder"].ToString() ?? string.Empty),
-                    new HardenedCohortIdentifiers(query["CohortIds"].Where(s => !string.IsNullOrEmpty(s)).Select(int.Parse).ToArray()),
+                    new HardenedCohortIdentifiers(query["CohortIds"].Where(s => !string.IsNullOrEmpty(s)).Select(s => int.Parse(s!)).ToArray()),
                     new HardenedReportSlug(slug),
                     new HardenedFilterKeys(query["Filters"].Where(s => s != null).Cast<string>().ToArray()),
                     new HardenedSearchQueries(searchDict)

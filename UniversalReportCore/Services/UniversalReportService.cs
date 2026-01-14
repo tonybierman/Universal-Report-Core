@@ -62,7 +62,7 @@ namespace UniversalReport.Services
             }
 
             // Ensure AggregateLogic is not null
-            parameters.AggregateLogic ??= async src => new Dictionary<string, dynamic>();
+            parameters.AggregateLogic ??= src => Task.FromResult(new Dictionary<string, dynamic>());
 
             // Create paginated list with mapping and aggregates
             var result = await PaginatedList<TViewModel>.CreateMappedWithAggregatesAsync(
